@@ -19,27 +19,167 @@
 \section{Model}\whenintegrated{\label{model}}
 \whenintegrated{\label{sec:model}} % integrated doc: SST for labels
 
-This section describes the economic environment used in the model.
-Households receive stochastic income and choose consumption and savings
-subject to a budget constraint.
+Therefore, consumption each period for consumer $i$ can be written as in \eqref{eq:model}:
+\begin{verbatimwrite}{\eqns/splurge.ltx}
+  \begin{equation}
+    \begin{gathered}
+      \begin{aligned}
+        \mathbf{c}_{i,t} & = \mathbf{c}_{sp,i,t} + \mathbf{c}_{opt,i,t}, \whenintegrated{\label{eq:model}} % integrated doc: SST for labels
+      \end{aligned}
+    \end{gathered}
+  \end{equation}
+\end{verbatimwrite}
+\input{\eqns/splurge.ltx}
+{\noindent}where $\mathbf{c}_{i,t}$ is total consumption, $\mathbf{c}_{sp,i,t}$ is the splurge consumption, and $\mathbf{c}_{opt,i,t}$ is the consumer's optimal choice of consumption after splurging.
+Splurge consumption is simply a fraction of income, as shown in \eqref{eq:splurge}:
+\begin{equation}
+  \begin{gathered}
+    \begin{aligned}
+      \mathbf{c}_{sp,i,t} = \varsigma \mathbf{y}_{i,t},
+      \whenintegrated{\label{eq:splurge}} % integrated doc: SST for labels
+    \end{aligned}
+  \end{gathered}
+\end{equation}
+% RAG_METADATA: code_location=AggFiscalModel.py:getIncome()
+% RAG_METADATA: paper_reference=Section 2.1, Eq. (2)
+% RAG_METADATA: related_equations=eq:model
+% RAG_METADATA: equation_type=income_equation
+% RAG_METADATA: domain=consumption
+% RAG_METADATA: parameters=ς=0.249 (estimated)
+while the optimized portion of consumption is chosen to maximize the perpetual-youth lifetime expected-utility-maximizing consumption, where $D$ is the death probability:
+\begin{equation}
+  \begin{gathered}
+    \begin{aligned}
+      \sum_{t=0}^{\infty}\beta_i^t {(1-D)}^t \mathbb{E}_0 u(\mathbf{c}_{opt,i,t}),
+      \whenintegrated{\label{eq:utility}} % integrated doc: SST for labels
+    \end{aligned}
+  \end{gathered}
+\end{equation}
+% RAG_METADATA: paper_reference=Section 2.1
+% RAG_METADATA: related_equations=eq:model,eq:bellman
+% RAG_METADATA: equation_type=objective_function
+% RAG_METADATA: domain=optimization
+% RAG_METADATA: parameters=β=discount factor, D=death probability
+We use a standard CRRA (constant relative risk aversion) utility function, so $u(c) = c^{1-\gamma}/(1-\gamma)$ for $\gamma \neq 1$ and $u(c) = \log(c)$ for $\gamma=1$, where $\gamma$ is the coefficient of relative risk aversion.
+The optimization is subject to the budget constraint \eqref{eq:budget}, given existing market resources $\mathbf{m}_{i,t}$ and income state, and a no-borrowing constraint:
+\begin{equation}
+  \begin{gathered}
+    \begin{aligned}
+      \mathbf{a}_{i,t}   & = \mathbf{m}_{i,t} - \mathbf{c}_{i,t},     \\
+      \mathbf{m}_{i,t+1} & = R \mathbf{a}_{i,t} + \mathbf{y}_{i,t+1}, \\
+      \mathbf{a}_{i,t}   & \geq 0,
+      \whenintegrated{\label{eq:budget}} % integrated doc: SST for labels
+    \end{aligned}
+  \end{gathered}
+\end{equation}
+% RAG_METADATA: code_location=EstimAggFiscalModel.py
+% RAG_METADATA: paper_reference=Section 2.1
+% RAG_METADATA: related_equations=eq:model,eq:income
+% RAG_METADATA: equation_type=constraint_equation
+% RAG_METADATA: domain=budget_constraint
+% RAG_METADATA: parameters=R=gross interest factor
+where $R$ is the gross interest factor for accumulated assets $\mathbf{a}_{i,t}$, and $\mathbf{y}_{i,t+1}$ is determined by \eqref{eq:income}.
 
-\subsection{Income Process}
+\subsection{The income process}\whenintegrated{\label{the-income-process}}
 
-Households receive stochastic labor income that depends on employment
-status and income shocks. The detailed specification follows the model
-described in the original paper.
+Consumers face a stochastic income process with permanent and transitory shocks to income, along with unemployment shocks.
+In normal times, consumers who become unemployed receive unemployment benefits for two quarters.
+Permanent income evolves according to \eqref{eq:perm_income}:
+\begin{equation}
+  \begin{gathered}
+    \begin{aligned}
+      \mathbf{p}_{i,t+1} & = \psi_{i,t+1}\Gamma_{e(i)}\mathbf{p}_{i,t},
+      \whenintegrated{\label{eq:perm_income}} % integrated doc: SST for labels
+    \end{aligned}
+  \end{gathered}
+\end{equation}
+% RAG_METADATA: code_location=EstimAggFiscalModel.py:getIncome()
+% RAG_METADATA: paper_reference=Section 2.2
+% RAG_METADATA: related_equations=eq:income
+% RAG_METADATA: equation_type=income_equation
+% RAG_METADATA: domain=income
+% RAG_METADATA: parameters=ψ=permanent income shock, Γ=growth rate by education
 
-\subsection{Recessions and Policies}
+The actual income a consumer receives, given the permanent income from \eqref{eq:perm_income}, will be subject to the individual's employment status as well as transitory shocks, $\xi_{i,t}$, as shown in \eqref{eq:income}:
+\begin{equation}
+  \begin{gathered}
+    \begin{aligned}
+      \mathbf{y}_{i,t} =   \begin{cases}
+                             \xi_{i,t}\mathbf{p}_{i,t},  & \text{if employed}                    \\
+                             \rho_b \mathbf{p}_{i,t},    & \text{if unemployed with benefits}    \\
+                             \rho_{nb} \mathbf{p}_{i,t}, & \text{if unemployed without benefits}
+                           \end{cases}
+      \whenintegrated{\label{eq:income}} % integrated doc: SST for labels
+    \end{aligned}
+  \end{gathered}
+\end{equation}
+% RAG_METADATA: code_location=EstimAggFiscalModel.py:getIncome()
+% RAG_METADATA: paper_reference=Section 2.2
+% RAG_METADATA: related_equations=eq:perm_income,eq:budget
+% RAG_METADATA: equation_type=income_equation
+% RAG_METADATA: domain=income
+% RAG_METADATA: parameters=ξ=transitory shock, ρ_b=benefit replacement rate, ρ_nb=no-benefit replacement rate
+where $\xi_{i,t}$ is normally distributed with variance $\sigma_{\xi}^2$, and $\rho_b$ and $\rho_{nb}$ are the replacement rates for an unemployed consumer who is or is not eligible for unemployment benefits, respectively.
 
-The model allows for recession shocks and several fiscal policy
-responses, such as stimulus checks, unemployment benefit extensions,
-and payroll tax cuts.
+\subsection{Recessions and policies}\whenintegrated{\label{recessions-and-policies}}
+\whenintegrated{\label{sec:recessions}} % integrated doc: SST for labels
+We model the arrival of a recession, and the government policy response to it, as an unpredictable event---an MIT shock.
 
-\subsection{Aggregate Demand Effects}
+\paragraph{Recession.} At the onset of a recession, several changes occur.
 
-An extension of the model introduces feedback from aggregate
-consumption to income through an aggregate demand channel.
+\paragraph{Policies.} The policies we consider in response to a recession are inspired by the Economic Stimulus Act of 2008 and the Tax Relief, Unemployment Insurance Reauthorization, and Job Creation Act of 2010.
 
+\paragraph{1.
+  Stimulus check.} In this policy response, the government sends money to every consumer that directly increases the household's market resources.
+
+\paragraph{2.
+  Extended unemployment benefits.} In this policy response, unemployment benefits are extended from two quarters to four quarters.
+
+\paragraph{3.
+  Payroll tax cut.} In this policy response, employee-side payroll taxes are reduced for a period of eight quarters.
+
+\paragraph{Financing the policies.} Some work in the HA macro literature has shown that if taxes are raised immediately to offset any fiscal stimulus, results can be very different than they would be if, as occurs in reality, recessionary policies are debt financed.
+
+\subsection{Aggregate demand effects}\whenintegrated{\label{aggregate-demand-effects}}
+\whenintegrated{\label{sec:ADeffects}} % integrated doc: SST for labels
+
+Our baseline model is a partial equilibrium model that does not include any feedback from aggregate consumption to income.
+
+With this extension, any changes in consumption away from the steady-state consumption level feed back into labor income.
+Aggregate demand effects are evaluated as in \eqref{eq:ad_feedback}:
+\begin{equation}
+  \begin{gathered}
+    \begin{aligned}
+      AD(C_t) =   \begin{cases}{\Big(C_t/\tilde{C}\Big)}^\kappa, & \text{if in a recession} \\
+             1,                                & \text{otherwise} ,
+                  \end{cases}
+      \whenintegrated{\label{eq:ad_feedback}} % integrated doc: SST for labels
+    \end{aligned}
+  \end{gathered}
+\end{equation}
+% RAG_METADATA: code_location=AggFiscalMAIN.py:computeAD()
+% RAG_METADATA: paper_reference=Section 4.5
+% RAG_METADATA: related_equations=eq:aggregate
+% RAG_METADATA: equation_type=policy_equation
+% RAG_METADATA: domain=aggregate_demand
+% RAG_METADATA: parameters=κ=aggregate demand elasticity, C̃=steady-state consumption
+where $\tilde{C}$ is the level of consumption in the steady state.
+Idiosyncratic income in the aggregate demand extension is multiplied by the aggregate demand function from \eqref{eq:ad_feedback}, as shown in \eqref{eq:ad_income}:
+\begin{equation}
+  \begin{gathered}
+    \begin{aligned}
+      \mathbf{y}_{AD,i,t} = AD(C_t)\mathbf{y}_{i,t},
+      \whenintegrated{\label{eq:ad_income}} % integrated doc: SST for labels
+    \end{aligned}
+  \end{gathered}
+\end{equation}
+% RAG_METADATA: code_location=AggFiscalMAIN.py:computeAD()
+% RAG_METADATA: paper_reference=Section 4.5
+% RAG_METADATA: related_equations=eq:ad_feedback,eq:income,eq:budget
+% RAG_METADATA: equation_type=policy_equation
+% RAG_METADATA: domain=aggregate_demand
+% RAG_METADATA: description=Applies aggregate demand feedback to individual income
+The series $\mathbf{y}_{AD,i,t}$ from \eqref{eq:ad_income} is then used for each consumer's budget constraint \eqref{eq:budget}.
 
 % Smart bibliography: Only include bibliography if standalone AND has citations
 \smartbib
