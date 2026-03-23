@@ -2,7 +2,7 @@
 
 ## Abstract
 
-Using a heterogeneous agent model calibrated to match spending dynamics over four years following an income shock (Fagereng, Holm, and Natvik 2021), we assess the effectiveness of three fiscal stimulus policies implemented during recent recessions. Unemployment insurance (UI) extensions are the "bang for the buck" winner when the metric is effectiveness in boosting utility. Stimulus checks are second-best and have two advantages (over UI): they arrive faster, and are scalable. A temporary (two-year) cut in wage taxation is considerably less effective than the other policies and has negligible effects in the version of our model without a multiplier.
+We study the role of heterogeneity in the transmission of foreign shocks. We build a Heterogeneous-Agent New-Keynesian Small Open Model Economy (HANKSOME) that experiences a current account reversal. Households' portfolio composition and the extent of foreign currency borrowing are key determinants of the magnitude of the contraction in consumption associated with a sudden stop in capital inflows. The contraction is more severe when households are leveraged and owe debt in foreign currency. In this setting, the revaluation of foreign debt causes a larger contraction in aggregate consumption when debt and leverage are concentrated among poorer households. Closing the output gap via an exchange-rate devaluation may therefore be detrimental to household welfare due to the heterogeneous impact of the foreign debt revaluation. Our HANKSOME framework can rationalize the observed "fear of floating" in emerging market economies, even in the absence of contractionary devaluations.
 
 ---
 

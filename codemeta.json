@@ -2,7 +2,7 @@
   "@context": "https://raw.githubusercontent.com/codemeta/codemeta/master/codemeta.jsonld",
   "@type": "SoftwareSourceCode",
   "name": "HAFiscal",
-  "description": "Heterogeneous agent model for fiscal stimulus policy analysis",
+  "description": "Heterogeneous-Agent New-Keynesian Small Open Model Economy (HANKSOME) for studying the transmission of foreign shocks",
   "version": "1.0.0",
   "keywords": [
     "heterogeneous agents",

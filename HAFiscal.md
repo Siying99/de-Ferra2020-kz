@@ -1,7 +1,7 @@
 ---
 # CFF required fields
 cff-version: "1.1.0" # required (don't change)
-message: "Using a heterogeneous agent model calibrated to match measured spending dynamics over four years following an income shock (Fagereng, Holm, and Natvik (2021)), we assess the effectiveness of three fiscal stimulus policies employed during recent recessions." # required
+message: "We study the role of heterogeneity in the transmission of foreign shocks using a Heterogeneous-Agent New-Keynesian Small Open Model Economy (HANKSOME) that experiences a current account reversal." # required
 authors: # required
   -
     family-names: "Carroll"
@@ -25,7 +25,7 @@ authors: # required
     orcid: "https://orcid.org/0000-0001-9195-7120"
 
 title: “Welfare and Spending Effects of Consumption Stimulus Policies” # required
-abstract: "Using a heterogeneous agent model calibrated to match measured spending dynamics over four years following an income shock (Fagereng, Holm, and Natvik (2021)), we assess the effectiveness of three fiscal stimulus policies employed during recent recessions. Unemployment insurance (UI) extensions are the clear “bang for the buck” winner when effectiveness is measured in utility terms. Stimulus checks are second best and have two advantages (over UI): they arrive faster, and they are scalable to any desired size. A temporary (two-year) cut in the rate of wage taxation is considerably less effective than the other policies and has negligible effects in the version of our model without a multiplier." # abstract: optional
+abstract: "We study the role of heterogeneity in the transmission of foreign shocks. We build a Heterogeneous-Agent New-Keynesian Small Open Model Economy (HANKSOME) that experiences a current account reversal. Households' portfolio composition and the extent of foreign currency borrowing are key determinants of the magnitude of the contraction in consumption associated with a sudden stop in capital inflows. The contraction is more severe when households are leveraged and owe debt in foreign currency. In this setting, the revaluation of foreign debt causes a larger contraction in aggregate consumption when debt and leverage are concentrated among poorer households. Closing the output gap via an exchange-rate devaluation may therefore be detrimental to household welfare due to the heterogeneous impact of the foreign debt revaluation. Our HANKSOME framework can rationalize the observed fear of floating in emerging market economies, even in the absence of contractionary devaluations." # abstract: optional
 
 # REMARK required fields
 remark-version: "1.0" # required
