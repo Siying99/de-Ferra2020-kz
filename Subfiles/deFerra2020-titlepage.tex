@@ -1,0 +1,67 @@
+\input{./._relpath-to-latexroot.ltx}
+\documentclass[\latexroot/\projectname]{subfiles}
+\input{\latexroot/@resources/subfile-setup.ltx}
+\begin{document}
+
+\webonly{
+  % execute this version if compiling with make4ht
+  \newcommand{\versn}{Web}
+}
+
+\title{Household Heterogeneity and the Transmission \\ of Foreign Shocks}
+
+\author{Sergio de Ferra\authNum \and Kurt Mitman\authNum \and Federica Romei\authNum}
+
+\keywords{sudden stops, foreign currency debt, exchange rate policy, incomplete markets}
+
+\jelclass{F32, F41, E21 \\[0pt]
+  \href{https://econ-ark.org}{\includegraphics[width=1.5cm]{images/PoweredByEconARK}}
+}
+
+\date{\today}
+
+\maketitle
+\vspace{-0.5\baselineskip}
+
+\whenintegrated{\label{abstract}} % integrated doc: SST for labels
+\begin{verbatimwrite}{deFerra2020-Abstract.txt}
+  We study the role of heterogeneity in the transmission of foreign shocks. We build a Heterogeneous-Agent New-Keynesian Small Open Model Economy (HANKSOME) that experiences a current account reversal. Households' portfolio composition and the extent of foreign currency borrowing are key determinants of the magnitude of the contraction in consumption associated with a sudden stop in capital inflows. The contraction is more severe when households are leveraged and owe debt in foreign currency. In this setting, the revaluation of foreign debt causes a larger contraction in aggregate consumption when debt and leverage are concentrated among poorer households. Closing the output gap via an exchange-rate devaluation may therefore be detrimental to household welfare due to the heterogeneous impact of the foreign debt revaluation. Our HANKSOME framework can rationalize the observed ``fear of floating'' in emerging market economies, even in the absence of contractionary devaluations.
+\end{verbatimwrite}
+\begin{abstract}
+  \input{deFerra2020-Abstract.txt}
+\end{abstract}
+\vspace{-0.5\baselineskip}
+
+% Various resources
+\whenintegrated{\label{links}} % integrated doc: SST for labels
+
+\providecommand{\REMARK}{\href{https://github.com/econ-ark/REMARK}{REMARK}}
+\begin{footnotesize}
+  \setlength{\parskip}{0pt}
+  \parbox{0.9\textwidth}{
+    \begin{tabbing}
+      \texttt{~~~~~~~~~~~~~~~~~~~~~~~} \= \=  \\
+      \texttt{~~~~GitHub~Repo:~~~~~~~} \> \> \texttt{\href{https://github.com/Siying99/de-Ferra2020-kz}{https://github.com/Siying99/de-Ferra2020-kz}} \\
+      \texttt{~~~~~~~~Notebook:~~~~~~} \> \> \texttt{\href{https://github.com/Siying99/de-Ferra2020-kz/blob/main/deFerra2020\_bellman-stages.ipynb}{deFerra2020\_bellman-stages.ipynb}} \\
+      \texttt{~~~~Original~Paper:~~~~} \> \> \texttt{\href{https://doi.org/10.1016/j.jinteco.2020.103303}{Journal~of~International~Economics,~124,~103303}} \\
+    \end{tabbing}
+  } % end \parbox{\textwidth}
+\end{footnotesize}
+\vspace{-0.3\baselineskip}
+
+\centerline{A \href{https://github.com/econ-ark/REMARK}{REMARK} exploring \cite{de-Ferra2019-co}}
+\vspace{-0.3\baselineskip}
+
+\begin{authorsinfo}
+  \noindent \name{de~Ferra: Department of Economics, Stockholm University, \href{mailto:sergio.deferra@ne.su.se}{\texttt{sergio.deferra@ne.su.se}}} \newline
+  \name{Mitman: Institute for International Economic Studies, Stockholm University, \href{mailto:kurt.mitman@iies.su.se}{\texttt{kurt.mitman@iies.su.se}}} \newline
+  \name{Romei: Department of Economics, Stockholm School of Economics, \href{mailto:Federica.Romei@hhs.se}{\texttt{Federica.Romei@hhs.se}}}
+\end{authorsinfo}
+
+\pagenumbering{gobble} % Prevent numbering for pages including the TOC and title page
+
+\titlepagefinish
+
+\smartbib
+
+\end{document}

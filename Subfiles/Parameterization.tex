@@ -3,69 +3,20 @@
 \input{\latexroot/@resources/subfile-setup.ltx}
 \begin{document}
 
-\section{Parameterizing the model}
-\whenintegrated{\label{sec:parameters}}
+\section{Understanding the role of heterogeneity}
+\whenintegrated{\label{sec:heterogeneity}}
 
-This section describes how we set the model's parameters. 
+What role do domestically incomplete markets play in shaping the aggregate response to foreign shocks? Consider an unexpected shock to the exchange rate, $\Delta e_t$. The implied change in wealth $\Xi_{it}$ varies across households and is given by $\Xi_{it} = \Delta e_t \cdot b_{F,t}$. The consumption response is:
+\begin{equation}
+  \partial C_t = \overline{\text{MPC}}_t \cdot \bar{\Xi}_t + \text{Cov}(\text{MPC}_{it}, \Xi_{it})
+  \whenintegrated{\label{eq:cov}}
+\end{equation}
+In the absence of heterogeneity, $\partial C_t = \overline{\text{MPC}}_t \cdot \bar{\Xi}_t$, as in the representative agent model. The contribution of domestically incomplete markets is captured through $\text{Cov}(\text{MPC}_{it}, \Xi_{it})$: if high MPC households tend to be more exposed, the consumption response is amplified.
 
-\subsection{Estimation of the splurge factor}
-\whenintegrated{\label{sec:splurge}}
+\section{Calibration}
+\whenintegrated{\label{sec:calibration}}
 
-The splurge allows us to capture the shorter- and longer-term response of consumption to income shocks, especially for consumers with significant liquid wealth. 
-
-
-\unisubfile{Figures/splurge_estimation}
-
-% Include MPC by Wealth Quartiles table as subfile
-\unisubfile{Tables/MPC_WQ}
-
-For this estimation exercise, the remaining model parameters are calibrated to reflect the Norwegian economy.
-
-\subsection{Data on permanent income, liquid wealth, and education}\whenintegrated{\label{data-on-permanent-income-liquid-wealth-and-education}}
-\whenintegrated{\label{sec:SCFdata}}
-
-Before we move on to the parameterization of the full model, we describe in detail the data that we use to get measures of permanent income, liquid wealth, and the division of households into educational groups in the United States.
-
-\subsection{Parameters in the full model}
-\whenintegrated{\label{sec:paramsFull}}
-
-With households classified into the three education groups using the SCF data, we proceed to set the parameters of the model as follows.
-
-\subsubsection{Calibrated parameters --- Normal times}
-\whenintegrated{\label{sec:calib}}
-
-Table~\ref{tab:calibration} presents our calibration of the model parameters in normal times. 
-
-\unisubfile{Tables/calibration}
-
-\subsubsection{Calibrated parameters --- Recession}
-\whenintegrated{\label{sec:calibRecession}}
-
-Table~\ref{tab:calibrationRecession} shows the model parameters that change when a recession hits. 
-
-\subsubsection{Estimating the discount factor distributions}
-\whenintegrated{\label{sec:estimBetas}}
-
-Discount factor distributions are estimated separately for each education group to match the distribution of liquid wealth for households in that group.
-
-\unisubfile{Tables/estimBetas}
-
-\unisubfile{Code/HA-Models/FromPandemicCode/LorenzPts}
-
-Note that several of the types in the Dropout group are estimated to have quite low discount factors (they are very impatient).
-
-\subsubsection{Implications for non-targeted moments}\whenintegrated{\label{non-targeted-moments}}
-\whenintegrated{\label{sec:nonTargetedMoments}}
-
-Before we move on to compare different consumption stimulus policies in the calibrated model, we also report implications of the model for some non-targeted moments.
-
-\unisubfile{Tables/nonTargetedMoments}
-
-\whenintegrated{\label{ganong-noel}}
-
-The second pattern concerns the dynamics of income and spending for households that become unemployed and remain unemployed long enough for unemployment benefits to expire.
-
-\unisubfile{Figures/untargetedMoments}
+We calibrate the framework to the economy of Hungary---an example of a small open economy with high concentration of foreign denominated debt going into the Global Financial Crisis. Key parameters include the intertemporal elasticity of substitution $1/\sigma = 1$, home goods share $\chi = 0.6$, discount factor $\beta = 0.983$, capital share $\alpha = 0.33$, and Rotemberg adjustment cost $\zeta = 100$.
 
 % Smart bibliography: Only include bibliography if standalone AND has citations
 \smartbib

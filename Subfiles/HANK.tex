@@ -3,20 +3,14 @@
 \input{\latexroot/@resources/subfile-setup.ltx}
 \begin{document}
 
-\FloatBarrier
-\section{Robustness in a HANK and SAM Model}
-\whenintegrated{\label{sec:hank}} % integrated doc: SST for labels
+\section{Inspecting the mechanism}
+\whenintegrated{\label{sec:mechanism}}
 
-The main results of this paper are presented in a partial equilibrium setup with aggregate demand effects that do not arise from general equilibrium effects.
+In this section we perform a series of simpler experiments to understand the forces that underlie the positive and welfare results for the sudden stop. We consider three scenarios: (i)~a real benchmark with home-good denominated debt, (ii)~flexible exchange rates with foreign-currency denominated debt, and (iii)~fixed exchange rates with foreign-currency denominated debt.
 
-\subfile{../Figures/HANK_IRFs}
-\subfile{../Figures/HANK_multipliers}
-
+The key finding is that the distribution of household leverage is a crucial determinant of aggregate dynamics. When poor households are more highly leveraged, a larger contraction in aggregate consumption takes place, because the fall in net wealth hits households with high marginal propensities to consume. The desirability of a fixed versus floating exchange rate depends crucially on the distribution of household leverage and the fraction of debt denominated in foreign currency.
 
 % Smart bibliography: Only include bibliography if standalone AND has citations
 \smartbib
 
-\pdfonly{
-% execute this version if compiling with pdflatex
 \end{document}
-}
