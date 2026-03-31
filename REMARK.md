@@ -1,22 +1,23 @@
 ---
-# This is metadata for indexing HAFiscal as a 'REMARK'
-# in the https://github.com/econ-ark.org project
-github_repo_url: https://github.com/econ-ark/HAFiscal
-remark-name: HAFiscal # required
-notebooks: # path to any notebooks within the repo - optional
-  - HANK-and-SAM-tutorial.ipynb
-dashboards: # path to any dashboards (Voila) within the repo - optional
-  - dashboard/app.ipynb
-tags: # Use the relevant tags
+# Metadata for indexing this REMARK in the econ-ark project
+# See https://github.com/econ-ark/REMARK
+github_repo_url: https://github.com/Siying99/de-Ferra2020-kz
+remark-name: de-Ferra2020-kz
+notebooks:
+  - deFerra2020_bellman-stages.ipynb
+tags:
   - REMARK
   - Notebook
-  - Reproduction
-keywords: # optional
-  - Consumption
-  - Stimulus
-  - Fiscal Policy
-  - Welfare
+keywords:
+  - Heterogeneous Agents
+  - Small Open Economy
+  - Current Account Reversal
+  - Exchange Rate
+  - Foreign Currency Debt
+  - HANK
 ---
-# Welfare and Spending Effects of Consumption Stimulus Policies
+# Household Heterogeneity and the Transmission of Foreign Shocks
 
-This repository is a complete software archive for the paper "Welfare and Spending Effects of Consumption Stimulus Policies" by Carroll, Crawley, Du, Frankovic, and Tretvoll (2025).
+This is a REMARK exploring the household problem in "Household heterogeneity and the transmission of foreign shocks" by Sergio de Ferra, Kurt Mitman, and Federica Romei (*Journal of International Economics*, 124, 103303, 2020).
+
+The notebook decomposes the household's Bellman equation into modular stages following the DDSL framework from [SolvingMicroDSOPs](https://llorracc.github.io/SolvingMicroDSOPs/).
