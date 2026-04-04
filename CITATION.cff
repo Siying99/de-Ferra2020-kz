@@ -11,6 +11,19 @@ authors:
   - given-names: Siying
     family-names: Li
 repository-code: 'https://github.com/Siying99/de-Ferra2020-kz'
+license: Apache-2.0
+abstract: >-
+  This REMARK explores the household optimization problem in
+  de Ferra, Mitman, and Romei (2020), which builds a
+  Heterogeneous-Agent New-Keynesian Small Open Model Economy
+  (HANKSOME) to study how household heterogeneity—particularly
+  portfolio composition and foreign-currency borrowing—shapes
+  the transmission of foreign shocks during current account
+  reversals. The main contribution is a stage decomposition of
+  the household's Bellman equation following the DDSL framework
+  from SolvingMicroDSOPs, breaking it into modular stages
+  (discounting, shocks-only, consumption) and connecting the
+  model to the Endogenous Grid Method (EGM).
 keywords:
   - heterogeneous agents
   - small open economy
