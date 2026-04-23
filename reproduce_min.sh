@@ -1,56 +1,56 @@
 #!/bin/bash
 # reproduce_min.sh - Minimal reproduction for REMARK compliance
-# 
-# This script runs minimal computational results to demonstrate reproducibility
-# without requiring the full 4-5 day computation time.
 #
-# For full reproduction, see: ./reproduce.sh --help
+# This script builds the paper PDF as the minimal reproducible artefact of
+# this REMARK. It does NOT run the HAFiscal-template computational branches,
+# which are not part of the de Ferra 2020 reproduction.
+#
+# For the full menu of options, see: ./reproduce.sh --help
 
-set -e  # Exit on error
+set -e
 
-# Print header
 echo "================================================================="
-echo "HAFiscal Minimal Reproduction"
+echo "de-Ferra2020-kz Minimal Reproduction"
 echo "================================================================="
 echo ""
-echo "Paper: Welfare and Spending Effects of Consumption Stimulus Policies"
-echo "Authors: Carroll, Crawley, Du, Frankovic, Tretvoll (2025)"
+echo "Paper:   Household Heterogeneity and the Transmission of Foreign Shocks"
+echo "Authors: Sergio de Ferra, Kurt Mitman, Federica Romei"
+echo "Journal: Journal of International Economics, 124, 103303 (2020)"
+echo "DOI:     10.1016/j.jinteco.2020.103303"
 echo ""
-echo "This runs minimal computational results (~1 hour) to demonstrate"
-echo "reproducibility. For full reproduction (4-5 days), run:"
-echo "  ./reproduce.sh --all"
+echo "REMARK author: Siying Li (Johns Hopkins University)"
+echo ""
+echo "This runs the minimal reproducible artefact of the REMARK: compiling"
+echo "deFerra2020.pdf from deFerra2020.tex. Expected runtime: under 1 minute"
+echo "on a 2024 MacBook Pro M3 (16 GB RAM)."
 echo ""
 echo "See ./reproduce.sh --help for all reproduction options."
 echo ""
 echo "================================================================="
 echo ""
 
-# Check that reproduce.sh exists
 if [[ ! -f "reproduce.sh" ]]; then
     echo "Error: reproduce.sh not found. Please run from repository root."
     exit 1
 fi
 
-# Make sure reproduce.sh is executable
 if [[ ! -x "reproduce.sh" ]]; then
     chmod +x reproduce.sh
 fi
 
-# Run minimal computational results
-echo "Running: ./reproduce.sh --comp min"
+echo "Running: ./reproduce.sh --docs main"
 echo ""
-./reproduce.sh --comp min
+./reproduce.sh --docs main
 
-# Success message
 echo ""
 echo "================================================================="
-echo "✅ Minimal reproduction complete"
+echo "Minimal reproduction complete"
 echo "================================================================="
 echo ""
-echo "Results: Code/HA-Models/FromPandemicCode/Results/"
+echo "Primary artefact: deFerra2020.pdf"
 echo ""
 echo "Next steps:"
-echo "  - View logs: cat reproduce/logs/latest.log"
-echo "  - Compile paper: ./reproduce.sh --docs"
-echo "  - Full reproduction: ./reproduce.sh --all (4-5 days)"
+echo "  - View logs:              cat reproduce/logs/latest.log"
+echo "  - Full docs compile:      ./reproduce.sh --docs all"
+echo "  - Environment check:      ./reproduce.sh --envt"
 echo ""

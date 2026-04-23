@@ -1,13 +1,13 @@
-# HAFiscal Dockerfile
-# 
+# de-Ferra2020-kz Dockerfile
+#
 # Single Source of Truth (SST): reproduce/docker/setup.sh
 # This Dockerfile uses setup.sh directly to ensure consistency with devcontainer builds.
 # All TeX Live and Python environment setup logic is maintained in setup.sh.
 #
-# Based on .devcontainer/devcontainer.json
-# Should produce functionally equivalent containers to the devcontainer build process
+# Python version is standardised at 3.12 across environment.yml, requirements.txt,
+# pyproject.toml, and this Dockerfile.
 
-FROM mcr.microsoft.com/devcontainers/python:3.11
+FROM mcr.microsoft.com/devcontainers/python:3.12
 
 # Set environment variables (from containerEnv in devcontainer.json)
 ENV PYTHONUNBUFFERED=1
@@ -67,7 +67,7 @@ RUN if [ -f /workspace/reproduce/docker/setup.sh ]; then \
 #   - Shell auto-activation setup
 #
 # Create workspace structure expected by setup.sh
-RUN mkdir -p /workspaces && ln -s /workspace /workspaces/HAFiscal-Public && \
+RUN mkdir -p /workspaces && ln -s /workspace /workspaces/de-Ferra2020-kz && \
     chown -R vscode:vscode /workspace /workspaces
 
 # Ensure vscode user has sudo access (required by setup.sh)

@@ -3,6 +3,7 @@
 # See https://github.com/econ-ark/REMARK
 github_repo_url: https://github.com/Siying99/de-Ferra2020-kz
 remark-name: de-Ferra2020-kz
+tier: 2
 notebooks:
   - deFerra2020_bellman-stages.ipynb
 tags:

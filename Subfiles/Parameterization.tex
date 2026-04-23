@@ -16,7 +16,38 @@ In the absence of heterogeneity, $\partial C_t = \overline{\text{MPC}}_t \cdot \
 \section{Calibration}
 \whenintegrated{\label{sec:calibration}}
 
-We calibrate the framework to the economy of Hungary---an example of a small open economy with high concentration of foreign denominated debt going into the Global Financial Crisis. Key parameters include the intertemporal elasticity of substitution $1/\sigma = 1$, home goods share $\chi = 0.6$, discount factor $\beta = 0.983$, capital share $\alpha = 0.33$, and Rotemberg adjustment cost $\zeta = 100$.
+We calibrate the framework to the economy of Hungary---an example of a small open economy with high concentration of foreign-denominated debt going into the Global Financial Crisis. We solve the model in discrete time and calibrate it at a quarterly frequency. The calibrated parameters are summarized in Table~\ref{tab:deFerra2020_calibration}.
+
+\subfile{\latexroot/Tables/deFerra2020_tab1_calibration}
+
+\subsection{Households}\whenintegrated{\label{sec:calibration-households}}
+
+\subsubsection{Preferences}\whenintegrated{\label{sec:calibration-preferences}}
+
+Households have constant relative risk aversion (CRRA) preferences over a constant-elasticity-of-substitution aggregator of home and foreign consumption goods. Following standard choices in the macroeconomics literature, the intertemporal elasticity of substitution $1/\sigma$ is set to $1$ and the Frisch elasticity of labor supply to $1$. The elasticity of substitution between home and foreign goods, $\theta$, is also set to $1$. The share of home goods in consumption, $\chi$, is set to $0.6$, implying a ratio of exported value added to GDP of 33\%. The subjective discount factor is chosen as $\beta = 0.983$ to match a ratio of aggregate net wealth to quarterly GDP of 8.26 \citep{ECB2016HFCSSecondWave}. The tightness of the household borrowing constraint $\bar{a}$ is set to $0$, reflecting the fact that the majority of household debt in Hungary was collateralized, as reported in the second wave of the Household Finance and Consumption Survey (HFCS) run by the European Central Bank.
+
+\subsubsection{Productivity process}\whenintegrated{\label{sec:calibration-productivity}}
+
+As the HFCS features only a cross-sectional observation for the Hungarian economy, and the lack of panel data on individuals or households makes direct estimation of the household labor productivity process impossible, labor productivity is assumed to follow an AR(1) process with persistence $\rho_{l} = 0.97$ and normal innovations with standard deviation $\sigma_{l} = 0.2$, calibrated to match the cross-sectional dispersion in income in the HFCS and the 10\% of households in Hungary that are at the borrowing constraint. The income process is discretized into a seven-point Markov chain via the Rouwenhorst method.
+
+\subsubsection{Technology}\whenintegrated{\label{sec:calibration-technology}}
+
+The capital share is set to $\alpha = 0.33$. The quarterly depreciation rate is set to $\delta = 0.02$ so that the return on capital net of depreciation equals the real return on bonds when the economy matches the observed capital-to-output ratio of 9.70 in the data. A standard quadratic capital adjustment cost function is assumed:
+\begin{equation}
+  \Psi(I, K) = \frac{\psi}{2} \left( \frac{I - \delta K}{K} \right)^{2} K.
+  \whenintegrated{\label{eq:adjustment-cost}}
+\end{equation}
+The value $\psi = 17$ matches the elasticity of investment to Tobin's Q reported by \citet{EberlyRebeloVincent2008NBER13866}.
+
+\subsubsection{Foreign sector}\whenintegrated{\label{sec:calibration-foreign}}
+
+The foreign demand shifter $D$ is chosen to normalize the steady-state value of the terms of trade to unity. The model allows for two different values for the elasticity of substitution across home and foreign goods in the preferences of domestic and foreign households, $\theta$ and $\theta^{*}$ respectively. From the foreign households' point of view, $\theta^{*}$ corresponds to the elasticity of substitution across varieties produced by different countries, whose empirical counterpart is the micro-elasticity across different foreign sources of imports estimated in the trade literature. From the domestic households' point of view, the relevant empirical counterpart is the macro-elasticity between domestic and imported goods. \citet{FeenstraLuckObstfeldRuss2018} estimate both elasticities using highly disaggregated data; the calibration adopts $\theta^{*} = 3$ and $\theta = 1$ following their findings.
+
+The supply of foreign credit $\bar{B}$ is set to match a net-foreign-asset-to-quarterly-GDP ratio for Hungary of $-2$. This matches the private-sector debt ratio of 50\% of annual GDP reported by \citet{IMF2008HungaryArticleIV}. While the total international investment position of Hungary was larger than this figure, credit to the private sector is the relevant calibration target here, given the absence of government debt in this setting.
+
+\subsubsection{Nominal rigidities}\whenintegrated{\label{sec:calibration-nominal}}
+
+The elasticity of substitution between domestic varieties is set to $\varepsilon = 10$ so that the steady-state markup is 10\% of output. Following \citet{KaplanMollViolante2018AER}, the Rotemberg adjustment cost parameter is set to $\zeta = 100$, implying a slope of the New Keynesian Phillips curve of $\varepsilon/\zeta = 0.1$ in the middle range of empirical estimates.
 
 % Smart bibliography: Only include bibliography if standalone AND has citations
 \smartbib

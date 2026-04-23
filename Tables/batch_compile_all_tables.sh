@@ -5,18 +5,9 @@ echo "Following prompts/always-show-terminal-output.md requirements"
 echo "Timestamp: $(date)"
 echo
 
-# List of table files (excluding template and already done calibration)
+# List of table files (excluding template)
 tables=(
-    "calibrationRecession"
-    "Comparison_Splurge_Table" 
-    "estimBetas"
-    "MPC_WQ"
-    "Multiplier_SplurgeComp"
-    "Multiplier"
-    "nonTargetedMoments_wSplZero"
-    "nonTargetedMoments"
-    "welfare6_SplurgeComp"
-    "welfare6"
+    "deFerra2020_tab1_calibration"
 )
 
 # Function to get file size safely

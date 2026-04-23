@@ -51,8 +51,6 @@ OPTIONS:
 TARGETS:
     main                    HAFiscal.tex (main paper)
     slides                  HAFiscal-Slides.tex
-    appendix-hank          Subfiles/Appendix-HANK.tex
-    appendix-nosplurge     Subfiles/Appendix-NoSplurge.tex
     all                    All documents (default)
 
 EXAMPLES:
@@ -144,8 +142,6 @@ resolve_document() {
     case "$1" in
         "main") echo "HAFiscal.tex" ;;
         "slides") echo "HAFiscal-Slides.tex" ;;
-        "appendix-hank") echo "Subfiles/Appendix-HANK.tex" ;;
-        "appendix-nosplurge") echo "Subfiles/Appendix-NoSplurge.tex" ;;
         *) echo "$1" ;;  # Return as-is for direct file paths
     esac
 }
@@ -154,8 +150,6 @@ list_documents() {
     echo "Available document targets:"
     echo "  main -> HAFiscal.tex"
     echo "  slides -> HAFiscal-Slides.tex"
-    echo "  appendix-hank -> Subfiles/Appendix-HANK.tex"
-    echo "  appendix-nosplurge -> Subfiles/Appendix-NoSplurge.tex"
 }
 
 # Enhanced LaTeX Error Parser

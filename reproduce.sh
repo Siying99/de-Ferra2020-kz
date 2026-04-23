@@ -1,7 +1,19 @@
 #!/bin/bash
 
-# HAFiscal Reproduction Script
-# This script provides options for reproducing different aspects of the HAFiscal project
+# de-Ferra2020-kz Reproduction Script
+# This script provides options for reproducing different aspects of the
+# de-Ferra2020-kz REMARK (de Ferra, Mitman, and Romei 2020, JIE).
+#
+# Primary reproduction artefact: deFerra2020.pdf (compiled from deFerra2020.tex).
+#
+# Runtime estimates (2024 MacBook Pro M3, 16 GB RAM):
+#   ./reproduce.sh --docs        ~30-60 seconds (PDF build)
+#   ./reproduce.sh --envt        ~1-2 minutes   (environment check)
+#
+# The --comp and --data branches were inherited from the HAFiscal template and
+# reference computational paths under Code/HA-Models/ that are not part of this
+# REMARK. They are preserved as scaffolding and should not be run against the
+# de Ferra 2020 model without first being rewritten.
 
 set -eo pipefail
 
@@ -94,7 +106,7 @@ init_logging() {
     
     # Write initial log entries
     log INFO "==================================="
-    log INFO "HAFiscal Reproduction Script Started"
+    log INFO "de-Ferra2020-kz Reproduction Script Started"
     log INFO "Command: $0 $*"
     log INFO "Working directory: $(pwd)"
     log INFO "Log file: $LOG_FILE"
@@ -647,9 +659,19 @@ trap 'exit_code=$?; print_summary $exit_code; cleanup_temp_files; benchmark_end 
 
 show_help() {
     cat << EOF
-HAFiscal Reproduction Script
+de-Ferra2020-kz Reproduction Script
 
 This script provides multiple reproduction options and includes environment testing.
+Primary reproduction artefact: deFerra2020.pdf (built with --docs).
+
+Approximate runtimes on a 2024 MacBook Pro M3 (16 GB RAM):
+    --docs        ~30-60 seconds (PDF build from deFerra2020.tex)
+    --envt        ~1-2 minutes   (TeX Live + Python environment check)
+
+NOTE: --comp and --data branches are HAFiscal template scaffolding and reference
+computational code under Code/HA-Models/ that is NOT part of this REMARK.
+Running those branches against the de Ferra 2020 model will fail until the
+underlying Python code is rewritten.
 
 USAGE:
     ./reproduce.sh [OPTION]
@@ -668,7 +690,7 @@ OPTIONS:
                          full: all computational results needed for the printed document (4-5 days on a high-end 2025 laptop)
                          max: full results + robustness (Step 3: Splurge=0 for Online Appendix) (~6 days on a high-end 2025 laptop)
     --docs, -d [SCOPE]  Reproduce LaTeX documents (SCOPE: main|all|figures|tables|subfiles, default: main)
-                         main: only the paper --- HAFiscal.tex
+                         main: only the paper --- deFerra2020.tex
                          all: the paper + individual Figures/ + Tables/ + Subfiles/
                          figures: the paper + Figures/
                          tables: the paper + Tables/
@@ -747,7 +769,7 @@ EOF
 
 show_interactive_menu() {
     echo "========================================"
-    echo "   HAFiscal Reproduction Options"
+    echo "   de-Ferra2020-kz Reproduction Options"
     echo "========================================"
     echo ""
     echo "Please select what you would like to reproduce:"
@@ -1117,7 +1139,7 @@ test_environment_comprehensive() {
     
     log PROGRESS "Starting environment testing (scope: $scope)"
     log INFO "========================================"
-    log INFO "Testing HAFiscal Environment Setup"
+    log INFO "Testing de-Ferra2020-kz Environment Setup"
     log INFO "========================================"
     echo ""
     
@@ -1334,7 +1356,7 @@ test_environment_comprehensive() {
             echo ""
         fi
         
-        echo "Your system is ready to reproduce HAFiscal results!"
+        echo "Your system is ready to reproduce de-Ferra2020-kz results!"
         echo ""
         echo "Next steps:"
         echo "  ./reproduce.sh --docs      # Compile documents"
@@ -2442,7 +2464,7 @@ case "$ACTION" in
     "")
         # No arguments provided - show helpful examples (no logging for this)
         echo "========================================"
-        echo "HAFiscal Reproduction Script"
+        echo "de-Ferra2020-kz Reproduction Script"
         echo "========================================"
         echo ""
         echo "Run with arguments to reproduce different parts of the project."
