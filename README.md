@@ -52,14 +52,27 @@ The REMARK targets **Tier 2** of the econ-ark [REMARK standard](https://github.c
 git clone https://github.com/Siying99/de-Ferra2020-kz.git
 cd de-Ferra2020-kz
 
-# Minimal reproduction (builds deFerra2020.pdf, ~1 minute)
+# Build the PDF only (≤1 minute, no Python required)
 ./reproduce_min.sh
 
-# Full help / other options
+# Run the fast Python pipeline (Table 1 + Figs 1–3, ≈ 5 min)
+./reproduce.sh --comp min
+
+# Run the full Python pipeline (everything, including Figs 4–5, ≈ 30 min)
+./reproduce.sh --comp full
+
+# Full help (all options, runtime estimates, environment setup)
 ./reproduce.sh --help
 ```
 
-On a 2024 MacBook Pro M3 (16 GB RAM), the minimal PDF build takes ~30–60 seconds.
+| Command | What it does | Runtime |
+|---|---|---|
+| `./reproduce_min.sh` | Build `deFerra2020.pdf` from existing figures | ≤ 1 min |
+| `./reproduce.sh --docs` | Same as above (REMARK convention) | ≤ 1 min |
+| `./reproduce.sh --comp min` | Phases A–C: Rouwenhorst, EGM, β-calibration, Figs 1–3 | ~5 min |
+| `./reproduce.sh --comp full` | Phases A–D: everything above + sudden-stop Figs 4–5 | ~30 min |
+
+Runtimes are measured on a 2024 MacBook Pro M3, single-core. The Python pipeline prints per-notebook wall-clock times via `time.perf_counter()`, and `reproduce.sh` prints quantitative results (calibrated $\beta^\star$, $K/Y$, NFA/Y, residuals) directly to the terminal at the end of `--comp min`.
 
 ---
 
@@ -84,7 +97,7 @@ The paper is assembled from `\subfile`'d sections under `Subfiles/`:
 
 - `Tables/deFerra2020_tab1_calibration.tex` — reproduces the paper's Table 1 (full calibration, all 13 parameters).
 - `Figures/deFerra2020_fig1_credit_supply.png` — reproduces Figure 1 of the paper.
-- `Figures/HANK_*.tex` — *placeholder* files inherited from the template; they do not render in the main PDF.
+- `Figures/deFerra2020_fig{2,3,4,5}.png` — reproduce Figures 2–5 of the paper.
 
 ### REMARK metadata
 
@@ -114,7 +127,7 @@ See `Subfiles/Parameterization.tex` for the narrative §4.1.1–4.1.5 and `Table
 
 ## Environment
 
-The Python environment is standardised across `binder/environment.yml`, `binder/requirements.txt`, `pyproject.toml`, and `Dockerfile` at **Python 3.12** with modern scientific-stack pins (`numpy>=1.26`, `scipy>=1.11`, `pandas>=2.1`, etc.). The notebook is markdown-only, so the Python environment is only needed if you want to launch Jupyter to read the notebook interactively.
+The Python environment is standardised across `binder/environment.yml`, `binder/requirements.txt`, `pyproject.toml`, and `Dockerfile` at **Python 3.12** with modern scientific-stack pins (`numpy>=1.26`, `scipy>=1.11`, `pandas>=2.1`, `numba>=0.59`, etc.). This environment is required for the 14 computational notebooks under `Code/Python/notebooks/` (which reproduce Figures 1–5 and the Table 1 calibration); the supplementary Bellman-stages notebook is markdown-only and does not require the Python environment to read.
 
 The LaTeX build uses the `econark` document class and bibliography style, both vendored in `@resources/texlive/texmf-local/`. The project `.latexmkrc` sets `TEXINPUTS` and `BSTINPUTS` so that `latexmk`/`bibtex` find these files without any extra environment setup.
 
@@ -186,21 +199,20 @@ warm-start used by notebook 10.
 
 ## Known limitations / future work
 
-- The §7 policy experiments are not replicated; a faithful replication would
-  require a new Python implementation of the HANKSOME solver under the
-  `HARK` / `sequence-jacobian` stack.
-- Some filenames in `Figures/` and elsewhere inherited from the HAFiscal
-  template still have `HANK` in them. They are hollow placeholders and are not
-  included in the main PDF build.
-- The `--comp` and `--data` branches of `reproduce.sh` are template scaffolding
-  and reference the HAFiscal computational code under `Code/HA-Models/`; they
-  should not be run against the de Ferra 2020 model.
+- The §7 policy experiments (optimal monetary rules, pegged-but-revisable
+  exchange rates) are not replicated. A faithful replication would require
+  embedding the HANKSOME solver inside an outer Ramsey-planner loop, which is
+  natural to do under the `HARK` / `sequence-jacobian` stack and is a
+  promising direction for future work.
+- The Bellman-stages notebook (`deFerra2020_bellman-stages.ipynb`) is currently
+  expository (markdown only). A future version of the REMARK could promote
+  this to an executable stage-by-stage solver in HARK.
 
 ---
 
 ## Template credit
 
-This repository was scaffolded from [HAFiscal-Public](https://github.com/llorracc/HAFiscal-Public) (Carroll, Crawley, Du, Frankovic, and Tretvoll). HAFiscal-specific code, tables, and appendix content have been removed or replaced with de Ferra-appropriate content; some filenames with `HANK` in them are retained as template scaffolding and contain placeholder notices.
+This repository was scaffolded from [HAFiscal-Public](https://github.com/llorracc/HAFiscal-Public) (Carroll, Crawley, Du, Frankovic, and Tretvoll). All HAFiscal-specific code, data, tables, and documentation have been removed; the surviving infrastructure (`reproduce.sh`, `@resources/`, the `econark` LaTeX class) has been adapted to the de Ferra (2020) project.
 
 ---
 
