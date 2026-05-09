@@ -1,106 +1,56 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "paper": {
-    "title": "Welfare and Spending Effects of Consumption Stimulus Policies",
-    "authors": [
-      "Christopher D. Carroll",
-      "Edmund Crawley",
-      "William Du",
-      "Ivan Frankovic",
-      "Hakon Tretvoll"
-    ],
-    "journal": "Quantitative Economics",
-    "year": 2025,
-    "repository": "https://github.com/llorracc/HAFiscal-Latest"
+  "remark": {
+    "repository": "de-Ferra2020-kz",
+    "tier": 2,
+    "remark_author": "Siying Li",
+    "remark_affiliation": "Johns Hopkins University",
+    "remark_url": "https://github.com/Siying99/de-Ferra2020-kz"
   },
-  "key_findings": {
-    "primary_result": "UI extensions provide highest welfare gain per dollar spent",
-    "policy_ranking": [
-      {
-        "rank": 1,
-        "policy": "Unemployment Insurance Extensions",
-        "welfare_cev": 0.012,
-        "multiplier_with_ad": 1.211
-      },
-      {
-        "rank": 2,
-        "policy": "Stimulus Checks",
-        "welfare_cev": 0.002,
-        "multiplier_with_ad": 1.234
-      },
-      {
-        "rank": 3,
-        "policy": "Payroll Tax Cuts",
-        "welfare_cev": 0.0,
-        "multiplier_with_ad": 0.978
-      }
+  "paper": {
+    "title": "Household heterogeneity and the transmission of foreign shocks",
+    "authors": [
+      "Sergio de Ferra",
+      "Kurt Mitman",
+      "Federica Romei"
+    ],
+    "journal": "Journal of International Economics",
+    "volume": 124,
+    "pages": "103303",
+    "year": 2020,
+    "doi": "10.1016/j.jinteco.2020.103303"
+  },
+  "model": {
+    "name": "HANKSOME",
+    "full_name": "Heterogeneous-Agent New-Keynesian Small Open Model Economy",
+    "calibration_country": "Hungary",
+    "key_features": [
+      "Heterogeneous households with incomplete markets",
+      "Foreign-currency borrowing",
+      "Current account reversal / sudden stop",
+      "Flexible vs. fixed exchange rate regimes"
     ]
   },
-  "model_parameters": {
-    "splurge_factor": 0.249,
-    "risk_aversion_crra": 2.0,
-    "interest_rate_quarterly": 1.01,
-    "death_probability": 0.00625,
-    "ui_replacement_rate": 0.7,
-    "non_ui_replacement_rate": 0.5
+  "key_findings": {
+    "claim_1": "Foreign-currency debt revaluation amplifies consumption contraction when leverage is concentrated among poor (high-MPC) households",
+    "claim_2": "Fixed exchange rate regime improves welfare over flexible FX despite causing a deeper output recession",
+    "claim_3": "HANKSOME rationalises 'fear of floating' in emerging markets"
   },
-  "computational": {
-    "full_replication_days": 5,
-    "minimal_validation_hours": 1,
-    "step1_splurge_minutes": 20,
-    "step2_discount_factors_hours": 21,
-    "step4_hank_hours": 1,
-    "step5_policy_comparison_hours": 65,
-    "agents_per_type": 5000,
-    "total_types": 21,
-    "education_groups": 3,
-    "discount_factor_types_per_group": 7
+  "key_quantitative_results": {
+    "beta": 0.9444,
+    "asset_to_income_ratio": 3.11,
+    "consumption_drop_flex_fx_impact_pct": -20,
+    "consumption_drop_fixed_fx_impact_pct": -15,
+    "output_change_flex_fx_impact_pct": 5,
+    "output_change_fixed_fx_impact_pct": -3
   },
-  "methodology": {
-    "model_type": "Heterogeneous Agent",
-    "solution_method": "Endogenous Grid Method (EGM)",
-    "employment_process": "4-state Markov chain",
-    "calibration_data": "Norwegian lottery data (Fagereng et al. 2021), SCF 2004",
-    "innovation": "Splurge factor for immediate consumption response"
-  },
-  "keywords": [
-    "fiscal stimulus",
-    "heterogeneous agents",
-    "HANK",
-    "MPC",
-    "marginal propensity to consume",
-    "unemployment insurance",
-    "stimulus checks",
-    "tax cuts",
-    "welfare analysis",
-    "aggregate demand",
-    "splurge consumption",
-    "DSGE",
-    "computational economics",
-    "REMARK"
-  ],
-  "jel_codes": ["E21", "E62", "H31"],
   "reproduction": {
-    "main_script": "reproduce.sh",
-    "quick_test": "./reproduce.sh --comp min",
-    "full_replication": "./reproduce.sh --comp full",
-    "docs_only": "./reproduce.sh --docs",
-    "python_entry": "Code/HA-Models/do_all.py"
-  },
-  "metadata_files": {
-    "codemeta": "codemeta.json",
-    "schema_org": "schema.json",
-    "citation": "CITATION.cff",
-    "license": "LICENSE"
-  },
-  "ai_documentation": {
-    "quick_start": "README_IF_YOU_ARE_AN_AI/000_AI_QUICK_START_GUIDE.md",
-    "abstract_claims": "README_IF_YOU_ARE_AN_AI/010_PAPER_ABSTRACT_AND_CLAIMS.md",
-    "research_context": "README_IF_YOU_ARE_AN_AI/020_RESEARCH_CONTEXT_AND_FINDINGS.md",
-    "computational_workflows": "README_IF_YOU_ARE_AN_AI/030_COMPUTATIONAL_WORKFLOWS.md",
-    "model_summary": "README_IF_YOU_ARE_AN_AI/035_MODEL_SUMMARY.md",
-    "code_navigation": "README_IF_YOU_ARE_AN_AI/060_CODE_NAVIGATION.md",
-    "troubleshooting": "README_IF_YOU_ARE_AN_AI/080_TROUBLESHOOTING_FOR_AI_SYSTEMS.md"
+    "figures_reproduced": [1, 2, 3, 4, 5],
+    "tables_reproduced": [1],
+    "pipeline_language": "Python",
+    "pipeline_version": "3.12",
+    "pipeline_notebooks": 14,
+    "total_runtime_minutes_approx": 35,
+    "entry_point": "./reproduce.sh --comp full && ./reproduce.sh --docs"
   }
 }
-

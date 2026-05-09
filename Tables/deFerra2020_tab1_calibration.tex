@@ -1,0 +1,61 @@
+\input{./._relpath-to-latexroot.ltx}
+\documentclass[\latexroot/\projectname]{subfiles}
+\input{\latexroot/@resources/subfile-setup.ltx}
+
+\begin{document}
+
+% =====================================================================
+% Table 1 of de Ferra, Mitman, and Romei (2020): Calibration.
+% All parameter values and targets reproduced verbatim from
+% Table 1 (p.~7 of the JIE version, printed as p.~904 of JIE vol.~124).
+% Source:  de Ferra, S., Mitman, K., and Romei, F. (2020).
+%          ``Household heterogeneity and the transmission of foreign shocks.''
+%          Journal of International Economics, 124, 103303.
+%
+% Author-year references in the Target/Source column are given as plain
+% text rather than \cite{} so that the table renders cleanly even when
+% the project-wide bibliography build is unavailable; full citations are
+% carried in the narrative of Subfiles/Parameterization.tex.
+% =====================================================================
+
+\begin{table}[htb]
+  \centering
+  \caption{Calibration (reproduces Table 1 of de~Ferra, Mitman, and Romei, 2020)%
+    \whenintegrated{\label{tab:deFerra2020_calibration}}}
+  \footnotesize
+  \renewcommand{\arraystretch}{1.2}
+  \setlength{\tabcolsep}{5pt}
+  \begin{tabular}{@{}p{0.42\textwidth}c p{0.40\textwidth}@{}}
+    \toprule
+    \textbf{Parameter} & \textbf{Value} & \textbf{Target / Source} \\
+    \midrule
+    Intertemporal EOS                        & $\sigma = 1$       & Standard value \\
+    Home/foreign good EOS in home            & $\theta = 1$       & Feenstra et al.\ (2018) \\
+    Home/foreign good EOS in foreign         & $\theta^{*} = 3$   & Feenstra et al.\ (2018) \\
+    Share of home goods in consumption       & $\chi = 0.6$       & Exported value added to GDP, 33\% \\
+    Discount factor                          & $\beta = 0.983$    & Aggregate net wealth to GDP, 8.26 (ECB, 2016) \\
+    Persistence, labor productivity          & $\rho_{l} = 0.97$  & Income dispersion, Hungary 2016 \\
+    Std.\ dev., labor productivity           & $\sigma_{l} = 0.2$ & Share of borrowing-constrained HHs, Hungary 2016 \\
+    Capital share                            & $\alpha = 0.33$    & Standard value \\
+    Depreciation rate                        & $\delta = 0.02$    & Real rate of 4.3\% \\
+    Capital adjustment cost                  & $\psi = 17$        & Elasticity of investment to Tobin's $Q$ (Eberly et al., 2008) \\
+    Supply of foreign credit                 & $\bar{B} = -2$     & Private debt to GDP, Hungary 2008 (IMF, 2008) \\
+    EOS between home varieties               & $\varepsilon = 10$ & Steady-state markup, 10\% of output \\
+    Rotemberg adjustment cost                & $\zeta = 100$      & Kaplan, Moll, and Violante (2018) \\
+    \bottomrule
+  \end{tabular}
+
+  \begin{flushleft}
+    \footnotesize\textit{Notes.} Reproduces Table~1 of de~Ferra, Mitman, and Romei (2020) verbatim;
+    all values and calibration targets are as reported in the paper.
+    The model is solved in discrete time at a quarterly frequency. The labor productivity
+    process is an AR(1) with persistence $\rho_{l} = 0.97$ and innovation standard deviation
+    $\sigma_{l} = 0.2$, discretised into a seven-state Markov chain via the Rouwenhorst method.
+    The supply of foreign credit $\bar{B}$ is denominated in units of the home good and
+    calibrated to a net-foreign-asset-to-quarterly-GDP ratio of $-2$.
+  \end{flushleft}
+\end{table}
+
+\smartbib
+
+\end{document}

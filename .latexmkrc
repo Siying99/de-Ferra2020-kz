@@ -18,6 +18,22 @@ for (1..5) {
 # This ensures all compilations produce PDF directly and can include PDF/PNG/JPG images
 $pdf_mode = 1;  # 1=pdflatex, 2=ps2pdf, 3=dvipdf, 4=lualatex, 5=xelatex
 
+# ----------------------------------------------------------------------------
+# Point kpathsea at the vendored TeX tree under @resources/ and @local/.
+# Without this, latexmk/bibtex cannot find econark.cls, econark.bst, etc.,
+# and the compiled PDF ends up with "[?]" markers for every citation.
+# Trailing "//" = recursive search; leading "" (empty first path) = also fall
+# back to the system TEXINPUTS / BSTINPUTS / BIBINPUTS.
+# ----------------------------------------------------------------------------
+my $resources_tex = "$latexmkroot/\@resources/texlive/texmf-local";
+my $local_tex     = "$latexmkroot/\@local/texlive/texmf-local";
+$ENV{'TEXINPUTS'} = "$resources_tex/tex/latex//:$local_tex/tex/latex//:"
+                  . ($ENV{'TEXINPUTS'} // '');
+$ENV{'BSTINPUTS'} = "$resources_tex/bibtex/bst//:"
+                  . ($ENV{'BSTINPUTS'} // '');
+$ENV{'BIBINPUTS'} = "$resources_tex/bibtex/bib//:$latexmkroot//:"
+                  . ($ENV{'BIBINPUTS'} // '');
+
 
 # Load the circular crossrefs handler
 do "$latexmkroot/\@resources/latexmk/latexmkrc/latexmkrc_for-projects-with-circular-crossrefs";

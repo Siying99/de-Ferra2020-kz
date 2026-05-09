@@ -1,85 +1,33 @@
 {
-  "title": "HAFiscal Replication Package: Welfare and Spending Effects of Consumption Stimulus Policies",
-  "description": "Complete replication package for the paper 'Welfare and Spending Effects of Consumption Stimulus Policies' by Carroll, Crawley, Du, Frankovic, and Tretvoll (2025). This repository provides all code, data, and documentation needed to reproduce the paper's computational results, figures, and tables. The package uses the HARK (Heterogeneous Agents Resources and toolKit) framework to implement heterogeneous agent models for analyzing fiscal stimulus policies.",
+  "title": "de-Ferra2020-kz: A REMARK reproducing Household Heterogeneity and the Transmission of Foreign Shocks",
+  "description": "REMARK (Replication and Exploration Made using ARK) for de Ferra, Mitman, and Romei (2020), 'Household heterogeneity and the transmission of foreign shocks', Journal of International Economics 124, 103303. Includes a LaTeX paper summarising the model and calibration, and a Python reproduction pipeline (notebooks 01–14) that replicates Table 1, Figures 1–5, and the full credit-supply expansion and unexpected-contraction transitions from scratch.",
   "license": "Apache-2.0",
   "creators": [
     {
-      "name": "Carroll, Christopher D.",
-      "affiliation": "Johns Hopkins University",
-      "orcid": "0000-0003-3732-9312"
-    },
-    {
-      "name": "Crawley, Edmund",
-      "affiliation": "Federal Reserve Board"
-    },
-    {
-      "name": "Du, William",
+      "name": "Li, Siying",
       "affiliation": "Johns Hopkins University"
-    },
-    {
-      "name": "Frankovic, Ivan",
-      "affiliation": "Deutsche Bundesbank"
-    },
-    {
-      "name": "Tretvoll, Hakon",
-      "affiliation": "Statistics Norway"
     }
-  ],
-  "keywords": [
-    "fiscal policy",
-    "heterogeneous agents",
-    "HANK",
-    "stimulus checks",
-    "unemployment insurance",
-    "payroll tax cuts",
-    "marginal propensity to consume",
-    "spending multipliers",
-    "consumption",
-    "macroeconomics",
-    "computational economics",
-    "HARK",
-    "reproducible research"
   ],
   "related_identifiers": [
     {
-      "identifier": "10.5281/zenodo.17861977",
-      "relation": "isIdenticalTo",
-      "scheme": "doi"
-    },
-    {
-      "identifier": "https://github.com/llorracc/HAFiscal-Public",
-      "relation": "isSupplementTo",
-      "scheme": "url"
-    },
-    {
-      "identifier": "https://github.com/econ-ark/HAFiscal",
-      "relation": "isVariantFormOf",
-      "scheme": "url"
+      "scheme": "doi",
+      "identifier": "10.1016/j.jinteco.2020.103303",
+      "relation": "isSupplementTo"
     }
   ],
-  "communities": [
-    {
-      "identifier": "econ-ark"
-    }
+  "keywords": [
+    "heterogeneous agents",
+    "small open economy",
+    "current account reversal",
+    "sudden stops",
+    "foreign currency debt",
+    "exchange rate policy",
+    "incomplete markets",
+    "HANKSOME",
+    "REMARK",
+    "replication",
+    "computational economics"
   ],
-  "subjects": [
-    {
-      "term": "E21",
-      "scheme": "jel"
-    },
-    {
-      "term": "E62",
-      "scheme": "jel"
-    },
-    {
-      "term": "H31",
-      "scheme": "jel"
-    }
-  ],
-  "language": "eng",
-  "resource_type": {
-    "type": "software",
-    "title": "Computational Model"
-  },
-  "upload_type": "software"
+  "upload_type": "software",
+  "access_right": "open"
 }

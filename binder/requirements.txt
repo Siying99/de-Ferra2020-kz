@@ -1,10 +1,21 @@
-numpy==1.22.0
-voila==0.5.0a0
-matplotlib==3.4.2
-ipywidgets==7.6.3
-runipy==0.1.5
-pytest==6.2.4
-jupyter==1.0.0
-jupyter_contrib_nbextensions==0.5.1
-econ-ark==0.14.1
+# Pip requirements for the de-Ferra2020-kz REMARK.
+#
+# Pins are aligned with binder/environment.yml and pyproject.toml (Python 3.12).
+# Used by Binder as a fallback when environment.yml is not honoured, and by
+# reproduce.sh when setting up a pip-only venv.
 
+numpy>=1.26
+scipy>=1.11
+pandas>=2.1
+matplotlib>=3.8
+numba>=0.59
+
+jupyter>=1.0
+notebook>=7.0
+ipykernel>=6.0
+ipywidgets>=8.0
+
+statsmodels>=0.14
+seaborn>=0.13
+
+econ-ark>=0.15

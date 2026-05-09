@@ -2,7 +2,7 @@
 
 ## Overview
 
-The HAFiscal LaTeX compilation produces several expected warnings that are **intentional and correct**. This document explains these warnings, why they occur, and why they should not be "fixed."
+The de-Ferra2020-kz LaTeX compilation produces several expected warnings that are **intentional and correct**. This document explains these warnings, why they occur, and why they should not be "fixed."
 
 ## Critical: Hyperref Destination Warnings (INTENTIONAL)
 

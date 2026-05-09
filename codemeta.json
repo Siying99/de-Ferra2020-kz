@@ -1,17 +1,17 @@
 {
   "@context": "https://raw.githubusercontent.com/codemeta/codemeta/master/codemeta.jsonld",
   "@type": "SoftwareSourceCode",
-  "name": "HAFiscal",
-  "description": "Heterogeneous-Agent New-Keynesian Small Open Model Economy (HANKSOME) for studying the transmission of foreign shocks",
+  "name": "de-Ferra2020-kz",
+  "description": "REMARK reproducing de Ferra, Mitman, and Romei (2020), 'Household heterogeneity and the transmission of foreign shocks', with a stage decomposition of the household Bellman equation following the DDSL framework.",
   "version": "1.0.0",
   "keywords": [
     "heterogeneous agents",
-    "fiscal policy",
+    "small open economy",
+    "sudden stops",
+    "foreign currency debt",
+    "exchange rate",
     "HANK",
-    "MPC",
-    "marginal propensity to consume",
     "computational economics",
-    "dynamic stochastic general equilibrium",
     "REMARK",
     "Reproduction"
   ],
@@ -19,48 +19,25 @@
     {
       "@type": "ComputerLanguage",
       "name": "Python",
-      "version": "3.9+"
-    },
-    {
-      "@type": "ComputerLanguage",
-      "name": "Stata"
+      "version": "3.12"
     }
   ],
-  "runtimePlatform": "Python 3.9+",
-  "codeRepository": "https://github.com/econ-ark/HAFiscal",
+  "runtimePlatform": "Python 3.12",
+  "codeRepository": "https://github.com/Siying99/de-Ferra2020-kz",
   "license": "https://spdx.org/licenses/Apache-2.0",
   "author": [
     {
       "@type": "Person",
-      "givenName": "Christopher D.",
-      "familyName": "Carroll",
-      "orcid": "https://orcid.org/0000-0003-3732-9312"
-    },
-    {
-      "@type": "Person",
-      "givenName": "Edmund",
-      "familyName": "Crawley"
-    },
-    {
-      "@type": "Person",
-      "givenName": "William",
-      "familyName": "Du"
-    },
-    {
-      "@type": "Person",
-      "givenName": "Ivan",
-      "familyName": "Frankovic"
-    },
-    {
-      "@type": "Person",
-      "givenName": "Hakon",
-      "familyName": "Tretvoll"
+      "givenName": "Siying",
+      "familyName": "Li",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Johns Hopkins University"
+      }
     }
   ],
-  "citation": "https://github.com/econ-ark/HAFiscal/blob/main/CITATION.cff",
+  "citation": "https://github.com/Siying99/de-Ferra2020-kz/blob/main/CITATION.cff",
   "relatedLink": [
-    "https://github.com/econ-ark/HAFiscal",
-    "https://github.com/llorracc/HAFiscal-Public"
+    "https://doi.org/10.1016/j.jinteco.2020.103303"
   ]
 }
-

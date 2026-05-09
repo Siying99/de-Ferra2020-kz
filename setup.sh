@@ -1,5 +1,5 @@
 #!/bin/bash
-# HAFiscal Repository Setup Script
+# de-Ferra2020-kz Repository Setup Script
 #
 # This script fixes executable permissions for shell scripts and Python scripts
 # that may have been lost during git clone on some systems.

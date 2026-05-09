@@ -4,27 +4,32 @@
 
 \begin{document}
 
-\begin{figure}[htb] 
-  \centering
-  \caption{\pregenmark Multiplier comparison: partial equilibrium vs.\ HANK model}
-  \whenintegrated{\label{fig:HANK_multipliers}} % integrated doc: SST for labels
-  \includegraphics[width=.9\textwidth]{\latexroot/Code/HA-Models/FromPandemicCode/Figures/Cumulative_multipliers_withHank.pdf}
+% =====================================================================
+% Placeholder.  The original HAFiscal template shipped a figure showing
+% cumulative multipliers from a HANK-SAM extension.  The de Ferra, Mitman,
+% and Romei (2020) paper does NOT contain a multipliers figure, so the
+% HAFiscal content has been removed.  The filename is retained so that
+% the build scaffolding remains stable while we decide what (if anything)
+% the HANK-related subfile of this REMARK should show.
+%
+% Speculative: one natural repurposing would be to generate a figure
+% comparing aggregate consumption IRFs under the four experiments in
+% Section 7 of de Ferra et al. (2020) (foreign interest rate, credit
+% supply, foreign demand, productivity).  That is not implemented here.
+% =====================================================================
 
-  \medskip
-  \noindent\parbox{\textwidth}{\footnotesize
-    \textbf{Note}: This figure compares consumption multipliers across model frameworks (Section~\ref{sec:hank}).
-    The comparison shows multipliers over different time horizons under a fixed real rate rule
-    between the baseline partial equilibrium model (with state-dependent multipliers during recessions)
-    and the general equilibrium HANK-SAM model (with uniform Keynesian cross mechanism).
-    Both models show the tax cut policy substantially underperforming relative to stimulus checks
-    and UI extensions, validating the robustness of policy rankings across modeling approaches.
-    The HANK model produces larger overall multipliers due to general equilibrium effects.
-  }
+\begin{figure}[htb]
+  \centering
+  \caption{Placeholder---no corresponding figure in \citet{de-Ferra2019-co}%
+    \whenintegrated{\label{fig:deFerra2020_placeholder_multipliers}}}
+  \fbox{\parbox{.7\textwidth}{%
+      \footnotesize\centering
+      This subfile is a placeholder.  It previously rendered a HAFiscal
+      multipliers figure that has no counterpart in the de Ferra,
+      Mitman, and Romei (2020) paper this REMARK reproduces.
+  }}
 \end{figure}
 
-\vspace{0.5em}
-
-% Smart bibliography: Only include bibliography if standalone AND has citations
 \smartbib
 
 \end{document}

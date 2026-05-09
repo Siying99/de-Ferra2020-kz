@@ -1,7 +1,19 @@
 #!/bin/bash
 
-# HAFiscal Reproduction Script
-# This script provides options for reproducing different aspects of the HAFiscal project
+# de-Ferra2020-kz Reproduction Script
+# This script provides options for reproducing different aspects of the
+# de-Ferra2020-kz REMARK (de Ferra, Mitman, and Romei 2020, JIE).
+#
+# Primary reproduction artefact: deFerra2020.pdf (compiled from deFerra2020.tex).
+#
+# Runtime estimates (2024 MacBook Pro M3, 16 GB RAM):
+#   ./reproduce.sh --docs        ~30-60 seconds (PDF build)
+#   ./reproduce.sh --envt        ~1-2 minutes   (environment check)
+#
+# The --comp and --data branches were inherited from the HAFiscal template and
+# reference computational paths under Code/HA-Models/ that are not part of this
+# REMARK. They are preserved as scaffolding and should not be run against the
+# de Ferra 2020 model without first being rewritten.
 
 set -eo pipefail
 
@@ -94,7 +106,7 @@ init_logging() {
     
     # Write initial log entries
     log INFO "==================================="
-    log INFO "HAFiscal Reproduction Script Started"
+    log INFO "de-Ferra2020-kz Reproduction Script Started"
     log INFO "Command: $0 $*"
     log INFO "Working directory: $(pwd)"
     log INFO "Log file: $LOG_FILE"
@@ -647,107 +659,68 @@ trap 'exit_code=$?; print_summary $exit_code; cleanup_temp_files; benchmark_end 
 
 show_help() {
     cat << EOF
-HAFiscal Reproduction Script
+de-Ferra2020-kz Reproduction Script
+=====================================
+Paper:   Household Heterogeneity and the Transmission of Foreign Shocks
+Authors: de Ferra, Mitman, Romei (2020), JIE 124, 103303
+REMARK:  Siying Li (Johns Hopkins University)
+Tier:    2 (calibration + Figs 1-5 reproducible from scratch)
 
-This script provides multiple reproduction options and includes environment testing.
+Primary artefact: deFerra2020.pdf  (LaTeX from deFerra2020.tex)
+Computed artefacts: Figures/deFerra2020_fig{1-5}.png  (Python pipeline)
+
+Runtimes on a 2024 MacBook Pro M3 (16 GB RAM):
+    --docs             <30 seconds (PDF from pre-existing figures)
+    ./reproduce_min.sh <30 seconds (same, convenience alias)
+    --comp min         ~3-5 minutes (Phases A-C: calibration + Figs 1-3)
+    --comp full        ~30-35 minutes (Phases A-D: all figures incl. 4-5)
 
 USAGE:
-    ./reproduce.sh [OPTION]
+    ./reproduce.sh [OPTION] [SCOPE]
 
 OPTIONS:
     --help, -h          Show this help message
-    --envt, -e          Test environment setup (TeX Live + Python/computational)
-    --data [SCOPE]      Reproduce empirical data or figures from results
-                         SCOPE: scf|IMPC|LP|all (default: scf)
-                         scf: empirical data moments from SCF 2004 (~1 minute + download time)
-                         IMPC: Intertemporal MPC figures from pre-computed results
-                         LP: Lorenz Points figures from pre-computed results
-                         all: all figures from results (IMPC + LP)
-    --comp, -c [SCOPE]  Reproduce computational results (SCOPE: min|full|max, default: min)
-                         min: minimal computational results (~1 hour)
-                         full: all computational results needed for the printed document (4-5 days on a high-end 2025 laptop)
-                         max: full results + robustness (Step 3: Splurge=0 for Online Appendix) (~6 days on a high-end 2025 laptop)
-    --docs, -d [SCOPE]  Reproduce LaTeX documents (SCOPE: main|all|figures|tables|subfiles, default: main)
-                         main: only the paper --- HAFiscal.tex
-                         all: the paper + individual Figures/ + Tables/ + Subfiles/
-                         figures: the paper + Figures/
-                         tables: the paper + Tables/
-                         subfiles: the paper + Subfiles/
-    --use-latest-scf-data  Download latest SCF 2004 data from Fed and auto-adjust to 2013$
-                         Downloads 2022$ data, divides by 1.1587 to convert to 2013$
-                         Results will match paper exactly. Use with --data flag
-                         ⚠️  WARNING: Assumes downloaded data is in 2022 dollars.
-                            When Fed updates inflation adjustments, update the
-                            inflation factor in adjust_scf_inflation.py
-                         See docs/SCF_DATA_VINTAGE.md for details
-    --all, -a           Reproduce everything: data moments, all computational results + all documents
-    --interactive, -i   Show interactive menu (delegates to reproduce.py)
-    --dry-run           Show commands that would be executed (only with --docs)
-    --verbose, -v       Show detailed command tracing in terminal (set -x output)
-                        By default, command tracing is logged to file only
-    --showlabels        Show equation/figure/table labels in margins (for review)
-    --no-labels         Hide labels in margins (for publication)
-    --stop-on-error     Stop compilation on first error (useful for debugging, only with --docs)
+    --envt, -e          Test environment (TeX Live + Python 3.12 kernel)
+    --docs [SCOPE]      Compile LaTeX PDF  (SCOPE: main|all|subfiles, default: main)
+                         main:     deFerra2020.tex only
+                         all:      deFerra2020.tex + Figures/ + Subfiles/
+    --comp [SCOPE]      Run Python reproduction pipeline  (SCOPE: min|full, default: min)
+                         min:  Phases A+B+C  (notebooks 01-11, Figs 1-3)  ~3-5 min
+                         full: Phases A+B+C+D (notebooks 01-14, Figs 1-5) ~30-35 min
+    --all, -a           --comp full  then  --docs all
+    --verbose, -v       Extra terminal output
+    --dry-run           Print commands without executing (--docs only)
+    --stop-on-error     Abort on first LaTeX error (--docs only)
 
-ENVIRONMENT TESTING:
-    Use --envt to test your environment setup (TeX Live and/or Python).
-    For environment issues, see README.md for setup instructions.
+COMPUTATIONAL PIPELINE DETAILS:
+    Phase A (notebooks 01-04):  Rouwenhorst, grids, shock paths, Figure 1
+    Phase B (notebooks 05-08):  EGM, distribution, beta-calibration, Table 1
+    Phase C (notebooks 09-11):  Initial+final SS, credit-expansion transition, Figs 2-3
+    Phase D (notebooks 12-14):  Unexpected contraction (flex + fixed FX), Figs 4-5
 
-LOGGING:
-    All script execution is automatically logged with timestamps.
-    - Logs are saved to: reproduce/logs/reproduce_YYYYMMDD_HHMMSS.log
-    - Latest log symlink: reproduce/logs/latest.log
-    - Logs include: progress updates, errors, timings, and command execution
-    - View latest log: cat reproduce/logs/latest.log
-    - Monitor in real-time: tail -f reproduce/logs/latest.log
-    - Search for errors: grep ERROR reproduce/logs/latest.log
+    Requires: Python 3.12 with the 'deferra2020-kz' Jupyter kernel.
+    See Code/Python/README.md for kernel setup.
 
-ENVIRONMENT VARIABLES:
-    REPRODUCE_TARGETS   Comma-separated list of targets to reproduce (non-interactive mode)
-                       Valid values: docs, comp, all
-                       Examples:
-                         REPRODUCE_TARGETS=docs
-                         REPRODUCE_TARGETS=comp,docs  
-                         REPRODUCE_TARGETS=all
-    
-    BENCHMARK          Enable/disable automatic benchmarking (default: true)
-                       Examples:
-                         BENCHMARK=false ./reproduce.sh --docs    # Disable benchmarking
-                         BENCHMARK=true ./reproduce.sh --comp min # Enable (default)
+    Alternatively, run the pipeline directly:
+      cd Code/Python
+      ./run_all.sh --phase=ABC        # Phases A-C only
+      ./run_all.sh --phase=all        # Phases A-D (full)
 
 EXAMPLES:
-    ./reproduce.sh                           # Show quick examples (this help)
-    ./reproduce.sh --interactive             # Show interactive menu
-    ./reproduce.sh --envt                    # Test both TeX Live and computational environments
-    ./reproduce.sh --envt texlive            # Test TeX Live environment only
-    ./reproduce.sh --envt comp_uv            # Test computational (UV) environment only
-    ./reproduce.sh --docs                    # Compile repo root documents (default: main scope)
-    ./reproduce.sh --docs main               # Compile only repo root documents  
-    ./reproduce.sh --docs all                # Compile root + Figures/ + Tables/ + Subfiles/
-    ./reproduce.sh --docs figures            # Compile repo root + Figures/
-    ./reproduce.sh --docs tables             # Compile repo root + Tables/
-    ./reproduce.sh --docs subfiles           # Compile repo root + Subfiles/
-    ./reproduce.sh --docs all --stop-on-error # Stop on first compilation error
-    ./reproduce.sh --comp min                # Minimal computational results (~1 hour)
-    ./reproduce.sh --comp full               # All computational results for printed document (4-5 days on a high-end 2025 laptop)
-    ./reproduce.sh --comp max                # Maximum computational results including robustness (~6 days on a high-end 2025 laptop)
-    ./reproduce.sh --data                    # Empirical data moments from SCF 2004 (~1 minute + download)
-    ./reproduce.sh --data scf                # Empirical data moments (default)
-    ./reproduce.sh --data IMPC               # Generate IMPC figures from results
-    ./reproduce.sh --data LP                 # Generate Lorenz Points figures
-    ./reproduce.sh --data all                # Generate all figures from results
-    ./reproduce.sh --data --use-latest-scf-data  # Download latest Fed data, auto-adjust to 2013$ (matches paper)
-    ./reproduce.sh --all                     # Everything: all documents + all computational results
-    
-    # Advanced examples:
-    BENCHMARK=false ./reproduce.sh --docs main   # Disable benchmarking
+    ./reproduce_min.sh                    # Build PDF from existing figures (<30s)
+    ./reproduce.sh --docs                 # Same as above
+    ./reproduce.sh --comp min             # Regenerate Figs 1-3 from scratch (~5 min)
+    ./reproduce.sh --comp full            # Regenerate Figs 1-5 from scratch (~35 min)
+    ./reproduce.sh --comp full && ./reproduce.sh --docs    # Full end-to-end
+    ./reproduce.sh --envt                 # Check TeX Live + Python environment
+    BENCHMARK=false ./reproduce.sh --docs # Skip benchmarking
 
 EOF
 }
 
 show_interactive_menu() {
     echo "========================================"
-    echo "   HAFiscal Reproduction Options"
+    echo "   de-Ferra2020-kz Reproduction Options"
     echo "========================================"
     echo ""
     echo "Please select what you would like to reproduce:"
@@ -1117,7 +1090,7 @@ test_environment_comprehensive() {
     
     log PROGRESS "Starting environment testing (scope: $scope)"
     log INFO "========================================"
-    log INFO "Testing HAFiscal Environment Setup"
+    log INFO "Testing de-Ferra2020-kz Environment Setup"
     log INFO "========================================"
     echo ""
     
@@ -1334,7 +1307,7 @@ test_environment_comprehensive() {
             echo ""
         fi
         
-        echo "Your system is ready to reproduce HAFiscal results!"
+        echo "Your system is ready to reproduce de-Ferra2020-kz results!"
         echo ""
         echo "Next steps:"
         echo "  ./reproduce.sh --docs      # Compile documents"
@@ -2442,7 +2415,7 @@ case "$ACTION" in
     "")
         # No arguments provided - show helpful examples (no logging for this)
         echo "========================================"
-        echo "HAFiscal Reproduction Script"
+        echo "de-Ferra2020-kz Reproduction Script"
         echo "========================================"
         echo ""
         echo "Run with arguments to reproduce different parts of the project."

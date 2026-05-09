@@ -4,75 +4,35 @@
 
 \begin{document}
 
+% =====================================================================
+% Placeholder.  The original HAFiscal template shipped a 6-panel figure
+% (`HANK_IRFs`) showing consumption IRFs and cumulative multipliers for
+% stimulus checks, UI extensions, and a payroll tax cut in a HANK-SAM
+% general-equilibrium extension.  Those objects are specific to the
+% HAFiscal project and do not correspond to any figure in de Ferra,
+% Mitman, and Romei (2020).  The HAFiscal \includegraphics paths pointed
+% to pdfs under Code/HA-Models/FromPandemicCode/Figures/ that are not
+% part of this REMARK; keeping them would cause the build to fail as
+% soon as this figure were \subfile{}'d from the main text.
+%
+% Speculative: the closest natural analog in de Ferra et al. (2020) is
+% the set of impulse-response figures (Figs. 2-5, 7, 8) tracking the
+% model economy's response to foreign shocks.  Those are already shown
+% in the paper PDF and are not reproduced here.
+% =====================================================================
+
 \begin{figure}[H]
   \centering
-  \caption{\pregenmark General equilibrium policy comparison in HANK-SAM model}
-  \whenintegrated{\label{fig:HANK_IRFs}} % integrated doc: SST for labels
-  \noindent\begin{minipage}{\textwidth}
-    \centering
-    \begin{subfigure}[b]{.30\linewidth}
-      \centering
-      % Original path: \latexroot/Code/HA-Models/FromPandemicCode/Figures/HANK_transfer_irf
-      \includegraphics[width=\linewidth]{\latexroot/Code/HA-Models/FromPandemicCode/Figures/HANK_transfer_IRF.pdf}
-      \caption{Check IRF}
-      \whenintegrated{\label{fig:hank_stimulus_irf}} % integrated doc: SST for labels
-    \end{subfigure}
-    %
-    \begin{subfigure}[b]{.30\linewidth}
-      \centering
-      % Original path: \latexroot/Code/HA-Models/FromPandemicCode/Figures/HANK_UI_irf
-      \includegraphics[width=\linewidth]{\latexroot/Code/HA-Models/FromPandemicCode/Figures/HANK_UI_IRF.pdf}
-      \caption{UI extension IRF}
-      \whenintegrated{\label{fig:hank_UI_irf}} % integrated doc: SST for labels
-    \end{subfigure}
-    %
-    \begin{subfigure}[b]{.30\linewidth}
-      \centering
-      % Original path: \latexroot/Code/HA-Models/FromPandemicCode/Figures/HANK_tax_irf
-      \includegraphics[width=\linewidth]{\latexroot/Code/HA-Models/FromPandemicCode/Figures/HANK_tax_IRF.pdf}
-      \caption{Tax cut IRF}
-      \whenintegrated{\label{fig:hank_tax_irf}} % integrated doc: SST for labels
-    \end{subfigure}
-    \\[1em]
-    \begin{subfigure}[b]{.30\linewidth}
-      \centering
-      % Original path: \latexroot/Code/HA-Models/FromPandemicCode/Figures/HANK_transfer_multiplier
-      \includegraphics[width=\linewidth]{\latexroot/Code/HA-Models/FromPandemicCode/Figures/HANK_transfer_multiplier.pdf}
-      \caption{Check multiplier}
-      \whenintegrated{\label{fig:HANK_transfer_multiplier}} % integrated doc: SST for labels
-    \end{subfigure}
-    %
-    \begin{subfigure}[b]{.30\linewidth}
-      \centering
-      % Original path: \latexroot/Code/HA-Models/FromPandemicCode/Figures/HANK_UI_multiplier
-      \includegraphics[width=\linewidth]{\latexroot/Code/HA-Models/FromPandemicCode/Figures/HANK_UI_multiplier.pdf}
-      \caption{UI extension multiplier}
-      \whenintegrated{\label{fig:HANK_UI_multiplier}} % integrated doc: SST for labels
-    \end{subfigure}
-    %
-    \begin{subfigure}[b]{.30\linewidth}
-      \centering
-      % Original path: \latexroot/Code/HA-Models/FromPandemicCode/Figures/HANK_tax_multiplier
-      \includegraphics[width=\linewidth]{\latexroot/Code/HA-Models/FromPandemicCode/Figures/HANK_tax_multiplier.pdf}
-      \caption{Payroll tax cut multiplier}
-      \whenintegrated{\label{fig:HANK_tax_multiplier}} % integrated doc: SST for labels
-    \end{subfigure}
-  \end{minipage}
+  \caption{Placeholder---no corresponding figure in \citet{de-Ferra2019-co}%
+    \whenintegrated{\label{fig:deFerra2020_placeholder_IRFs}}}
+  \fbox{\parbox{.7\textwidth}{%
+      \footnotesize\centering
+      This subfile is a placeholder.  It previously rendered a 6-panel
+      HAFiscal HANK-SAM figure that has no counterpart in the de Ferra,
+      Mitman, and Romei (2020) paper this REMARK reproduces.
+  }}
 \end{figure}
-\noindent\parbox{\textwidth}{\footnotesize
-  \textbf{Note}: This figure presents general equilibrium results from the HANK-SAM model (Section~\ref{sec:hank}).
-  Subfigures~(a)-(c) show consumption impulse responses under three monetary policy rules:
-  active Taylor rule, fixed nominal rate (ZLB), and fixed real rate.
-  Subfigures~(d)-(f) show corresponding cumulative multipliers over time.
-  The general equilibrium framework generates multipliers through an intertemporal Keynesian cross mechanism,
-  particularly pronounced when monetary policy is passive.
-  Results validate the partial equilibrium findings that UI extensions achieve the highest multipliers
-  across all policy environments.
-}
 
-\vspace{1em}  % Add space after figure
-
-% Smart bibliography: Only include bibliography if standalone AND has citations
 \smartbib
 
 \end{document}

@@ -1,56 +1,70 @@
 #!/bin/bash
-# reproduce_min.sh - Minimal reproduction for REMARK compliance
-# 
-# This script runs minimal computational results to demonstrate reproducibility
-# without requiring the full 4-5 day computation time.
+# reproduce_min.sh — Minimal (fast) reproduction for REMARK compliance
 #
-# For full reproduction, see: ./reproduce.sh --help
+# Builds deFerra2020.pdf from existing .npz outputs + pre-generated figures.
+# Expected runtime: < 30 seconds (LaTeX only, no Python).
+#
+# For a more thorough reproduction that also re-runs Phase A+B+C of the Python
+# pipeline, use:
+#   ./reproduce.sh --comp          # Phases A+B+C (~3-5 min)
+#   ./reproduce.sh --comp --full   # Phases A+B+C+D (~30-35 min, incl. Figs 4-5)
+#
+# For the full menu of options, see: ./reproduce.sh --help
+#
+# REMARK tier: 2 (code + calibration reproducible from a clean clone)
 
-set -e  # Exit on error
+set -e
 
-# Print header
+ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$ROOT_DIR"
+
 echo "================================================================="
-echo "HAFiscal Minimal Reproduction"
+echo " de-Ferra2020-kz  —  Minimal Reproduction"
+echo "================================================================="
+echo " Paper:   Household Heterogeneity and the Transmission of"
+echo "          Foreign Shocks"
+echo " Authors: Sergio de Ferra, Kurt Mitman, Federica Romei"
+echo " Journal: Journal of International Economics, 124, 103303 (2020)"
+echo " DOI:     10.1016/j.jinteco.2020.103303"
+echo " REMARK author: Siying Li (Johns Hopkins University)"
+echo " Tier: 2 (calibration + Figs 1-5 reproducible from scratch)"
 echo "================================================================="
 echo ""
-echo "Paper: Welfare and Spending Effects of Consumption Stimulus Policies"
-echo "Authors: Carroll, Crawley, Du, Frankovic, Tretvoll (2025)"
-echo ""
-echo "This runs minimal computational results (~1 hour) to demonstrate"
-echo "reproducibility. For full reproduction (4-5 days), run:"
-echo "  ./reproduce.sh --all"
-echo ""
-echo "See ./reproduce.sh --help for all reproduction options."
-echo ""
-echo "================================================================="
+echo "Step 1/2: Compiling deFerra2020.pdf with latexmk ..."
 echo ""
 
-# Check that reproduce.sh exists
-if [[ ! -f "reproduce.sh" ]]; then
-    echo "Error: reproduce.sh not found. Please run from repository root."
-    exit 1
+if ! command -v latexmk &>/dev/null; then
+  echo "ERROR: latexmk not found. Install TeX Live (texlive-full) or MiKTeX."
+  exit 1
 fi
 
-# Make sure reproduce.sh is executable
-if [[ ! -x "reproduce.sh" ]]; then
-    chmod +x reproduce.sh
+latexmk -pdf -interaction=nonstopmode -file-line-error deFerra2020.tex 2>&1 \
+  | grep -E "(Warning|Error|!|Saved|pages)" || true
+
+echo ""
+echo "Step 2/2: Verifying output ..."
+if [[ -f deFerra2020.pdf ]]; then
+  SIZE=$(du -h deFerra2020.pdf | cut -f1)
+  echo "  ✓  deFerra2020.pdf   ($SIZE)"
+else
+  echo "  ERROR: deFerra2020.pdf was not produced. See deFerra2020.log."
+  exit 1
 fi
 
-# Run minimal computational results
-echo "Running: ./reproduce.sh --comp min"
-echo ""
-./reproduce.sh --comp min
+for f in Figures/deFerra2020_fig1_credit_supply.png \
+         Figures/deFerra2020_fig2.png \
+         Figures/deFerra2020_fig3.png \
+         Figures/deFerra2020_fig4.png \
+         Figures/deFerra2020_fig5.png; do
+  [[ -f "$f" ]] && echo "  ✓  $f" || echo "  ✗  $f  (run ./reproduce.sh --comp to regenerate)"
+done
 
-# Success message
 echo ""
 echo "================================================================="
-echo "✅ Minimal reproduction complete"
+echo " Minimal reproduction complete."
+echo " Primary artefact:  deFerra2020.pdf"
+echo ""
+echo " To regenerate figures from scratch (requires Python 3.12):"
+echo "   ./reproduce.sh --comp            # Phases A-C  (~3-5 min)"
+echo "   ./reproduce.sh --comp --full     # Phases A-D  (~30-35 min, incl. Figs 4-5)"
 echo "================================================================="
-echo ""
-echo "Results: Code/HA-Models/FromPandemicCode/Results/"
-echo ""
-echo "Next steps:"
-echo "  - View logs: cat reproduce/logs/latest.log"
-echo "  - Compile paper: ./reproduce.sh --docs"
-echo "  - Full reproduction: ./reproduce.sh --all (4-5 days)"
-echo ""

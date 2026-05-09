@@ -1,8 +1,10 @@
-# README_IF_YOU_ARE_AN_AI Directory - Documentation Index
+# README_IF_YOU_ARE_AN_AI — de-Ferra2020-kz
 
-**🤖 Welcome to the AI Documentation Center**
+**AI Documentation Center for the de Ferra, Mitman, Romei (2020) REMARK**
 
-This directory contains comprehensive documentation specifically designed for AI systems to understand, navigate, and interact with this research repository.
+This directory contains documentation for AI systems navigating the
+**de-Ferra2020-kz** REMARK repository (reproduction of "Household heterogeneity
+and the transmission of foreign shocks," JIE 2020).
 
 ## 📋 **Documentation Index**
 
