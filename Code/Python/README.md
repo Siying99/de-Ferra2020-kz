@@ -45,7 +45,10 @@ are reported in the cell outputs.
 **Option B — interactive, cell-by-cell** (recommended for inspection):
 
 ```bash
-# From the repo root
+# From the repo root — creates or refreshes `.venv-darwin-arm64` with **Python 3.12**
+# (required; an older 3.9 venv triggers Cursor’s “Python no longer supported” banner).
+bash reproduce/reproduce_environment_comp_uv.sh
+
 .venv-darwin-arm64/bin/jupyter lab Code/Python/notebooks/
 ```
 

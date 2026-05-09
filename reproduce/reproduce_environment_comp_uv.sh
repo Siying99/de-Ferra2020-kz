@@ -1,5 +1,5 @@
 #!/bin/bash
-# HAFiscal Environment Setup with UV
+# de-Ferra2020-kz Environment Setup with UV
 # This script sets up the Python environment using UV package manager
 # This is the SINGLE SOURCE OF TRUTH for UV environment setup
 
@@ -33,6 +33,9 @@ fi
 # Get script directory and project root
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+# Python X.Y for UV venvs (must match pyproject.toml requires-python, e.g. >=3.12,<3.13)
+UV_PYTHON_VERSION="${UV_PYTHON_VERSION:-3.12}"
 
 # Detect if we're on a Windows filesystem mount (e.g., /mnt/c/)
 # Symlinks don't work reliably on Windows filesystem mounts in WSL2
@@ -220,7 +223,7 @@ VENV_PATH=$(get_platform_venv_path)
 VENV_NAME=$(basename "$VENV_PATH")
 
 echo "========================================"
-echo "HAFiscal Environment Setup (UV)"
+echo "de-Ferra2020-kz Environment Setup (UV)"
 echo "========================================"
 echo ""
 echo "Platform: $(uname -s) ($(uname -m))"
@@ -246,6 +249,16 @@ VENV_NAME=$(basename "$VENV_PATH")
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 # Check for platform-specific venv first, then legacy .venv
+if [[ -d "$VENV_PATH" ]] && [[ -f "$VENV_PATH/bin/python" ]]; then
+    VENV_PY_MM=$("$VENV_PATH/bin/python" -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" 2>/dev/null || echo "")
+    if [[ -n "$VENV_PY_MM" ]] && [[ "$VENV_PY_MM" != "$UV_PYTHON_VERSION" ]]; then
+        echo "⚠️  Existing $VENV_NAME uses Python $VENV_PY_MM; this REMARK requires Python $UV_PYTHON_VERSION (see pyproject.toml)."
+        echo "   Removing old venv so dependencies can be reinstalled..."
+        rm -rf "$VENV_PATH"
+        echo ""
+    fi
+fi
+
 if [[ -d "$VENV_PATH" ]] && [[ -f "$VENV_PATH/bin/python" ]]; then
     echo "✅ Found existing UV environment at $VENV_NAME/"
     
@@ -539,17 +552,12 @@ with open('pyproject.toml', 'r') as f:
 fi
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# STEP 3: Ensure Python 3.9 is available
+# STEP 3: Ensure Python ${UV_PYTHON_VERSION} is available
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-echo "Checking Python 3.9 availability..."
-if uv python list 2>/dev/null | grep -q "cpython-3.9"; then
-    echo "✅ Python 3.9 is available"
-else
-    echo "Installing Python 3.9..."
-    uv python install 3.9
-    echo "✅ Python 3.9 installed"
-fi
+echo "Ensuring Python ${UV_PYTHON_VERSION} is installed via uv..."
+uv python install "${UV_PYTHON_VERSION}"
+echo "✅ Python ${UV_PYTHON_VERSION} ready"
 echo ""
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -633,6 +641,16 @@ if [[ -d "$VENV_PATH" ]] && [[ ! -f "$VENV_PATH/bin/python" ]]; then
     rm -rf "$VENV_PATH"
 fi
 
+# Recreate venv if it was built with the wrong Python (e.g. legacy 3.9 — EOL, fails Cursor Jupyter checks)
+if [[ -f "$VENV_PATH/bin/python" ]]; then
+    VENV_PY_MM=$("$VENV_PATH/bin/python" -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" 2>/dev/null || echo "")
+    if [[ -n "$VENV_PY_MM" ]] && [[ "$VENV_PY_MM" != "$UV_PYTHON_VERSION" ]]; then
+        echo "⚠️  Existing $VENV_NAME uses Python $VENV_PY_MM; this REMARK standard is Python $UV_PYTHON_VERSION."
+        echo "   Removing old venv for a clean rebuild..."
+        rm -rf "$VENV_PATH"
+    fi
+fi
+
 # Create platform-specific venv if it doesn't exist
 if [[ ! -d "$VENV_PATH" ]]; then
     echo "Creating virtual environment at $VENV_NAME..."
@@ -643,23 +661,23 @@ if [[ ! -d "$VENV_PATH" ]]; then
     # Ensure UV is in PATH before creating venv
     ensure_uv_in_path
     
-    # Install Python 3.9 using UV's managed Python installer
+    # Install Python using UV's managed Python installer
     # This ensures we have a standalone Python that doesn't depend on Xcode/system Python
-    echo "Ensuring Python 3.9 is available..."
+    echo "Ensuring Python ${UV_PYTHON_VERSION} is available..."
     if [[ "$(uname -m)" == "arm64" ]]; then
-        arch -arm64 uv python install 3.9 >/dev/null 2>&1 || true
+        arch -arm64 uv python install "${UV_PYTHON_VERSION}" >/dev/null 2>&1 || true
     else
-        uv python install 3.9 >/dev/null 2>&1 || true
+        uv python install "${UV_PYTHON_VERSION}" >/dev/null 2>&1 || true
     fi
-    echo "✓ Python 3.9 ready"
+    echo "✓ Python ${UV_PYTHON_VERSION} ready"
     echo ""
     
     # Force arm64 on Apple Silicon
     if [[ "$(uname -m)" == "arm64" ]]; then
         echo "Detected Apple Silicon - creating arm64 environment"
-        arch -arm64 uv venv --python 3.9 "$VENV_PATH"
+        arch -arm64 uv venv --python "${UV_PYTHON_VERSION}" "$VENV_PATH"
     else
-        uv venv --python 3.9 "$VENV_PATH"
+        uv venv --python "${UV_PYTHON_VERSION}" "$VENV_PATH"
     fi
     
     # Verify the venv was created
@@ -689,7 +707,7 @@ export UV_PROJECT_ENVIRONMENT="$VENV_PATH"
 
 # Force arm64 on Apple Silicon
 if [[ "$(uname -m)" == "arm64" ]]; then
-    if arch -arm64 uv sync --all-groups --python 3.9; then
+    if arch -arm64 uv sync --all-groups --python "${UV_PYTHON_VERSION}"; then
         echo ""
         echo "✅ Environment setup complete (arm64)!"
     else
@@ -698,7 +716,7 @@ if [[ "$(uname -m)" == "arm64" ]]; then
         return 1 2>/dev/null || exit 1
     fi
 else
-    if uv sync --all-groups --python 3.9; then
+    if uv sync --all-groups --python "${UV_PYTHON_VERSION}"; then
         echo ""
         echo "✅ Environment setup complete!"
     else
@@ -717,7 +735,7 @@ echo "========================================"
 echo "Setup Summary"
 echo "========================================"
 echo "Virtual environment: $VENV_NAME/"
-echo "Python version: 3.9"
+echo "Python version: ${UV_PYTHON_VERSION} (see pyproject.toml)"
 echo "Packages: All dependency groups installed"
 
 # Verify the environment
