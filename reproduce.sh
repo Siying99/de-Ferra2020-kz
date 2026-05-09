@@ -1067,8 +1067,11 @@ reproduce_all_computational_results() {
     fi
     
     if [[ -f "./reproduce/reproduce_computed.sh" ]]; then
-        log INFO "Executing: ./reproduce/reproduce_computed.sh"
-        
+        log INFO "Executing: ./reproduce/reproduce_computed.sh (COMP_SCOPE=$COMP_SCOPE)"
+
+        # Export COMP_SCOPE so the child script picks up min|full|max
+        # (without this, child defaults to "min" and Phase D never runs).
+        export COMP_SCOPE
         if ./reproduce/reproduce_computed.sh 2>&1 | tee -a "$LOG_FILE"; then
             local elapsed=$(($(date +%s) - start_time))
             log SUCCESS "All computational results completed successfully"
