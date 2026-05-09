@@ -6,7 +6,7 @@
 #
 # Primary reproduction artefact: deFerra2020.pdf (compiled from deFerra2020.tex).
 #
-# Runtime estimates (2024 MacBook Pro M3, 16 GB RAM):
+# Runtime estimates (Apple M4 Pro MacBook Pro):
 #   ./reproduce.sh --docs        ~30-60 seconds (PDF build)
 #   ./reproduce.sh --envt        ~1-2 minutes   (environment check)
 #
@@ -669,11 +669,11 @@ Tier:    2 (calibration + Figs 1-5 reproducible from scratch)
 Primary artefact: deFerra2020.pdf  (LaTeX from deFerra2020.tex)
 Computed artefacts: Figures/deFerra2020_fig{1-5}.png  (Python pipeline)
 
-Runtimes on a 2024 MacBook Pro M3 (16 GB RAM):
+Runtimes on an Apple M4 Pro MacBook Pro:
     --docs             <30 seconds (PDF from pre-existing figures)
     ./reproduce_min.sh <30 seconds (same, convenience alias)
     --comp min         ~3-5 minutes (Phases A-C: calibration + Figs 1-3)
-    --comp full        ~30-35 minutes (Phases A-D: all figures incl. 4-5)
+    --comp full        ~26 minutes (Phases A-D: all figures incl. 4-5)
 
 USAGE:
     ./reproduce.sh [OPTION] [SCOPE]
@@ -686,7 +686,7 @@ OPTIONS:
                          all:      deFerra2020.tex + Figures/ + Subfiles/
     --comp [SCOPE]      Run Python reproduction pipeline  (SCOPE: min|full, default: min)
                          min:  Phases A+B+C  (notebooks 01-11, Figs 1-3)  ~3-5 min
-                         full: Phases A+B+C+D (notebooks 01-14, Figs 1-5) ~30-35 min
+                         full: Phases A+B+C+D (notebooks 01-14, Figs 1-5) ~26 min
     --all, -a           --comp full  then  --docs all
     --verbose, -v       Extra terminal output
     --dry-run           Print commands without executing (--docs only)
@@ -740,12 +740,12 @@ show_interactive_menu() {
     echo ""
     echo "4) All Computational Results"
     echo "   - Reproduces all computational results from the paper"
-    echo "   - ⚠️  WARNING: This may take 4-5 DAYS on a high-end 2025 laptop"
+    echo "   - ⚠️  WARNING: This may take ~26 minutes on an Apple M4 Pro MacBook Pro"
     echo "   - Requires significant computational resources"
     echo ""
     echo "5) Everything"
     echo "   - All documents + all computational results"
-    echo "   - ⚠️  WARNING: This may take 4-5 DAYS on a high-end 2025 laptop"
+    echo "   - ⚠️  WARNING: This may take ~26 minutes on an Apple M4 Pro MacBook Pro"
     echo "   - Complete reproduction of the entire project"
     echo ""
     echo "6) Exit"
@@ -916,7 +916,7 @@ reproduce_all_results() {
     log INFO "Complete Reproduction: All Computational Results + Documents"
     log INFO "========================================"
     echo ""
-    log WARNING "This process may take 4-5 DAYS on a high-end 2025 laptop"
+    log WARNING "This process may take ~26 minutes on an Apple M4 Pro MacBook Pro"
     log INFO "This will reproduce (in order):"
     log INFO "  1. All computational results"
     log INFO "  2. All figures from results (IMPC + Lorenz Points)"
@@ -1042,7 +1042,7 @@ reproduce_all_computational_results() {
     log INFO "Reproducing All Computational Results..."
     log INFO "========================================"
     echo ""
-    log WARNING "This process may take 4-5 DAYS on a high-end 2025 laptop"
+    log WARNING "This process may take ~26 minutes on an Apple M4 Pro MacBook Pro"
     log INFO "Make sure you have:"
     log INFO "- Sufficient computational resources"
     log INFO "- Stable power supply"
@@ -1067,8 +1067,11 @@ reproduce_all_computational_results() {
     fi
     
     if [[ -f "./reproduce/reproduce_computed.sh" ]]; then
-        log INFO "Executing: ./reproduce/reproduce_computed.sh"
-        
+        log INFO "Executing: ./reproduce/reproduce_computed.sh (COMP_SCOPE=$COMP_SCOPE)"
+
+        # Export COMP_SCOPE so the child script picks up min|full|max
+        # (without this, child defaults to "min" and Phase D never runs).
+        export COMP_SCOPE
         if ./reproduce/reproduce_computed.sh 2>&1 | tee -a "$LOG_FILE"; then
             local elapsed=$(($(date +%s) - start_time))
             log SUCCESS "All computational results completed successfully"
@@ -1551,7 +1554,7 @@ run_automatic_reproduction() {
     # Step 4: All computational results  
     echo ">>> Step $step/$total_steps: Reproducing all computational results..."
     echo "========================================"
-    echo "⚠️  WARNING: This final step may take 4-5 DAYS on a high-end 2025 laptop!"
+    echo "⚠️  WARNING: This final step may take ~26 minutes on an Apple M4 Pro MacBook Pro!"
     if reproduce_all_results; then
         echo "✅ Step $step/$total_steps completed successfully"
     else
@@ -2432,7 +2435,7 @@ case "$ACTION" in
         echo ""
         echo "  # Computational results:"
         echo "  ./reproduce.sh --comp min           # Quick test (~1 hour)"
-        echo "  ./reproduce.sh --comp full          # Full results (4-5 days)"
+        echo "  ./reproduce.sh --comp full          # Full results (~26 min)"
         echo ""
         echo "  # LaTeX documents:"
         echo "  ./reproduce.sh --docs main          # Compile paper only"
