@@ -333,7 +333,7 @@ if [[ "$FETCHED_PRECOMPUTED" == "true" && ${#FETCHED_FILES[@]} -gt 0 ]]; then
     echo "To run a complete, from-scratch reproduction:"
     echo "  ./reproduce.sh --comp full"
     echo ""
-    echo "The full reproduction takes ~30-35 minutes on a modern Apple-silicon laptop but provides complete verification"
+    echo "The full reproduction takes ~30-35 minutes on an Apple M4 Pro MacBook Pro but provides complete verification"
     echo "of all computational results from which these figures were generated."
     echo ""
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

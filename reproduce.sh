@@ -6,7 +6,7 @@
 #
 # Primary reproduction artefact: deFerra2020.pdf (compiled from deFerra2020.tex).
 #
-# Runtime estimates (modern Apple-silicon laptop):
+# Runtime estimates (Apple M4 Pro MacBook Pro):
 #   ./reproduce.sh --docs        ~30-60 seconds (PDF build)
 #   ./reproduce.sh --envt        ~1-2 minutes   (environment check)
 #
@@ -669,7 +669,7 @@ Tier:    2 (calibration + Figs 1-5 reproducible from scratch)
 Primary artefact: deFerra2020.pdf  (LaTeX from deFerra2020.tex)
 Computed artefacts: Figures/deFerra2020_fig{1-5}.png  (Python pipeline)
 
-Runtimes on a modern Apple-silicon laptop:
+Runtimes on an Apple M4 Pro MacBook Pro:
     --docs             <30 seconds (PDF from pre-existing figures)
     ./reproduce_min.sh <30 seconds (same, convenience alias)
     --comp min         ~3-5 minutes (Phases A-C: calibration + Figs 1-3)
@@ -740,12 +740,12 @@ show_interactive_menu() {
     echo ""
     echo "4) All Computational Results"
     echo "   - Reproduces all computational results from the paper"
-    echo "   - ⚠️  WARNING: This may take ~30-35 minutes on a modern Apple-silicon laptop"
+    echo "   - ⚠️  WARNING: This may take ~30-35 minutes on an Apple M4 Pro MacBook Pro"
     echo "   - Requires significant computational resources"
     echo ""
     echo "5) Everything"
     echo "   - All documents + all computational results"
-    echo "   - ⚠️  WARNING: This may take ~30-35 minutes on a modern Apple-silicon laptop"
+    echo "   - ⚠️  WARNING: This may take ~30-35 minutes on an Apple M4 Pro MacBook Pro"
     echo "   - Complete reproduction of the entire project"
     echo ""
     echo "6) Exit"
@@ -916,7 +916,7 @@ reproduce_all_results() {
     log INFO "Complete Reproduction: All Computational Results + Documents"
     log INFO "========================================"
     echo ""
-    log WARNING "This process may take ~30-35 minutes on a modern Apple-silicon laptop"
+    log WARNING "This process may take ~30-35 minutes on an Apple M4 Pro MacBook Pro"
     log INFO "This will reproduce (in order):"
     log INFO "  1. All computational results"
     log INFO "  2. All figures from results (IMPC + Lorenz Points)"
@@ -1042,7 +1042,7 @@ reproduce_all_computational_results() {
     log INFO "Reproducing All Computational Results..."
     log INFO "========================================"
     echo ""
-    log WARNING "This process may take ~30-35 minutes on a modern Apple-silicon laptop"
+    log WARNING "This process may take ~30-35 minutes on an Apple M4 Pro MacBook Pro"
     log INFO "Make sure you have:"
     log INFO "- Sufficient computational resources"
     log INFO "- Stable power supply"
@@ -1551,7 +1551,7 @@ run_automatic_reproduction() {
     # Step 4: All computational results  
     echo ">>> Step $step/$total_steps: Reproducing all computational results..."
     echo "========================================"
-    echo "⚠️  WARNING: This final step may take ~30-35 minutes on a modern Apple-silicon laptop!"
+    echo "⚠️  WARNING: This final step may take ~30-35 minutes on an Apple M4 Pro MacBook Pro!"
     if reproduce_all_results; then
         echo "✅ Step $step/$total_steps completed successfully"
     else

@@ -92,7 +92,7 @@ de-Ferra2020-kz/
 | C | 09–11 | Initial & final steady state, credit-expansion transition, Figs 2–3 | ~2 min |
 | D | 12–14 | Unexpected contraction (flex + fixed FX), Figs 4–5 | ~25 min |
 
-All phases together: ~30–35 min on a 2024 MacBook Pro M3 (16 GB RAM).
+All phases together: ~30–35 min on an Apple M4 Pro MacBook Pro (16 GB RAM).
 
 ### Data flow
 

@@ -15,7 +15,7 @@ REMARK author: Siying Li (Johns Hopkins University)
 ./reproduce.sh --comp full && ./reproduce.sh --docs
 ```
 
-Expected runtime: **~35 minutes** on a 2024 MacBook Pro M3 (16 GB RAM).
+Expected runtime: **~35 minutes** on an Apple M4 Pro MacBook Pro (16 GB RAM).
 
 ---
 

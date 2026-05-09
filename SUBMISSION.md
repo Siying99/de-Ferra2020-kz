@@ -49,7 +49,7 @@ git checkout v1.0.0   # or: git checkout main
 ./reproduce.sh --help        # All options + per-phase runtime estimates
 ```
 
-Runtimes measured on a modern Apple-silicon laptop, single-core. The Python pipeline prints per-notebook wall-clock times via `time.perf_counter()`, and `reproduce.sh --comp min` prints quantitative results (β\*, K/Y, NFA/Y, residuals) at the end.
+Runtimes measured on an Apple M4 Pro MacBook Pro, single-core. The Python pipeline prints per-notebook wall-clock times via `time.perf_counter()`, and `reproduce.sh --comp min` prints quantitative results (β\*, K/Y, NFA/Y, residuals) at the end.
 
 ---
 

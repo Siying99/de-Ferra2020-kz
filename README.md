@@ -72,7 +72,7 @@ cd de-Ferra2020-kz
 | `./reproduce.sh --comp min` | Phases A–C: Rouwenhorst, EGM, β-calibration, Figs 1–3 | ~5 min |
 | `./reproduce.sh --comp full` | Phases A–D: everything above + sudden-stop Figs 4–5 | ~30 min |
 
-Runtimes are measured on a modern Apple-silicon laptop, single-core. The Python pipeline prints per-notebook wall-clock times via `time.perf_counter()`, and `reproduce.sh` prints quantitative results (calibrated $\beta^\star$, $K/Y$, NFA/Y, residuals) directly to the terminal at the end of `--comp min`.
+Runtimes are measured on an Apple M4 Pro MacBook Pro, single-core. The Python pipeline prints per-notebook wall-clock times via `time.perf_counter()`, and `reproduce.sh` prints quantitative results (calibrated $\beta^\star$, $K/Y$, NFA/Y, residuals) directly to the terminal at the end of `--comp min`.
 
 ---
 
@@ -185,7 +185,7 @@ Highlights of the from-scratch Python ports:
 
 Per-notebook wall-clock timings are printed by each notebook (via
 `time.perf_counter()`), and a total-pipeline timer is built into
-`Code/Python/run_all.sh`. Single-core wall-clock budget on Apple-silicon laptops
+`Code/Python/run_all.sh`. Single-core wall-clock budget on an Apple M4 Pro MacBook Pro
 (May 2026):
 
 - `./run_all.sh --phase=ABC --fast`: **< 1 min**
