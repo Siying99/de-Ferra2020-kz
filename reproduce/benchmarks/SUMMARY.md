@@ -2,7 +2,7 @@
 
 ## What We've Implemented
 
-A comprehensive benchmarking system following industry standards (pytest-benchmark, GitHub Actions benchmark format) to track HAFiscal reproduction performance.
+A comprehensive benchmarking system following industry standards (pytest-benchmark, GitHub Actions benchmark format) to track de-Ferra2020-kz reproduction performance.
 
 ## Files Created
 

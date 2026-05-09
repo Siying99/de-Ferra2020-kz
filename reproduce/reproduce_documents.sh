@@ -1,5 +1,5 @@
 #!/bin/bash
-# HAFiscal LaTeX Document Reproduction Script
+# de-Ferra2020-kz LaTeX Document Reproduction Script
 # 
 # This script provides comprehensive document compilation following research reproduction best practices.
 # Consolidates functionality from multiple reproduction scripts into a single, maintainable solution.
@@ -17,11 +17,11 @@ DRY_RUN=false
 STOP_ON_ERROR="${STOP_ON_ERROR:-false}"
 SCOPE="main"
 DRAFT_MODE_ENABLED="false"
-REPO_TYPE="STANDARD"  # Will be set to "QE" if HAFiscal.tex exists
+REPO_TYPE="STANDARD"  # Will be set to "QE" if an alternate main .tex exists
 
 show_help() {
     cat << 'EOF'
-HAFiscal LaTeX Document Reproduction Script
+de-Ferra2020-kz LaTeX Document Reproduction Script
 
 USAGE:
     ./reproduce_documents.sh [OPTIONS] [TARGETS...]

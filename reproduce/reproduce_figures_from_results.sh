@@ -71,7 +71,7 @@ done
 # If files are missing, download them from GitHub via HTTP
 if [[ ${#MISSING_FILES[@]} -gt 0 ]]; then
     # Download from GitHub raw URL (avoids git fetch which bloats .git/objects/)
-    GITHUB_REPO="${GITHUB_REPO:-llorracc/HAFiscal-QE}"
+    GITHUB_REPO="${GITHUB_REPO:-Siying99/de-Ferra2020-kz}"
     PRECOMPUTED_BRANCH="${PRECOMPUTED_BRANCH:-with-precomputed-artifacts}"
     RAW_BASE_URL="https://raw.githubusercontent.com/${GITHUB_REPO}/${PRECOMPUTED_BRANCH}"
     
