@@ -68,6 +68,17 @@ log_success() { echo "✅ $*"; }
 log_error() { echo "❌ ERROR: $*" >&2; }
 log_warning() { echo "⚠️  WARNING: $*"; }
 
+# Main paper at repo root: de-Ferra2020-kz REMARK vs HAFiscal template
+main_paper_tex() {
+    if [[ -f "deFerra2020.tex" ]]; then
+        echo "deFerra2020.tex"
+    elif [[ -f "HAFiscal.tex" ]]; then
+        echo "HAFiscal.tex"
+    else
+        echo ""
+    fi
+}
+
 # Track if we fetched bibliography from with-precomputed-artifacts (for cleanup later)
 FETCHED_BIBLIOGRAPHY=false
 
@@ -140,15 +151,25 @@ cleanup_auxiliary_files() {
 # Function to resolve document target to file path
 resolve_document() {
     case "$1" in
-        "main") echo "HAFiscal.tex" ;;
+        "main")
+            local mp
+            mp=$(main_paper_tex)
+            if [[ -n "$mp" ]]; then
+                echo "$mp"
+            else
+                echo "HAFiscal.tex"
+            fi
+            ;;
         "slides") echo "HAFiscal-Slides.tex" ;;
         *) echo "$1" ;;  # Return as-is for direct file paths
     esac
 }
 
 list_documents() {
+    local mp
+    mp=$(main_paper_tex)
     echo "Available document targets:"
-    echo "  main -> HAFiscal.tex"
+    echo "  main -> ${mp:-<deFerra2020.tex or HAFiscal.tex>}"
     echo "  slides -> HAFiscal-Slides.tex"
 }
 
@@ -382,8 +403,10 @@ validate_environment() {
             log_error "Tried PATH: $PATH"
             return 1
         fi
-        if [[ ! -f "HAFiscal.tex" ]]; then
-            log_error "HAFiscal.tex not found - run from project root directory"
+        local mp
+        mp=$(main_paper_tex)
+        if [[ -z "$mp" ]]; then
+            log_error "No main paper .tex found (expected deFerra2020.tex or HAFiscal.tex) - run from project root"
             return 1
         fi
         log_success "Environment validation completed (minimal checks)"
@@ -430,8 +453,10 @@ validate_environment() {
         return 1
     fi
     
-    if [[ ! -f "HAFiscal.tex" ]]; then
-        log_error "HAFiscal.tex not found - run from project root directory"
+    local mp
+    mp=$(main_paper_tex)
+    if [[ -z "$mp" ]]; then
+        log_error "No main paper .tex found (expected deFerra2020.tex or HAFiscal.tex) - run from project root directory"
         return 1
     fi
     
@@ -852,7 +877,7 @@ main() {
         fi
     fi
     
-    log_info "Starting HAFiscal document reproduction (mode: $REPRODUCTION_MODE)"
+    log_info "Starting document reproduction (mode: $REPRODUCTION_MODE, main: $(main_paper_tex))"
     
     # Handle single document compilation
     if [[ -n "$single_document" ]]; then

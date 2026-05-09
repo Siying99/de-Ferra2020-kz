@@ -1,29 +1,57 @@
 #!/bin/bash
+# reproduce_computed.sh  --  Phase A+B+C+D  (full Python pipeline)
+#
+# This script runs all 14 de Ferra 2020 Python notebooks via run_all.sh.
+# Phase D (notebooks 12-14, unexpected contraction) adds ~25 minutes.
+# Omit --full to run Phases A-C only (~3-5 min).
+#
+# Called by:  ./reproduce.sh --comp [min|full]
+#   min  → Phases A-C only  (run_all.sh --phase=ABC)
+#   full → Phases A-C+D      (run_all.sh --phase=all)
+#
+# Requires: Python 3.12 with the deferra2020-kz kernel registered.
+# See Code/Python/README.md for setup.
 
 set -euo pipefail
 
-# Resolve paths robustly (works even if invoked from outside repo root)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+PYTHON_DIR="$PROJECT_ROOT/Code/Python"
 
-# Make sure the necessary requirements are available
-source "$SCRIPT_DIR/reproduce_environment.sh"
+# Detect the scope requested by reproduce.sh (env var COMP_SCOPE, default min)
+COMP_SCOPE="${COMP_SCOPE:-min}"
 
-# Change directory to the location of the Python script
-cd "$PROJECT_ROOT/Code/HA-Models"
+echo "================================================================="
+echo " de-Ferra2020-kz Python pipeline"
+echo " COMP_SCOPE = $COMP_SCOPE"
+echo "================================================================="
 
-# Create empty version file for full reproduction
-rm -f version
-touch version
+if [[ ! -f "$PYTHON_DIR/run_all.sh" ]]; then
+  echo "ERROR: $PYTHON_DIR/run_all.sh not found."
+  exit 1
+fi
+chmod +x "$PYTHON_DIR/run_all.sh"
 
-# Pass HAFISCAL_RUN_STEP_3 environment variable if set
-# (defaults to false in do_all.py if not set)
-export HAFISCAL_RUN_STEP_3="${HAFISCAL_RUN_STEP_3:-false}"
+cd "$PYTHON_DIR"
 
-# Run the Python script
-# NOTE: With 'set -e', any failure here aborts the script, preventing
-# the PREGENERATED flag from being removed on a failed computation.
-python do_all.py
+case "$COMP_SCOPE" in
+  min)
+    echo "Running Phases A+B+C (notebooks 01-11, ~3-5 min) ..."
+    KERNEL="deferra2020-kz" JUPYTER="jupyter" ./run_all.sh --phase=ABC
+    ;;
+  full|max)
+    echo "Running Phases A+B+C+D (notebooks 01-14, ~30-35 min) ..."
+    KERNEL="deferra2020-kz" JUPYTER="jupyter" ./run_all.sh --phase=all
+    ;;
+  *)
+    echo "ERROR: unknown COMP_SCOPE '$COMP_SCOPE'. Expected: min|full|max."
+    exit 1
+    ;;
+esac
+
+echo ""
+echo "Python pipeline complete. Outputs in $PYTHON_DIR/output/"
+echo "Figures synced to $PROJECT_ROOT/Figures/"
 
 # =============================================================================
 # REMOVE PREGENERATED FLAG AFTER SUCCESSFUL COMPUTATION
@@ -42,7 +70,7 @@ if [[ -f "$FLAG_FILE" ]]; then
     echo "Removing PREGENERATED flag file..."
     rm -f "$FLAG_FILE"
     echo "✓ Flag removed - table/figure captions will no longer show PREGENERATED markers"
-    echo "  (Recompile HAFiscal.tex to see updated captions)"
+    echo "  (Recompile deFerra2020.tex to see updated captions)"
     echo ""
 else
     echo ""

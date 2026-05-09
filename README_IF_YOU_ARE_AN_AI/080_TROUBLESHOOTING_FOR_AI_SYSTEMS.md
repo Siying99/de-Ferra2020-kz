@@ -1,285 +1,123 @@
-# Troubleshooting Guide for AI Systems
+# Troubleshooting Guide — de-Ferra2020-kz
 
-## Quick Diagnostic Commands
+## Common Issues
 
-Run these first to identify common issues:
+---
 
+### 1. Kernel not found when running notebooks
+
+**Symptom**: `jupyter nbconvert` fails with "No such kernel 'deferra2020-kz'"
+
+**Fix**:
 ```bash
-# Environment Check
-python -c "import numpy, pandas, matplotlib; print('✅ Basic packages OK')" || echo "❌ Package import error"
-
-# Repository Structure Check  
-ls -la reproduce.sh README.md Code/ || echo "❌ Repository structure issue"
-
-# Permissions Check
-touch test_write.txt && rm test_write.txt && echo "✅ Write permissions OK" || echo "❌ Permission error"
-
-# Git Status (if applicable)
-git status 2>/dev/null | head -3 || echo "Not a git repository or git not available"
+python -m ipykernel install --user \
+    --name deferra2020-kz \
+    --display-name "Python (deferra2020-kz)"
 ```
+Then verify with `jupyter kernelspec list`.
 
-## Common Error Categories & Solutions
+---
 
-### 1. Environment Setup Issues
+### 2. Notebook 13 (fixed-FX contraction) fails with RuntimeError
 
-#### Error: `ModuleNotFoundError: No module named 'econ_ark'`
-**Cause**: Python environment not properly configured
-**Solutions**:
+**Symptom**: `RuntimeError: dec_temp_fine < bmin at t=0` during `backsolve_egm`
 
-```bash
-# Option 1: Use conda environment
-uv sync --all-groups  # Recommended
-# or: conda env create -f environment.yml  # Traditional
-conda activate hafiscal-env
+**Cause**: The outer `scipy.optimize.root(method='lm')` passes a trial
+`(q, tot, NX_share)` vector that leads to negative net wealth, causing
+asset decisions to fall below the borrowing limit.
 
-# Option 2: Use pip installation  
-pip install -r binder/requirements.txt
+**Fix** (already applied in the notebook): `backsolve_egm` uses
+`np.maximum(dec_temp_fine, bmin)` instead of raising a `RuntimeError`.
+This gives a smooth residual surface for the solver.
 
-# Option 3: Install core dependencies manually
-pip install econ_ark numpy pandas matplotlib scipy jupyter
-```
+If the error recurs, check that you are not accidentally using an old
+version of the `backsolve_egm` function from another notebook.
 
-#### Error: `ModuleNotFoundError` or data processing failures
-**Cause**: Python environment not properly configured or missing data files
-**Impact**: Empirical data processing components will fail
-**Solutions**:
+---
 
-- Ensure Python environment is set up: `uv sync` or `conda env create -f environment.yml`
-- Verify data files exist: `ls Code/Empirical/*.dta Code/Empirical/*.csv`
-- Run data processing script: `python Code/Empirical/make_liquid_wealth.py`
-- Use pre-computed results in repository if available
+### 3. Notebook 13 does not converge (large residual remains)
 
-### 2. Computational Execution Issues
+**Symptom**: `scipy.optimize.root` status message shows `xtol` not satisfied
+or residual > 1e-4 after many iterations.
 
-#### Error: Memory errors during Step 2 or Step 5
-**Cause**: Insufficient RAM for large model estimation
-**Solutions**:
+**Possible causes**:
+- Wrong initial guess: re-run notebook 12 first to regenerate `contraction_flex.npz`
+- The solver got stuck in a local minimum; try a different `method` (e.g. `hybr`)
+- Memory pressure caused NaN in intermediate arrays
 
-```bash
-# Reduce computational intensity
-# Edit Code/HA-Models/do_all.py:
-run_step_2 = False  # Skip memory-intensive step
-run_step_5 = False  # Skip longest computation
-
-# Alternative: Run steps individually with breaks
-```
-
-#### Error: `KeyboardInterrupt` or timeout
-**Cause**: Computation taking longer than expected
-**Solutions**:
-
-- Be patient (Step 2: ~21 hours, Step 5: ~65 hours)
-- Use partial execution strategy
-- Monitor system resources (CPU, memory usage)
-
-### 3. File Access & Permission Issues
-
-#### Error: `Permission denied` when writing files
-**Cause**: Insufficient write permissions
-**Solutions**:
-
-```bash
-# Check directory permissions
-ls -la Code/HA-Models/
-chmod -R u+w Code/HA-Models/  # Fix write permissions
-
-# Alternative: Run in user directory
-cp -r Code/HA-Models ~/hafiscal_models
-cd ~/hafiscal_models && python do_all.py
-```
-
-#### Error: Missing input files or data
-**Cause**: Repository incomplete or corrupted
-**Solutions**:
-
-```bash
-# Verify repository integrity
-find . -name "*.py" | wc -l    # Should find multiple Python files
-find . -name "*.dta" | wc -l   # Should find Stata data files
-
-# Re-clone repository if necessary
-git status  # Check for missing files
-```
-
-### 4. Reproduction Script Issues
-
-#### Error: `./reproduce.sh: command not found`
-**Cause**: Script not executable or not in PATH
-**Solutions**:
-
-```bash
-# Make script executable
-chmod +x reproduce.sh
-
-# Run with explicit bash
-bash reproduce.sh --docs
-```
-
-#### Error: Reproduction fails with "missing computational results"
-**Cause**: Computational steps not yet completed
-**Solutions**:
-
-```bash
-# Run computational steps first
-cd Code/HA-Models && python do_all.py
-
-# Or use minimal computational reproduction
-./reproduce.sh --comp min
-```
-
-## AI-Specific Debugging Strategies
-
-### Strategy 1: Incremental Validation
-
-```bash
-# Test environment first
-python -c "import sys; print(sys.version)"
-
-# Test basic imports
-python -c "from HARK import ConsIndShockModel; print('HARK OK')"
-
-# Test individual steps
-cd Code/HA-Models
-python Target_AggMPCX_LiquWealth/Estimation_BetaNablaSplurge.py
-```
-
-### Strategy 2: Dry-run Mode
-
-```bash
-# See commands without executing (if supported)
-./reproduce.sh --dry-run --docs
-```
-
-### Strategy 3: Log Analysis
-
-```bash
-# Create detailed logs
-python do_all.py > computation.log 2>&1
-
-# Monitor progress
-tail -f computation.log
-
-# Search for errors
-grep -i error computation.log
-```
-
-## Known Issues & Workarounds
-
-### Issue 1: Long computation times
-**Expected**: Steps 2 and 5 take many hours
-**Workaround**: Use testing strategy with selective step execution
-
+**Diagnostic**:
 ```python
-# In do_all.py - Quick testing configuration:
-run_step_1 = True   # Fast validation
-run_step_2 = False  # Skip longest step
-run_step_3 = False  # Skip robustness
-run_step_4 = True   # Medium-length validation
-run_step_5 = False  # Skip policy comparison
-```
-
-### Issue 2: Platform compatibility
-**Expected**: Developed and tested on Windows
-**Workaround**: Mac/Linux users may need dependency adjustments
-
-```bash
-# Linux-specific package installs
-apt-get install python3-dev libatlas-base-dev
-
-# Mac-specific (with Homebrew)
-brew install python3 numpy scipy
-```
-
-### Issue 3: Data processing errors
-**Expected**: Empirical data processing uses Python (pandas reads .dta files)
-**Workaround**: Ensure Python environment is properly configured
-
-- Verify Python environment: `python --version` (should be 3.9+)
-- Check pandas installation: `python -c "import pandas; print(pandas.__version__)"`
-- Run data processing: `python Code/Empirical/make_liquid_wealth.py`
-- Data files (.dta format) are read by pandas, no Stata software needed
-
-## Validation Checksums & Expected Outputs
-
-### File Size Validation
-
-```bash
-# Key output file sizes (approximate):
-ls -lh Code/HA-Models/Target_AggMPCX_LiquWealth/Figures/*.pdf
-ls -lh Code/HA-Models/FromPandemicCode/Figures/*.pdf  
-ls -lh Code/HA-Models/FromPandemicCode/Tables/*.tex
-```
-
-### Success Indicators
-
-- **Step 1 Complete**: Files in `Target_AggMPCX_LiquWealth/Figures/`
-- **Step 4 Complete**: Files in `FromPandemicCode/Figures/` (HANK results)
-- **Full Success**: Complete figure and table sets
-
-## Emergency Recovery Procedures
-
-### If computation hangs:
-
-1. Check system resources (`top`, `htop`)
-2. Look for infinite loops in log files
-3. Restart with reduced scope (fewer steps)
-
-### If files corrupted:
-
-1. Backup any successful intermediate results
-2. Clean workspace: `git clean -fd`
-3. Restart from clean state
-
-### If environment broken:
-
-1. Create fresh conda environment
-2. Reinstall dependencies from scratch
-3. Test with minimal example first
-
-## AI Performance Optimization
-
-### Memory Management
-
-```bash
-# Monitor memory usage
-watch -n 1 'free -h'
-
-# For large datasets, consider:
-export OMP_NUM_THREADS=1  # Reduce parallelization
-ulimit -m 30000000        # Set memory limits
-```
-
-### CPU Optimization  
-
-```bash
-# Use all available cores for Python
-export MKL_NUM_THREADS=$(nproc)
-export NUMEXPR_NUM_THREADS=$(nproc)
-```
-
-## AI Support Resources
-
-### Self-Diagnosis Tools
-
-```bash
-# Environment report
-python -c "import platform, sys; print(f'OS: {platform.system()}'); print(f'Python: {sys.version}')"
-
-# Dependency report
-pip list | grep -E "(numpy|pandas|scipy|matplotlib|econ-ark)"
-```
-
-### Debug Information Collection
-
-```bash
-# Collect system info for debugging
-uname -a > debug_info.txt
-python --version >> debug_info.txt  
-pip list >> debug_info.txt
-echo "=== Error Log ===" >> debug_info.txt
-tail -50 computation.log >> debug_info.txt
+import numpy as np
+data = np.load("output/contraction_fixed.npz", allow_pickle=True)
+print(data['residual'])  # should be < 1e-5 at solution
 ```
 
 ---
 
-**AI Debugging Philosophy**: Start small, validate incrementally, and use selective execution to isolate issues. The computational workflow is robust but resource-intensive, so plan accordingly.
+### 4. Figures are blank or missing
+
+**Symptom**: PNG files in `Figures/` exist but are empty or not updated.
+
+**Fix**: Run the relevant notebook again, or check that the notebook
+saves to *both* `Code/Python/output/` and `Figures/`:
+```python
+FIGS_DIR = Path("../../../Figures")   # repo root Figures/
+fig.savefig(FIGS_DIR / "deFerra2020_fig4.png", dpi=150, bbox_inches="tight")
+```
+
+---
+
+### 5. `latexmk` fails with "file not found"
+
+**Symptom**: LaTeX build fails because a figure PNG is missing.
+
+**Fix**: Run the Python pipeline first:
+```bash
+./reproduce.sh --comp full    # or --comp min for Figs 1-3 only
+./reproduce.sh --docs
+```
+
+---
+
+### 6. `run_all.sh --fast` not skipping fsolve in notebook 10
+
+**Symptom**: notebook 10 still runs the full `fsolve` refinement (~170s)
+even with `--fast`.
+
+**Cause**: The `sed` pattern in `run_all.sh` that modifies `REFINE = True`
+must match the exact JSON string `"REFINE = True\n",`.
+
+**Fix**: Check the `sed` line in `run_all.sh`:
+```bash
+sed -i.bak 's/"REFINE = True\\n",/"REFINE = False\\n",/g' notebooks/10_solve_transition.ipynb
+```
+
+---
+
+### 7. `reproduce.sh --comp min` fails with "kernel not found"
+
+**Fix**: Ensure the `deferra2020-kz` kernel is registered (see issue 1 above).
+The `KERNEL` environment variable passed by `reproduce_computed_min.sh` must
+match an installed kernel name exactly.
+
+---
+
+## Verification Checklist
+
+After a successful full run, verify:
+
+```bash
+# 1. Calibration converged
+cat Code/Python/output/calibration_summary.json
+
+# 2. Figures exist
+ls Figures/deFerra2020_fig{1,2,3,4,5}.png
+
+# 3. PDF compiled
+ls -lh deFerra2020.pdf    # should be > 500 KB
+
+# 4. Numerical comparison
+cat Code/Python/output/verification_table.md
+```
+
+The calibration summary should show β ≈ 0.944 and asset-to-income ratio ≈ 3.11.

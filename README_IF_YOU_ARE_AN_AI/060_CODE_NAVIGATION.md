@@ -1,242 +1,111 @@
-# Code Navigation Guide for AI Systems
+# Code Navigation — de-Ferra2020-kz
 
-## Directory Structure Overview
+## Primary Pipeline: Code/Python/notebooks/
 
-```text
-Code/
-├── HA-Models/                      # Python heterogeneous agent models
-│   ├── do_all.py                   # 🎯 MAIN ENTRY POINT
-│   ├── reproduce_min.py            # Quick validation (~1 hour)
-│   ├── README.md                   # Detailed documentation
-│   │
-│   ├── Target_AggMPCX_LiquWealth/  # Step 1: Splurge estimation
-│   │   └── Estimation_BetaNablaSplurge.py
-│   │
-│   ├── FromPandemicCode/           # Steps 2-5: Main analysis
-│   │   ├── EstimAggFiscalMAIN.py   # Step 2: Discount factors
-│   │   ├── AggFiscalMAIN.py        # Step 5: Policy comparison
-│   │   ├── HA-Fiscal-HANK-SAM.py   # Step 4: HANK Jacobians
-│   │   └── ...
-│   │
-│   └── Results/                    # Output text files
-│
-└── Empirical/                      # Python empirical analysis
-    ├── make_liquid_wealth.py       # SCF data processing
-    ├── rscfp2004.dta               # SCF 2004 data
-    └── download_scf_data.sh        # Data download script
-```
+All results are produced by running notebooks in order. Each notebook saves `.npz`
+files to `Code/Python/output/` that later notebooks read.
 
----
+### Notebook Map
 
-## Key Entry Points
+| Notebook | Phase | Input(s) | Output(s) | Runtime |
+|----------|-------|----------|-----------|---------|
+| `01_rouwenhorst.ipynb` | A | — | `markov.npz` | <5s |
+| `02_params_and_grids.ipynb` | A | — | `params.npz` | <5s |
+| `03_shock_path.ipynb` | A | `markov.npz`, `params.npz` | `shock_path.npz` | <5s |
+| `04_figure1.ipynb` | A | `shock_path.npz` | `deFerra2020_fig1*.png` | <5s |
+| `05_egm.ipynb` | B | `params.npz`, `markov.npz` | `egm_ss.npz` | ~10s |
+| `06_distribution.ipynb` | B | `egm_ss.npz` | `distribution_ss.npz` | ~5s |
+| `07_calibrate_beta.ipynb` | B | `params.npz`, `markov.npz` | `calibration.npz`, `calibration_summary.json` | ~20s |
+| `08_verify_table1.ipynb` | B | `calibration.npz` | `verification_table.md` | <5s |
+| `09_initial_ss.ipynb` | C | `calibration.npz` | `initial_ss.npz` | ~10s |
+| `10_solve_transition.ipynb` | C | `initial_ss.npz`, `shock_path.npz` | `transition_flex.npz` | ~2min |
+| `11_figures_2_3.ipynb` | C | `transition_flex.npz` | `deFerra2020_fig{2,3}.png` | <5s |
+| `12_contraction_flex.ipynb` | D | `transition_flex.npz` | `contraction_flex.npz` | ~5min |
+| `13_contraction_fixed.ipynb` | D | `contraction_flex.npz` | `contraction_fixed.npz` | ~20min |
+| `14_figures_4_5.ipynb` | D | `contraction_flex.npz`, `contraction_fixed.npz` | `deFerra2020_fig{4,5}.png` | <5s |
 
-### Primary Entry Point
-
-| File | Purpose | Usage |
-|------|---------|-------|
-| `Code/HA-Models/do_all.py` | Master pipeline controller | `python do_all.py` |
-
-This script controls all 5 computational steps via boolean flags at the top of the file.
-
-### Quick Validation
-
-| File | Purpose | Runtime |
-|------|---------|---------|
-| `Code/HA-Models/reproduce_min.py` | Minimal validation run | See [timing estimates](../reproduce/benchmarks/README.md) |
-
-Use this to verify the environment works before full replication.
-
----
-
-## Step-by-Step File Map
-
-### Step 1: Splurge Factor Estimation
-
-| File | Purpose |
-|------|---------|
-| `Target_AggMPCX_LiquWealth/Estimation_BetaNablaSplurge.py` | Main estimation script |
-| `Target_AggMPCX_LiquWealth/SetupParamsCSTW.py` | Parameter configuration |
-
-**Outputs**: Figure 1, splurge factor estimate (ς = 0.249)
-
-### Step 2: Discount Factor Estimation
-
-| File | Purpose |
-|------|---------|
-| `FromPandemicCode/EstimAggFiscalMAIN.py` | Main estimation driver |
-| `FromPandemicCode/EstimAggFiscalModel.py` | `AggFiscalType` model class |
-| `FromPandemicCode/EstimParameters.py` | Estimation parameters |
-| `FromPandemicCode/EstimSetupEconomy.py` | Economy setup |
-| `FromPandemicCode/CreateLPfig.py` | Generate Figure 2 |
-| `FromPandemicCode/CreateIMPCfig.py` | Generate Figure 3 |
-
-**Outputs**: Figures 2-3, discount factor distributions by education
-
-### Step 4: HANK Model
-
-| File | Purpose |
-|------|---------|
-| `FromPandemicCode/HA-Fiscal-HANK-SAM.py` | Compute household Jacobians |
-| `FromPandemicCode/HA-Fiscal-HANK-SAM-to-python.py` | Run HANK experiments |
-
-**Outputs**: Figure 5, Jacobian matrices for dashboard
-
-### Step 5: Policy Comparison
-
-| File | Purpose |
-|------|---------|
-| `FromPandemicCode/AggFiscalMAIN.py` | Main policy comparison |
-| `FromPandemicCode/AggFiscalModel.py` | Policy simulation model |
-| `FromPandemicCode/Welfare.py` | Welfare calculations |
-| `FromPandemicCode/Output_Results.py` | Results formatting |
-
-**Outputs**: Figure 4, Figure 6, Tables 6-8
-
----
-
-## Core Model Classes
-
-### `AggFiscalType` (EstimAggFiscalModel.py)
-
-The main heterogeneous agent model class, extending HARK's `MarkovConsumerType`:
-
-```python
-class AggFiscalType(MarkovConsumerType):
-    # Key methods:
-    # - solve()           : Solve consumer's problem via EGM
-    # - simulate()        : Monte Carlo simulation
-    # - hitWithRecessionShock() : Apply recession/policy shocks
-    # - saveState() / restoreState() : State management for counterfactuals
-```
-
-### Key Parameters (EstimParameters.py)
-
-```python
-# Calibrated values
-CRRA = 2.0              # Risk aversion
-Splurge = 0.249         # Splurge factor
-Rfree = 1.01            # Quarterly interest rate
-LivPrb = 1 - 1/160      # Survival probability
-```
-
----
-
-## Support Files
-
-### Utilities
-
-| File | Purpose |
-|------|---------|
-| `FromPandemicCode/FiscalTools.py` | Helper functions |
-| `FromPandemicCode/OtherFunctions.py` | Additional utilities |
-| `FromPandemicCode/Simulate.py` | Simulation routines |
-| `FromPandemicCode/ConsMarkovModel.py` | Markov consumption model |
-
-### Configuration
-
-| File | Purpose |
-|------|---------|
-| `matplotlib_config.py` | Plot styling configuration |
-| `logging_config.py` | Logging setup |
-
-### Cleanup
-
-| File | Purpose |
-|------|---------|
-| `FromPandemicCode/Clean_Folders.py` | Remove generated files |
-
----
-
-## Output Locations
-
-### Figures
-
-| Location | Contents |
-|----------|----------|
-| `Target_AggMPCX_LiquWealth/Figures/` | Figure 1 (splurge estimation) |
-| `FromPandemicCode/Figures/` | Figures 2-6 |
-
-### Tables
-
-| Location | Contents |
-|----------|----------|
-| `FromPandemicCode/Tables/CRRA2/` | Main results (baseline CRRA=2) |
-| `FromPandemicCode/Tables/Splurge0/` | Robustness (no splurge) |
-| `FromPandemicCode/Tables/*/` | Other robustness variants |
-
-### Numerical Results
-
-| Location | Contents |
-|----------|----------|
-| `Results/AllResults_CRRA_2.0_R_1.01.txt` | Baseline numerical results |
-| `Results_HANK/` | HANK model outputs |
-
----
-
-## Empirical Data Processing
-
-### Stata Processing
+### Running Notebooks
 
 ```bash
-# Run in Python:
-python3 Code/Empirical/make_liquid_wealth.py
+cd Code/Python
+./run_all.sh --phase=ABC        # Phases A-C only (~5 min)
+./run_all.sh --phase=D          # Phase D only (requires Phase C outputs)
+./run_all.sh --phase=all        # All phases (~35 min)
 ```
 
-Produces calibration targets from SCF 2004 data.
-
-### Python Data Scripts
-
-| File | Purpose |
-|------|---------|
-| `make_liquid_wealth.py` | Primary SCF data processing script |
-| `adjust_scf_inflation.py` | Inflation adjustments |
-| `compare_scf_datasets.py` | Data validation |
-| `download_scf_data.sh` | Download SCF data files |
-
----
-
-## Dependencies
-
-### HARK Library
-
-The code extensively uses the [HARK library](https://github.com/econ-ark/HARK):
-
-```python
-from HARK.ConsumptionSaving.ConsMarkovModel import MarkovConsumerType
-from HARK.ConsumptionSaving.ConsIndShockModel import ConsumerSolution
-from HARK.distribution import DiscreteDistribution, Uniform
-from HARK.interpolation import LinearInterp, BilinearInterp
+Or run from repo root:
+```bash
+./reproduce.sh --comp min       # Phase A-C
+./reproduce.sh --comp full      # Phase A-D
 ```
 
-### Other Key Dependencies
+---
 
-- `numpy` - Numerical computing
-- `scipy` - Optimization (minimize)
-- `matplotlib` - Plotting
-- `pandas` - Data handling
+## Reference Code: Code/MATLAB/
+
+The original MATLAB replication package from the paper. Key files:
+
+| MATLAB file | Python equivalent |
+|-------------|-------------------|
+| `Main.m` | `run_all.sh` (orchestrator) |
+| `Steady_State_Ayagari/solve_EGM_EL_open_tg.m` | `05_egm.ipynb` |
+| `Steady_State_Ayagari/calibrate_beta_open_tg.m` | `07_calibrate_beta.ipynb` |
+| `Steady_State_Ayagari/ComputeDistHist_open.m` | `06_distribution.ipynb` |
+| `Transition/backsolve_egm.m` | `backsolve_egm()` in notebooks 10, 12, 13 |
+| `Transition/solve_transition_bis.m` | `10_solve_transition.ipynb` + `12_contraction_flex.ipynb` |
+| `Transition/solve_transition_fixed.m` | `13_contraction_fixed.ipynb` |
+| `MIT_transition.m` | `12_contraction_flex.ipynb` + `13_contraction_fixed.ipynb` |
+| `Figures.m` | `11_figures_2_3.ipynb` + `14_figures_4_5.ipynb` |
 
 ---
 
-## Quick Reference: "I want to..."
+## Key Algorithmic Components
 
-| Goal | Start Here |
-|------|------------|
-| Run everything | `python do_all.py` |
-| Quick test | `python reproduce_min.py` |
-| Just splurge estimation | `cd Target_AggMPCX_LiquWealth && python Estimation_BetaNablaSplurge.py` |
-| Just policy comparison | `cd FromPandemicCode && python AggFiscalMAIN.py` |
-| Understand the model class | Read `FromPandemicCode/EstimAggFiscalModel.py` |
-| See parameter values | Read `FromPandemicCode/EstimParameters.py` |
-| Process SCF data | Run `python3 Code/Empirical/make_liquid_wealth.py` |
+### Rouwenhorst Discretisation (nb 01)
+Approximates the AR(1) income process with a finite Markov chain.
+`rouwenhorst(N, rho, sigma)` → transition matrix + grid.
+
+### Endogenous Grid Method (EGM) (nb 05, 10, 12, 13)
+Function `backsolve_egm(a_grid, z_grid, Pi, beta, sigma, r, w)`:
+- Iterates on consumption policy function using first-order conditions
+- Uses PCHIP interpolation (`scipy.interpolate.PchipInterpolator`)
+- Returns savings policy function and consumption function
+
+### Stationary Distribution (nb 06)
+Sparse matrix eigenvalue method:
+`scipy.sparse.linalg.eigs(T.T, k=1, which='LM', sigma=1.0)`
+
+### β-Calibration (nb 07)
+`scipy.optimize.brentq` minimising distance between model asset-to-income ratio
+and empirical target (3.11).
+
+### Transition Solver — flexible FX (nb 10, 12)
+399-unknown system (TT × 3 − 3), solved with `scipy.optimize.fsolve`.
+
+### Transition Solver — fixed FX (nb 13)
+599-unknown system (3 × TT − 1), solved with `scipy.optimize.root(method='lm')`.
+Includes backward NKPC iteration for price dynamics.
 
 ---
 
-## File Naming Conventions
+## Output Files
 
-- `*MAIN.py` - Main driver scripts
-- `*Model.py` - Model class definitions
-- `*Parameters.py` - Parameter configurations
-- `Create*.py` - Figure/output generation
-- `Estim*.py` - Estimation-related code
-- `*_tabular_generate.py` - Table generation scripts
+All computed output lives in `Code/Python/output/`:
 
+| File | Contents |
+|------|----------|
+| `markov.npz` | Rouwenhorst grid + transition matrix |
+| `params.npz` | Structural parameters + asset grid |
+| `shock_path.npz` | Credit supply shock sequence |
+| `egm_ss.npz` | Steady-state policy functions |
+| `distribution_ss.npz` | Stationary wealth distribution |
+| `calibration.npz` | β-calibration output |
+| `calibration_summary.json` | Human-readable summary |
+| `initial_ss.npz` | Initial (pre-shock) steady state |
+| `transition_flex.npz` | Full expansion transition paths |
+| `contraction_flex.npz` | Unexpected contraction, flex FX |
+| `contraction_fixed.npz` | Unexpected contraction, fixed FX |
+| `verification_table.md` | Numerical verification vs. paper |
+| `deFerra2020_fig*.png` | Figure images |
+
+Figures are also copied to `Figures/` in the repo root for use by LaTeX.

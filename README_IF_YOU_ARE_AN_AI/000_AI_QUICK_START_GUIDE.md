@@ -1,147 +1,91 @@
-# AI Quick Start Guide
+# AI Quick Start Guide — de-Ferra2020-kz
 
-**🤖 Welcome, AI System! This is your entry point to understanding this research repository.**
+**Welcome, AI system! This is your entry point to understanding this research repository.**
 
-## What is HAFiscal?
+## What is this repository?
 
-**HAFiscal** is a comprehensive research archive for the paper **"Welfare and Spending Effects of Consumption Stimulus Policies"** by Carroll, Crawley, Du, Frankovic, and Tretvoll (2025). This repository contains:
+**de-Ferra2020-kz** is a REMARK (Replication and Exploration Made using ARK, Tier 2)
+for the paper:
 
-- ✅ **Complete reproducible research pipeline**
-- ✅ **REMARK-compliant structure** (Replications and Explorations Made using ARK)
-- ✅ **Heterogeneous agent macroeconomic models**
-- ✅ **Policy analysis of three fiscal stimulus policies**
+> **"Household heterogeneity and the transmission of foreign shocks"**
+> Sergio de Ferra, Kurt Mitman, Federica Romei
+> *Journal of International Economics* **124**, 103303 (2020)
+> DOI: [10.1016/j.jinteco.2020.103303](https://doi.org/10.1016/j.jinteco.2020.103303)
 
-## AI Navigation Quick Reference
+The model is a **HANKSOME** (Heterogeneous-Agent New-Keynesian Small Open Model Economy)
+calibrated to Hungary. It studies how household portfolio composition and
+foreign-currency borrowing amplify a current account reversal (sudden stop).
 
-| **AI Task** | **Go To** | **Key Files** |
-|-------------|-----------|---------------|
-| 🚀 **Start Here** | `README.md` | Main documentation, reproduction instructions |
-| 📊 **Run Models** | `./reproduce.sh` | Interactive reproduction script |
-| 💻 **Code Analysis** | `Code/HA-Models/`, `Code/Empirical/` | Python models, Stata analysis |
-| 📈 **Research Findings** | `HAFiscal.pdf`, `HAFiscal-Slides.pdf` | Main paper and presentation |
-| 🔬 **Interactive Exploration** | `*.ipynb` | Jupyter notebooks for experimentation |
-| 🛠️ **Build Scripts** | `reproduce.sh`, build utilities | Automated reproduction and document generation |
-
-## Repository Structure
-
-This repository contains a complete research replication package with organized directories for code, data, documentation, and outputs.
-
-## Research Overview (AI Summary)
-
-**Research Question**: Which fiscal stimulus policy is most effective during recessions?
-
-**Three Policies Analyzed**:
-
-1. **Unemployment Insurance (UI) Extensions**
-2. **Stimulus Checks (Direct Payments)**
-3. **Temporary Tax Cuts (Payroll Tax Reduction)**
-
-**Key Finding**: UI extensions are the clear "bang for the buck" winner, especially in utility terms.
-
-**Methodology**: Heterogeneous agent model calibrated to match empirical spending dynamics over 4 years post-income shock.
-
-## AI Interaction Workflows
-
-### 🎯 **Quick Validation** (AI Testing Repository)
-
-```bash
-# Test basic environment
-python -c "import numpy, pandas, matplotlib; print('Environment OK')"
-
-# Quick document reproduction
-./reproduce.sh --docs
-
-# Minimal computational validation
-./reproduce.sh --comp min
-```
-
-### 🔍 **Research Exploration** (AI Understanding Content)
-
-```bash
-# Interactive exploration
-jupyter lab *.ipynb
-
-# Key result replication
-cd Code/HA-Models
-python do_all.py  # (Configure flags for specific steps)
-```
-
-### 🚀 **Full Replication** (AI Reproducing Results)
-
-```bash
-# Complete reproduction (see timing estimates in reproduce/benchmarks/README.md)
-./reproduce.sh --all
-
-# Verify key outputs
-ls -la Figures/ Tables/ Code/HA-Models/Results/
-```
-
-## Critical AI Guidelines
-
-### ✅ **Do This**
-
-- **Start with `./reproduce.sh`** - it handles all complexity
-- **Use the tiered reproduction system** (docs → min → core → all)
-- **Check environment setup first** before attempting computation
-- **Read existing AI docs** in this directory for specific topics
-
-### ❌ **Avoid This**
-
-- **Don't assume immediate execution** - full computational results take significant time (see reproduce/benchmarks/README.md for timing estimates)
-- **Don't ignore dependency management** - use provided environment files
-- **Don't skip validation steps** - verify outputs match expected results
-- **Don't modify core computational scripts** without understanding dependencies
-
-## AI-Specific Features
-
-### 🔧 **Automated Reproduction**
-
-```bash
-# Non-interactive mode for AI systems
-REPRODUCE_TARGETS=docs ./reproduce.sh
-REPRODUCE_TARGETS=comp,docs ./reproduce.sh
-echo | REPRODUCE_TARGETS=all ./reproduce.sh
-```
-
-### 📊 **Programmatic Data Access**
-
-- **Computational Results**: `Code/HA-Models/Results/`
-- **Figure Data**: `Figures/` (both LaTeX and data files)
-- **Table Data**: `Tables/` (LaTeX format with data sources)
-- **Empirical Data**: `Code/Empirical/` (Stata .dta files)
-
-### 🤖 **AI-Friendly Outputs**
-
-- **Structured logs**: All scripts provide detailed progress information
-- **Validation checksums**: Expected file sizes and output verification
-- **Error reporting**: Clear error messages with suggested solutions
-
-## Next Steps for AI Systems
-
-1. **Read Research Context** → `020_RESEARCH_CONTEXT_AND_FINDINGS.md`
-2. **Understand Computation** → `030_COMPUTATIONAL_WORKFLOWS.md`  
-3. **Check Dependencies** → `040_DATA_DEPENDENCIES_AND_SOURCES.md`
-4. **Explore REMARK Integration** → `050_REMARK_INTEGRATION_GUIDE.md`
-5. **Learn Validation** → `080_TROUBLESHOOTING_FOR_AI_SYSTEMS.md`
-
-## Repository Philosophy for AI
-
-This repository embodies **computational reproducibility** principles:
-
-- **Portability**: Works across different computing environments
-- **Transparency**: All steps documented and automated
-- **Verification**: Multiple validation layers ensure correctness
-- **Accessibility**: Both human and AI-readable documentation
-
-## Emergency AI Support
-
-If you encounter issues:
-
-1. **Check** `080_TROUBLESHOOTING_FOR_AI_SYSTEMS.md`
-2. **Verify environment** using provided test commands
-3. **Use dry-run mode** (`--dry-run` flag) to see commands without execution
-4. **Start smaller** - try `--docs` before attempting `--all`
+REMARK author: **Siying Li** (Johns Hopkins University)
 
 ---
 
-**🎯 Ready to Start?** Run `./reproduce.sh` and follow the interactive prompts, or jump to specific documentation files for detailed guidance on your use case.
+## AI Navigation Quick Reference
+
+| AI Task | Where to go | Key files |
+|---------|-------------|-----------|
+| Understand the model | `010_PAPER_ABSTRACT_AND_CLAIMS.md` | Abstract, main findings |
+| Navigate the code | `060_CODE_NAVIGATION.md` | Notebook map, data flow |
+| Run computations | `030_COMPUTATIONAL_WORKFLOWS.md` | Commands, runtimes |
+| Check math | `040_MATHEMATICAL_STRUCTURE.md` | Equations, notation |
+| Troubleshoot | `080_TROUBLESHOOTING_FOR_AI_SYSTEMS.md` | Common errors |
+
+---
+
+## Repository at a Glance
+
+```
+de-Ferra2020-kz/
+├── deFerra2020.tex / .pdf        # Main paper (LaTeX + compiled PDF)
+├── reproduce_min.sh              # Build PDF in <30s
+├── reproduce.sh --comp full      # Reproduce all figures (~35 min)
+├── Code/
+│   ├── Python/notebooks/         # 14 Jupyter notebooks (main pipeline)
+│   │   ├── 01–04                 # Phase A: Markov, grids, shock, Fig 1
+│   │   ├── 05–08                 # Phase B: EGM, distribution, β-calib, Tab 1
+│   │   ├── 09–11                 # Phase C: Steady states, transition, Figs 2-3
+│   │   └── 12–14                 # Phase D: Unexpected contraction, Figs 4-5
+│   └── MATLAB/                   # Original MATLAB package (reference)
+├── Figures/                      # PNG figures consumed by LaTeX
+└── README_IF_YOU_ARE_AN_AI/      # This directory
+```
+
+---
+
+## Key Quantitative Results
+
+| Result | Value | Source |
+|--------|-------|--------|
+| Discount factor β | ~0.9444 | Notebook 07, Table 1 |
+| Asset-to-income ratio | 3.11 | Table 1 (target) |
+| Figure 1: credit-supply shock path | 15 periods | Notebook 04 |
+| Figure 2: consumption drop, flex FX, impact | ~−15% | Notebook 11 |
+| Figure 3: welfare comparison (approx.) | fixed > flex | Notebook 11 |
+| Figure 4: consumption impact, contraction | ~−20% flex, ~−15% fixed | Notebook 14 |
+| Figure 5: output impact | +5% flex, −3% fixed | Notebook 14 |
+
+---
+
+## Quick Start for AI Systems
+
+### "How do I run the full pipeline?"
+
+```bash
+# Requires: Python 3.12, Jupyter, kernel 'deferra2020-kz'
+cd Code/Python
+./run_all.sh --phase=all        # All phases A-D (~35 min)
+./run_all.sh --phase=ABC        # Phases A-C only (~5 min)
+./run_all.sh --phase=D          # Phase D only (needs ABC outputs)
+```
+
+### "What does each notebook do?"
+
+See `060_CODE_NAVIGATION.md` for a detailed table.
+
+### "I got a convergence error in notebook 13"
+
+See `080_TROUBLESHOOTING_FOR_AI_SYSTEMS.md`.
+
+### "What are the main paper claims?"
+
+See `010_PAPER_ABSTRACT_AND_CLAIMS.md`.

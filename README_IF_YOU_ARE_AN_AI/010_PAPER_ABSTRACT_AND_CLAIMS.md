@@ -1,157 +1,93 @@
-# Paper Abstract and Key Claims
+# Paper Abstract and Key Claims — de Ferra, Mitman, Romei (2020)
 
-## Abstract
+## Paper Details
 
-We study the role of heterogeneity in the transmission of foreign shocks. We build a Heterogeneous-Agent New-Keynesian Small Open Model Economy (HANKSOME) that experiences a current account reversal. Households' portfolio composition and the extent of foreign currency borrowing are key determinants of the magnitude of the contraction in consumption associated with a sudden stop in capital inflows. The contraction is more severe when households are leveraged and owe debt in foreign currency. In this setting, the revaluation of foreign debt causes a larger contraction in aggregate consumption when debt and leverage are concentrated among poorer households. Closing the output gap via an exchange-rate devaluation may therefore be detrimental to household welfare due to the heterogeneous impact of the foreign debt revaluation. Our HANKSOME framework can rationalize the observed "fear of floating" in emerging market economies, even in the absence of contractionary devaluations.
-
----
-
-## Key Claims (Structured for AI Indexing)
-
-### Claim 1: UI Extensions Have Highest Welfare Effectiveness
-
-> **Statement**: Unemployment insurance extensions provide the highest welfare gain per dollar of government spending.
-
-**Evidence**:
-
-- Welfare gain (CEV): 0.010-0.012 per dollar spent
-- Targets spending to those most affected by recession
-- 81.1% of stimulus consumed during recession
-
-**Location in Paper**: Section 4, Tables 6-7
+**Title:** Household heterogeneity and the transmission of foreign shocks  
+**Authors:** Sergio de Ferra, Kurt Mitman, Federica Romei  
+**Journal:** *Journal of International Economics* 124, 103303 (2020)  
+**DOI:** https://doi.org/10.1016/j.jinteco.2020.103303  
 
 ---
 
-### Claim 2: Stimulus Checks Are Second-Best but More Practical
+## Abstract (verbatim)
 
-> **Statement**: Direct stimulus checks are second in welfare effectiveness but offer practical advantages: faster delivery and scalability.
-
-**Evidence**:
-
-- Welfare gain (CEV): 0.000-0.002 per dollar spent
-- 74.2% consumed during recession
-- Can reach all households immediately
-
-**Location in Paper**: Section 4, Tables 6-7
-
----
-
-### Claim 3: Tax Cuts Are Least Effective
-
-> **Statement**: Temporary payroll tax cuts are the least effective stimulus policy, with negligible welfare effects in the baseline model.
-
-**Evidence**:
-
-- Welfare gain (CEV): ~0.000 (near zero)
-- Only 42.1% consumed during recession
-- Multiplier of 0.847-0.978 (lowest among policies)
-
-**Location in Paper**: Section 4, Tables 6-7
+We study the role of heterogeneity in the transmission of foreign shocks. We build
+a Heterogeneous-Agent New-Keynesian Small Open Model Economy (HANKSOME) that
+experiences a current account reversal. Households' portfolio composition and the
+extent of foreign currency borrowing are key determinants of the magnitude of the
+contraction in consumption associated with a sudden stop in capital inflows. The
+contraction is more severe when households are leveraged and owe debt in foreign
+currency. In this setting, the revaluation of foreign debt causes a larger
+contraction in aggregate consumption when debt and leverage are concentrated among
+poorer households. Closing the output gap via an exchange-rate devaluation may
+therefore be detrimental to household welfare due to the heterogeneous impact of
+the foreign debt revaluation. Our HANKSOME framework can rationalize the observed
+"fear of floating" in emerging market economies, even in the absence of
+contractionary devaluations.
 
 ---
 
-### Claim 4: Aggregate Demand Effects Matter
+## Key Claims
 
-> **Statement**: Including aggregate demand feedback effects substantially increases the effectiveness of all policies.
+### Claim 1: Leverage distribution amplifies consumption contractions
 
-**Evidence**:
+> **Statement**: When debt and leverage are concentrated among poorer households
+> (those with higher MPCs), a sudden stop causes a larger aggregate consumption
+> contraction through the net-wealth channel.
 
-- Stimulus check multiplier: 0.879 → 1.234 (with AD)
-- UI extension multiplier: 0.906 → 1.211 (with AD)
-- Tax cut multiplier: 0.847 → 0.978 (with AD)
+**Mechanism**: Foreign-currency debt revaluation reduces net wealth disproportionately
+for leveraged households. Since these households have high MPCs, the aggregate
+consumption effect is amplified relative to a representative-agent model.
 
-**Location in Paper**: Section 5
-
----
-
-### Claim 5: The "Splurge Factor" Captures Empirical MPC Patterns
-
-> **Statement**: A "splurge" component (ς = 0.249) is necessary to match observed marginal propensity to consume patterns.
-
-**Evidence**:
-
-- Without splurge: model underpredicts immediate consumption response
-- Splurge = 24.9% of income consumed immediately upon receipt
-- Calibrated to Norwegian lottery data (Fagereng et al. 2021)
-
-**Location in Paper**: Section 3
+**Python evidence**: Notebook 12–13 (`contraction_flex.npz`, `contraction_fixed.npz`).
 
 ---
 
-## Quantitative Results Summary
+### Claim 2: Fixed exchange rates can improve welfare despite causing a recession
 
-### Fiscal Multipliers (10-Year Horizon)
+> **Statement**: Fixing the exchange rate reduces the foreign-debt revaluation,
+> protecting highly-leveraged poor households, and thereby improves aggregate welfare
+> in consumption-equivalent terms — even though it generates a deeper output recession.
 
-| Policy | Without AD | With AD | 1st Round AD |
-|--------|------------|---------|--------------|
-| Stimulus Check | 0.879 | 1.234 | 1.157 |
-| UI Extension | 0.906 | 1.211 | 1.148 |
-| Tax Cut | 0.847 | 0.978 | 0.951 |
+**Mechanism**: Under flexible FX, depreciation stimulates output (Figure 5, +5% on
+impact) but causes a larger consumption crash (Figure 4, ~−20%) because foreign debt
+becomes more expensive in domestic terms. Under fixed FX, consumption falls less
+(~−15%) at the cost of a GDP recession (~−3%).
 
-### Welfare Gains (Consumption Equivalent Variation)
-
-| Policy | Without AD | With AD |
-|--------|------------|---------|
-| Stimulus Check | 0.000 | 0.002 |
-| UI Extension | 0.010 | 0.012 |
-| Tax Cut | -0.000 | 0.000 |
-
-### Timing of Stimulus
-
-| Policy | Expenditure During Recession | Consumption During Recession |
-|--------|------------------------------|------------------------------|
-| Stimulus Check | 100.0% | 74.2% |
-| UI Extension | 79.6% | 81.1% |
-| Tax Cut | 57.8% | 42.1% |
+**Python evidence**: Notebooks 12–14; Figures 4–5.
 
 ---
 
-## Model Parameters Summary
+### Claim 3: Fear of floating is rationalised without contractionary devaluation
 
-| Parameter | Symbol | Value | Source |
-|-----------|--------|-------|--------|
-| Splurge Factor | ς | 0.249 | Estimated (Section 3) |
-| Risk Aversion | γ | 2.0 | Standard |
-| Interest Rate | R | 1.01 (quarterly) | Calibration |
-| Death Probability | D | 1/160 | Perpetual youth |
-| UI Replacement Rate | ρ_b | 0.70 | BLS data |
-| Non-UI Replacement Rate | ρ_nb | 0.50 | Calibration |
+> **Statement**: The model generates endogenous "fear of floating" because the
+> welfare cost of the debt-revaluation channel exceeds the benefit of the
+> output-gap closing channel.
 
 ---
 
-## Citation
+## Table 1 — Calibration (Reproduced)
 
-Carroll, C. D., Crawley, E., Du, W., Frankovic, I., & Tretvoll, H. (2025). Welfare and Spending Effects of Consumption Stimulus Policies. *Quantitative Economics*.
+| Parameter | Value | Target |
+|-----------|-------|--------|
+| Discount factor β | ~0.9444 | Asset-to-income ratio 3.11 |
+| CRRA σ | 2.0 | Standard |
+| AR(1) income persistence ρ | 0.966 | Storesletten et al. |
+| Income shock std dev σ_z | 0.017 | Storesletten et al. |
+| Borrowing limit b̲ | −0.525 | Net foreign assets / income |
+| World interest rate r* | 0.04 | Annual |
+| Steady-state credit b* | 0.375 | Hungary NFA / income |
 
-**BibTeX**:
-
-```bibtex
-@article{carroll2025welfare,
-  title={Welfare and Spending Effects of Consumption Stimulus Policies},
-  author={Carroll, Christopher D. and Crawley, Edmund and Du, William and Frankovic, Ivan and Tretvoll, Hakon},
-  journal={Quantitative Economics},
-  year={2025}
-}
-```
-
----
-
-## Keywords for Indexing
-
-- Fiscal stimulus
-- Heterogeneous agents
-- HANK models
-- Marginal propensity to consume (MPC)
-- Unemployment insurance
-- Stimulus checks
-- Tax cuts
-- Welfare analysis
-- Aggregate demand
-- Splurge consumption
-- DSGE
-- Computational economics
+See `Code/Python/output/calibration_summary.json` for exact values from notebook 07.
 
 ---
 
-*This document provides structured claims for AI systems to index and reference.*
+## Figures Reproduced
 
+| Figure | Content | Notebook | Output file |
+|--------|---------|---------|-------------|
+| 1 | Credit supply shock path (Markov chain transitions) | 04 | `deFerra2020_fig1_credit_supply.png` |
+| 2 | Consumption, assets, distribution — credit expansion | 11 | `deFerra2020_fig2.png` |
+| 3 | Welfare decomposition — expansion vs. baseline | 11 | `deFerra2020_fig3.png` |
+| 4 | Consumption & key macro vars — unexpected contraction, flex vs. fixed FX | 14 | `deFerra2020_fig4.png` |
+| 5 | Output gap & exchange rate — unexpected contraction, flex vs. fixed FX | 14 | `deFerra2020_fig5.png` |

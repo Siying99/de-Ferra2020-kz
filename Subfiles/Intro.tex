@@ -22,6 +22,9 @@ We calibrate the model to match salient features of the Hungarian economy in the
 
 The paper is organized as follows. Section~\ref{sec:model} presents our small open economy incomplete markets model with nominal rigidities. Section~\ref{sec:heterogeneity} discusses the role of heterogeneity. In Section~\ref{sec:calibration} we discuss how we bring the model to the data. We outline our main experiments in Section~\ref{sec:experiments} and describe our results in Section~\ref{sec:suddenstop}. Section~\ref{sec:mechanism} inspects the mechanism, and Section~\ref{sec:conclusion} concludes.
 
+\paragraph{This REMARK.}
+This document is a \href{https://github.com/econ-ark/REMARK}{REMARK} (Replication of Economic Models using ARK) that reproduces the quantitative results of \cite{de-Ferra2019-co} from scratch in Python. The reproduction covers the full numerical pipeline: discretizing the income process via the Rouwenhorst method (notebook~01), parameterizing the model (notebook~02), constructing the MIT credit-supply shock paths (notebooks~03--04), solving household value functions by the Endogenous Grid Method (EGM, notebook~05), computing the stationary wealth distribution (notebook~06), calibrating the discount factor $\beta$ to match the Hungarian net-wealth-to-GDP ratio (notebook~07), verifying the Table~1 calibration targets (notebook~08), solving the initial steady state (notebook~09), computing the credit-expansion transition path (notebook~10), generating Figures 2--3 (notebook~11), and solving both the flexible- and fixed-exchange-rate sudden-stop transitions to reproduce Figures 4--5 (notebooks~12--14). All five figures in this document are generated entirely in Python and match the original MATLAB output within numerical tolerance; see \texttt{Code/Python/output/verification\_table.md} for a side-by-side comparison.
+
 % Smart bibliography: Only include bibliography if standalone AND has citations
 \smartbib
 

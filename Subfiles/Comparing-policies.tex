@@ -11,21 +11,78 @@ To study the implications of a reversal in capital flows on the model economy, w
 
 In the baseline experiment we assume that the model economy follows a floating exchange rate regime with all debt foreign-currency denominated, consistent with the Hungarian experience.
 
-\begin{figure}[htbp]
+\begin{figure}[!ht]
   \centering
-  \includegraphics[width=0.8\textwidth]{Figures/deFerra2020_fig1_credit_supply.png}
+  \includegraphics[width=0.82\textwidth]{Figures/deFerra2020_fig1_credit_supply.png}
   \caption{Foreign credit supply shocks.}
   \whenintegrated{\label{fig:credit_supply}}
+  \par\smallskip
+  {\footnotesize\noindent\textit{Note:} Both the credit-expansion AR(1) path and the unexpected-contraction path are reproduced from scratch in \texttt{Code/Python/notebooks/03\_shock\_path.ipynb} and \texttt{04\_figure1.ipynb}.}
 \end{figure}
+
+\section{Credit-expansion transition}
+\whenintegrated{\label{sec:expansion}}
+
+We now study the perfect-foresight transition path between an initial steady state with zero net foreign assets ($\mathrm{BGss}_0 = 0$) and a final steady state with foreign borrowing $\mathrm{BGss}_T \approx -11.13$, driven by the AR(1) credit-supply path of Figure~\ref{fig:credit_supply}. Households know the entire price path and play their lifetime problem accordingly; the system is solved at the calibrated discount factor $\beta^\star = 0.98322$ from notebook~07.
+
+The transition system follows \texttt{Code/MATLAB/Transition/solve\_transition\_bis.m} (\emph{flexible-FX, foreign-currency-debt} branch) and is reproduced from scratch in \texttt{Code/Python/notebooks/10\_solve\_transition.ipynb}. Setting the optional flag \texttt{REFINE = True} drives the residual to $\sim 7\times 10^{-14}$ via \texttt{scipy.optimize.fsolve} on the MATLAB warm-start path \texttt{Code/MATLAB/transition\_start.mat}; with \texttt{REFINE = False} the warm start is used directly (residual $\le 1.2\times 10^{-4}$, plots visually identical).
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.88\textwidth]{Figures/deFerra2020_fig2.png}
+  \caption{Credit-supply transition: real allocations.}
+  \whenintegrated{\label{fig:transition_real}}
+  \par\smallskip
+  {\footnotesize\noindent\textit{Note:} Each panel shows the percent deviation from the initial steady state over 100 quarters. Reproduced from scratch in \texttt{Code/Python/notebooks/11\_figures\_2\_3.ipynb}; cf.\ \texttt{Code/MATLAB/Figures.m} lines 45--119.}
+\end{figure}
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.88\textwidth]{Figures/deFerra2020_fig3.png}
+  \caption{Credit-supply transition: prices.}
+  \whenintegrated{\label{fig:transition_prices}}
+  \par\smallskip
+  {\footnotesize\noindent\textit{Note:} The fourth panel plots the level of the real interest rate (with the calibrated steady-state rate $r_{ss}$ as a reference line); the other three panels show percent deviations from the initial steady state. Reproduced from \texttt{Code/Python/notebooks/11\_figures\_2\_3.ipynb}; cf.\ \texttt{Code/MATLAB/Figures.m} lines 121--195.}
+\end{figure}
+
+The credit expansion drives consumption of home goods up by $\sim 5\%$ at impact and consumption of foreign goods up by $\sim 12\%$, financed by the new foreign borrowing. Output and investment respond more slowly through the capital-accumulation channel and continue to rise toward the final steady state over the entire 100-quarter horizon. On the price side, the terms of trade jump up by $\sim 7\%$ at impact (real appreciation), the nominal exchange rate appreciates by the same amount, and the real interest rate spikes briefly to $\sim 3.5\%$ per quarter due to the one-period excess return on capital implied by the balance-sheet revaluation, before reverting toward the calibrated rate. These magnitudes match the paper's Figures 2 and 3 within numerical tolerance; see \texttt{Code/Python/output/verification\_table.md} for an exact paper--MATLAB--Python comparison of the peak values.
 
 \section{Sudden stop}
 \whenintegrated{\label{sec:suddenstop}}
 
-The main experiment of interest is studying the reversal of foreign credit supply under the baseline scenario of a flexible exchange rate and foreign-currency denominated debt---the empirically relevant case for Hungary during the Global Financial Crisis, where 69\% of household debt was denominated in foreign currency.
+The main experiment of interest is studying the reversal of foreign credit supply under the baseline scenario of a flexible exchange rate and foreign-currency denominated debt---the empirically relevant case for Hungary during the Global Financial Crisis, where 69\% of household debt was denominated in foreign currency. We compare this to the counterfactual under a fixed exchange rate.
 
-Under a flexible exchange rate policy, consumption of home and foreign goods by domestic consumers contracts sharply because of the unexpected withdrawal of foreign credit and the fall in wealth due to the debt revaluation. We find, using a utilitarian metric, that under the flexible-exchange rate regime, welfare falls by 0.81\% in consumption equivalent variation (CEV) terms.
+The contraction starts in quarter $t = 41$ of the credit-expansion path of Section~\ref{sec:expansion}. Households were marching along the expansion when the contraction shock hits and re-optimise given the contraction credit path \texttt{new\_shock\_b\_agg} (Figure~\ref{fig:credit_supply}, dashed line), which decays back toward the calibrated steady-state NFA $\bar B \approx -4.34$. We turn on the leverage parameter $\hat k = 1/16$ (\texttt{Main.m} line 345), so that gross capital and gross debt are revalued by the depreciation through the household balance sheet.
 
-More than 92\% of households would have benefited from the fixed-exchange rate policy. Despite the fact that the fixed exchange rate generates a domestic recession---due to the presence of nominal rigidities---the fixed exchange rate policy is preferred by the vast majority of households. Our framework therefore generates a rationale for ``fear of floating'' even in the absence of a contractionary devaluation.
+Two transition systems must be solved:
+\begin{itemize}
+\item \textbf{Flexible-FX} (notebook 12, \texttt{Code/MATLAB/Transition/solve\_transition\_bis.m}): 399 unknowns $[k(2..TT);\,l(1..TT)]$, with a per-period 1-D solve for $\mathrm{tot}(t)$. Solved by \texttt{scipy.optimize.fsolve} from the simple geometric-decay initial guess in $\sim 5$ minutes on a single core; final residual $|r|_\infty \approx 2.7\times 10^{-8}$.
+\item \textbf{Fixed-FX} (notebook 13, \texttt{Code/MATLAB/Transition/solve\_transition\_fixed.m}): 599 unknowns $[k(2..TT);\,l(1..TT);\,\mathrm{tot}(1..TT)]$, with a backward NKPC iteration for marginal cost, real wage, and the real interest rate. Solved by \texttt{scipy.optimize.root(method='lm')} (Levenberg--Marquardt) warm-started from the flex solution in $\sim 20$ minutes; final residual $|r|_\infty \approx 3.9\times 10^{-13}$.
+\end{itemize}
+
+Figures~\ref{fig:contraction_real} and \ref{fig:contraction_prices} below reproduce the paper's Figures 4 and 5 by plotting both regimes' percent log-deviations from a common baseline (the period-41 expansion-path values).
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.88\textwidth]{Figures/deFerra2020_fig4.png}
+  \caption{Unexpected credit contraction: real allocations under flexible vs.\ fixed exchange rates.}
+  \whenintegrated{\label{fig:contraction_real}}
+  \par\smallskip
+  {\footnotesize\noindent\textit{Note:} Contraction starts at $t = 41$ with leverage $\hat k = 1/16$. Solid blue: flexible FX; dashed orange: fixed FX. All variables are $100 \times \log$-deviation from the period-41 baseline. Reproduced from scratch in \texttt{Code/Python/notebooks/14\_figures\_4\_5.ipynb}; cf.\ \texttt{Code/MATLAB/Figures.m} lines 220--299.}
+\end{figure}
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.88\textwidth]{Figures/deFerra2020_fig5.png}
+  \caption{Unexpected credit contraction: prices under flexible vs.\ fixed exchange rates.}
+  \whenintegrated{\label{fig:contraction_prices}}
+  \par\smallskip
+  {\footnotesize\noindent\textit{Note:} The fourth panel plots the deviation of the real interest rate in percentage points from the period-41 baseline; the other three panels are $100 \times \log$-deviations. Reproduced from \texttt{Code/Python/notebooks/14\_figures\_4\_5.ipynb}; cf.\ \texttt{Code/MATLAB/Figures.m} lines 304--382.}
+\end{figure}
+
+Under a flexible exchange rate, consumption of home and foreign goods contracts sharply because of the unexpected withdrawal of foreign credit and the fall in wealth due to the debt revaluation: at impact, home-good consumption falls by $\sim 9.9\%$ and foreign-good consumption by $\sim 21.8\%$ from the period-41 baseline. Investment falls by $\sim 19\%$ and the terms of trade depreciate by $\sim 11.9\%$. The real interest rate spikes briefly to roughly $+2.6$ pp above baseline.
+
+Under a fixed exchange rate, the same shock produces a much milder contraction at impact: home-good consumption $-1.8\%$, foreign-good consumption $-2.9\%$, investment $-3.2\%$, and the terms of trade barely move ($-1.0\%$). The two regimes converge to a common long-run path within ten quarters. Critically, the flexible-FX regime delivers a slightly \emph{higher} output path (output rises by $\sim 5\%$ at impact) because the depreciation stimulates net exports---i.e.\ the devaluation closes the output gap. But the welfare metric is consumption, not output. The paper finds that under a utilitarian metric welfare falls by 0.81\% in consumption-equivalent-variation (CEV) terms under flexible FX, and that more than 92\% of households would have preferred the fixed regime; despite the recession the fixed regime generates through nominal rigidities, the absence of foreign-debt revaluation makes it the politically and welfare-preferred choice. Our framework therefore generates a rationale for ``fear of floating'' even in the absence of a contractionary devaluation.
 
 % Bibliography inclusion handled automatically by document structure
 \smartbib

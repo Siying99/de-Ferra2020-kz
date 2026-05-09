@@ -30,10 +30,14 @@ The REMARK contains two kinds of reproducible content:
 | Paper object | Status in REMARK | Location |
 |---|---|---|
 | Model environment and Bellman equation | Summarised in paper §3 | `Subfiles/Model.tex` |
-| Calibration (Table 1, all 13 parameters) | **Reproduced verbatim** | `Tables/deFerra2020_tab1_calibration.tex` |
+| Calibration (Table 1, all 13 parameters) | **Reproduced verbatim** | `Tables/deFerra2020_tab1_calibration.tex`, `Code/Python/notebooks/02–08` |
 | Calibration narrative (§4.1.1–4.1.5) | **Reproduced as paraphrase** | `Subfiles/Parameterization.tex` |
-| Figure 1 (credit supply shock) | **Reproduced** as an image | `Figures/deFerra2020_fig1_credit_supply.png` |
-| Impulse responses (Figs. 2–5, 7, 8) | Not reproduced | — |
+| β-calibration & SS asset-market clearing | **Reproduced from scratch in Python** | `Code/Python/notebooks/05–07` |
+| Figure 1 (credit supply shock) | **Reproduced from scratch in Python** | `Code/Python/output/deFerra2020_fig1_credit_supply.png` |
+| Initial / final SS (zero NFA & AR(1) limit) | **Reproduced from scratch in Python** | `Code/Python/notebooks/09_initial_ss.ipynb` |
+| Credit-supply transition (perfect-foresight) | **Reproduced from scratch in Python** | `Code/Python/notebooks/10_solve_transition.ipynb` |
+| Figures 2 & 3 (real allocations + prices) | **Reproduced from scratch in Python** | `Code/Python/output/deFerra2020_fig{2,3}.png` |
+| Figures 4 & 5 (unexpected contraction, flex vs fixed FX) | **Reproduced from scratch in Python** | `Figures/deFerra2020_fig{4,5}.png` |
 | Quantitative policy experiments (§7) | Not reproduced | — |
 | Stage decomposition of household problem | **Added** as supplementary exposition | `deFerra2020_bellman-stages.ipynb` |
 
@@ -139,11 +143,58 @@ The notebook is intentionally markdown-only: its purpose is to clarify the timin
 
 ---
 
+## Python reproduction (steady state, calibration, transitions, Figs 1–5)
+
+A modular Python reproduction lives under `Code/Python/` and runs end-to-end as
+14 numbered Jupyter notebooks (`01_rouwenhorst.ipynb` → `14_figures_4_5.ipynb`).
+See [`Code/Python/README.md`](Code/Python/README.md) for the dependency graph and
+[`Code/Python/output/verification_table.md`](Code/Python/output/verification_table.md)
+for a paper / MATLAB / Python comparison table covering Table 1 and the impact-
+period magnitudes of Figures 2–5.
+
+Highlights of the from-scratch Python ports:
+
+- **Phase A**: Rouwenhorst chain, parameter+grid construction, AR(1) credit-supply
+  paths, Figure 1 (notebooks 01–04).
+- **Phase B**: EGM, stationary distribution, β-calibration, Table 1 verification
+  (notebooks 05–08). Calibrates `β* = 0.98322`, asset-market residual `~1.5e-4`.
+- **Phase C**: initial+final steady states, perfect-foresight credit-supply
+  transition with foreign-currency-debt revaluation, and Figures 2 & 3
+  (notebooks 09–11). Transition residual is driven to `~7e-14` after a one-shot
+  `scipy.optimize.fsolve` polish on the MATLAB warm-start path.
+- **Phase D**: unexpected credit contraction (sudden stop) at t = 41, with
+  leverage $\hat k = 1/16$. Notebook 12 solves the **flexible-FX** transition
+  (`fsolve` over 399 unknowns, ~5 min, residual $\sim 10^{-8}$). Notebook 13
+  ports `solve_transition_fixed.m` and solves the **fixed-FX** transition with a
+  Levenberg–Marquardt root-finder over 599 unknowns (~20 min, residual
+  $\sim 10^{-13}$). Notebook 14 reproduces Figures 4 & 5 comparing the two
+  regimes side-by-side.
+
+Per-notebook wall-clock timings are printed by each notebook (via
+`time.perf_counter()`), and a total-pipeline timer is built into
+`Code/Python/run_all.sh`. Single-core wall-clock budget on Apple-silicon laptops
+(May 2026):
+
+- `./run_all.sh --phase=ABC --fast`: **< 1 min**
+- `./run_all.sh --phase=ABC`: **~3–5 min**
+- `./run_all.sh --phase=all` (everything): **~30–35 min** (Phase D dominates)
+
+The MATLAB sources are vendored under `Code/MATLAB/` (the original [HANKSOME
+package](https://github.com/kurtmitman/HANKSOME) by de Ferra, Mitman, and
+Romei) for cross-checking and for the `Code/MATLAB/transition_start.mat`
+warm-start used by notebook 10.
+
 ## Known limitations / future work
 
-- The quantitative experiments of the paper (§6–§7) are not replicated here; a faithful replication would require a new Python implementation of the HANKSOME solver under the `HARK` / `sequence-jacobian` stack.
-- Some filenames in `Figures/` and elsewhere inherited from the HAFiscal template still have `HANK` in them. They are hollow placeholders and are not included in the main PDF build.
-- The `--comp` and `--data` branches of `reproduce.sh` are template scaffolding and reference the HAFiscal computational code under `Code/HA-Models/`; they should not be run against the de Ferra 2020 model.
+- The §7 policy experiments are not replicated; a faithful replication would
+  require a new Python implementation of the HANKSOME solver under the
+  `HARK` / `sequence-jacobian` stack.
+- Some filenames in `Figures/` and elsewhere inherited from the HAFiscal
+  template still have `HANK` in them. They are hollow placeholders and are not
+  included in the main PDF build.
+- The `--comp` and `--data` branches of `reproduce.sh` are template scaffolding
+  and reference the HAFiscal computational code under `Code/HA-Models/`; they
+  should not be run against the de Ferra 2020 model.
 
 ---
 

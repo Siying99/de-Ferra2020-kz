@@ -2,7 +2,7 @@
 
 ## Overview
 
-Figures, tables, and subfiles in the HAFiscal project are designed to work in **two modes**:
+Figures, tables, and subfiles in the de-Ferra2020-kz project are designed to work in **two modes**:
 
 1. **Integrated**: Compiled as part of the main `HAFiscal.tex` document
 2. **Standalone**: Compiled individually for debugging and development

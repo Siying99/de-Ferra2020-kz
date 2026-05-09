@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-echo "🚀 Setting up HAFiscal development environment with TeX Live 2025..."
+echo "🚀 Setting up de-Ferra2020-kz development environment with TeX Live 2025..."
 echo "📦 METHOD: TeX Live 2025 (scheme-basic + individual packages)"
 echo ""
 echo "This matches the standalone Docker image: hafiscal-texlive-2025"
@@ -113,7 +113,7 @@ else
     if [ -d .git ]; then
         REPO_NAME=$(basename "$(git rev-parse --show-toplevel 2>/dev/null)" 2>/dev/null || basename "$PWD")
     else
-        REPO_NAME=$(basename "$PWD" 2>/dev/null || echo "${REPO_NAME:-HAFiscal}")
+        REPO_NAME=$(basename "$PWD" 2>/dev/null || echo "${REPO_NAME:-de-Ferra2020-kz}")
     fi
     WORKSPACE_DIR="/workspaces/${REPO_NAME}"
 fi
@@ -654,13 +654,13 @@ echo "✅ Virtual environment verified at: $VENV_PATH"
 echo "Configuring shell auto-activation for: $VENV_PATH"
 
 # Create activation snippet that will be sourced by shells
-ACTIVATE_SNIPPET="# Auto-activate HAFiscal virtual environment
+ACTIVATE_SNIPPET="# Auto-activate de-Ferra2020-kz virtual environment
 if [ -f \"$VENV_PATH/bin/activate\" ]; then
     source \"$VENV_PATH/bin/activate\"
 fi"
 
 # Add to .bashrc if not already present
-if ! grep -q "Auto-activate HAFiscal virtual environment" ~/.bashrc 2>/dev/null; then
+if ! grep -q "Auto-activate de-Ferra2020-kz virtual environment" ~/.bashrc 2>/dev/null; then
     echo "" >> ~/.bashrc
     echo "$ACTIVATE_SNIPPET" >> ~/.bashrc
     echo "✅ Added .venv auto-activation to ~/.bashrc"
@@ -670,7 +670,7 @@ fi
 if command -v zsh >/dev/null 2>&1; then
     # Create .zshrc if it doesn't exist
     [ -f ~/.zshrc ] || touch ~/.zshrc
-    if ! grep -q "Auto-activate HAFiscal virtual environment" ~/.zshrc 2>/dev/null; then
+    if ! grep -q "Auto-activate de-Ferra2020-kz virtual environment" ~/.zshrc 2>/dev/null; then
         echo "" >> ~/.zshrc
         echo "$ACTIVATE_SNIPPET" >> ~/.zshrc
         echo "✅ Added .venv auto-activation to ~/.zshrc"
@@ -718,50 +718,50 @@ echo "Adding platform-agnostic venv activation to shell RC files..."
 # Variables should be literal (not expanded) so they expand when the code is sourced
 # shellcheck disable=SC2016
 ACTIVATION_CODE='
-# Auto-activate HAFiscal virtual environment (platform and architecture-specific)
+# Auto-activate de-Ferra2020-kz virtual environment (platform and architecture-specific)
 # Detects and activates the appropriate venv for the current platform and architecture
 if [ -z "${VIRTUAL_ENV:-}" ]; then
     # Determine workspace directory
-    HAFISCAL_WORKSPACE="/workspace"
-    if [ ! -d "$HAFISCAL_WORKSPACE" ]; then
+    PROJECT_WORKSPACE="/workspace"
+    if [ ! -d "$PROJECT_WORKSPACE" ]; then
         # Fallback: try to find workspace from common locations
         if [ -d "/workspace" ]; then
-            HAFISCAL_WORKSPACE="/workspace"
+            PROJECT_WORKSPACE="/workspace"
         elif [ -d "$HOME/workspace" ]; then
-            HAFISCAL_WORKSPACE="$HOME/workspace"
-        elif [ -d "$HOME/HAFiscal-Public" ]; then
-            HAFISCAL_WORKSPACE="$HOME/HAFiscal-Public"
+            PROJECT_WORKSPACE="$HOME/workspace"
+        elif [ -d "$HOME/de-Ferra2020-kz" ]; then
+            PROJECT_WORKSPACE="$HOME/de-Ferra2020-kz"
         fi
     fi
 
     # Detect platform and architecture
-    HAFISCAL_VENV=""
-    HAFISCAL_ARCH=$(uname -m)
+    PROJECT_VENV=""
+    PROJECT_ARCH=$(uname -m)
     case "$(uname -s)" in
         Darwin)
             # macOS: look for .venv-darwin-{arch}
-            if [ -f "$HAFISCAL_WORKSPACE/.venv-darwin-$HAFISCAL_ARCH/bin/activate" ]; then
-                HAFISCAL_VENV="$HAFISCAL_WORKSPACE/.venv-darwin-$HAFISCAL_ARCH"
+            if [ -f "$PROJECT_WORKSPACE/.venv-darwin-$PROJECT_ARCH/bin/activate" ]; then
+                PROJECT_VENV="$PROJECT_WORKSPACE/.venv-darwin-$PROJECT_ARCH"
             fi
             ;;
         Linux)
             # Linux: look for .venv-linux-{arch}
-            if [ -f "$HAFISCAL_WORKSPACE/.venv-linux-$HAFISCAL_ARCH/bin/activate" ]; then
-                HAFISCAL_VENV="$HAFISCAL_WORKSPACE/.venv-linux-$HAFISCAL_ARCH"
+            if [ -f "$PROJECT_WORKSPACE/.venv-linux-$PROJECT_ARCH/bin/activate" ]; then
+                PROJECT_VENV="$PROJECT_WORKSPACE/.venv-linux-$PROJECT_ARCH"
             fi
             ;;
     esac
 
     # Activate if found (architecture is encoded in name, so no verification needed)
-    if [ -n "$HAFISCAL_VENV" ] && [ -f "$HAFISCAL_VENV/bin/activate" ]; then
+    if [ -n "$PROJECT_VENV" ] && [ -f "$PROJECT_VENV/bin/activate" ]; then
         # shellcheck source=/dev/null
-        source "$HAFISCAL_VENV/bin/activate"
+        source "$PROJECT_VENV/bin/activate"
     fi
 fi'
 
 # Add activation code to .bashrc if not already present
 if [ -f "$HOME/.bashrc" ]; then
-    if ! grep -q "Auto-activate HAFiscal virtual environment" "$HOME/.bashrc" 2>/dev/null; then
+    if ! grep -q "Auto-activate de-Ferra2020-kz virtual environment" "$HOME/.bashrc" 2>/dev/null; then
         echo "$ACTIVATION_CODE" >> "$HOME/.bashrc"
         echo "✅ Added activation code to ~/.bashrc"
     else
@@ -773,7 +773,7 @@ fi
 
 # Add activation code to .zshrc if it exists
 if [ -f "$HOME/.zshrc" ]; then
-    if ! grep -q "Auto-activate HAFiscal virtual environment" "$HOME/.zshrc" 2>/dev/null; then
+    if ! grep -q "Auto-activate de-Ferra2020-kz virtual environment" "$HOME/.zshrc" 2>/dev/null; then
         echo "$ACTIVATION_CODE" >> "$HOME/.zshrc"
         echo "✅ Added activation code to ~/.zshrc"
     else
@@ -789,55 +789,55 @@ fi
 # Variables should be literal (not expanded) so they expand when the code is sourced
 # shellcheck disable=SC2016
 ACTIVATION_CODE_PROFILE='
-# Auto-activate HAFiscal virtual environment (platform and architecture-specific)
+# Auto-activate de-Ferra2020-kz virtual environment (platform and architecture-specific)
 if [ -z "${VIRTUAL_ENV:-}" ]; then
     # Determine workspace directory
-    HAFISCAL_WORKSPACE="/workspace"
-    if [ ! -d "$HAFISCAL_WORKSPACE" ]; then
+    PROJECT_WORKSPACE="/workspace"
+    if [ ! -d "$PROJECT_WORKSPACE" ]; then
         # Fallback: try to find workspace from common locations
         if [ -d "/workspace" ]; then
-            HAFISCAL_WORKSPACE="/workspace"
+            PROJECT_WORKSPACE="/workspace"
         elif [ -d "${HOME}/workspace" ]; then
-            HAFISCAL_WORKSPACE="${HOME}/workspace"
-        elif [ -d "${HOME}/HAFiscal-Public" ]; then
-            HAFISCAL_WORKSPACE="${HOME}/HAFiscal-Public"
+            PROJECT_WORKSPACE="${HOME}/workspace"
+        elif [ -d "${HOME}/de-Ferra2020-kz" ]; then
+            PROJECT_WORKSPACE="${HOME}/de-Ferra2020-kz"
         fi
     fi
 
     # Detect platform and architecture
-    HAFISCAL_VENV=""
-    HAFISCAL_ARCH=$(uname -m)
+    PROJECT_VENV=""
+    PROJECT_ARCH=$(uname -m)
     case "$(uname -s)" in
         Darwin)
-            if [ -f "${HAFISCAL_WORKSPACE}/.venv-darwin-${HAFISCAL_ARCH}/bin/activate" ]; then
-                HAFISCAL_VENV="${HAFISCAL_WORKSPACE}/.venv-darwin-${HAFISCAL_ARCH}"
+            if [ -f "${PROJECT_WORKSPACE}/.venv-darwin-${PROJECT_ARCH}/bin/activate" ]; then
+                PROJECT_VENV="${PROJECT_WORKSPACE}/.venv-darwin-${PROJECT_ARCH}"
             fi
             ;;
         Linux)
-            if [ -f "${HAFISCAL_WORKSPACE}/.venv-linux-${HAFISCAL_ARCH}/bin/activate" ]; then
-                HAFISCAL_VENV="${HAFISCAL_WORKSPACE}/.venv-linux-${HAFISCAL_ARCH}"
+            if [ -f "${PROJECT_WORKSPACE}/.venv-linux-${PROJECT_ARCH}/bin/activate" ]; then
+                PROJECT_VENV="${PROJECT_WORKSPACE}/.venv-linux-${PROJECT_ARCH}"
             fi
             ;;
     esac
 
     # Activate if found
-    if [ -n "$HAFISCAL_VENV" ] && [ -f "$HAFISCAL_VENV/bin/activate" ]; then
+    if [ -n "$PROJECT_VENV" ] && [ -f "$PROJECT_VENV/bin/activate" ]; then
         # Check if already activated correctly (PATH contains venv bin)
         case ":$PATH:" in
-            *":${HAFISCAL_VENV}/bin:"*)
+            *":${PROJECT_VENV}/bin:"*)
                 # Already activated correctly, no action needed
                 ;;
             *)
                 # Activate the venv
                 # shellcheck source=/dev/null
-                source "$HAFISCAL_VENV/bin/activate"
+                source "$PROJECT_VENV/bin/activate"
                 ;;
         esac
     fi
 fi'
 
 if [ -f "$HOME/.profile" ]; then
-    if ! grep -q "Auto-activate HAFiscal virtual environment" "$HOME/.profile" 2>/dev/null; then
+    if ! grep -q "Auto-activate de-Ferra2020-kz virtual environment" "$HOME/.profile" 2>/dev/null; then
         echo "$ACTIVATION_CODE_PROFILE" >> "$HOME/.profile"
         echo "✅ Added activation code to ~/.profile"
     else
