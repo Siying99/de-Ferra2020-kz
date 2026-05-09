@@ -31,7 +31,7 @@ everything):
 
 ```bash
 cd Code/Python
-./run_all.sh                    # full pipeline (Phases A+B+C+D), ~30–35 min
+./run_all.sh                    # full pipeline (Phases A+B+C+D), ~26 min
 ./run_all.sh --phase=ABC --fast # < 1 min: Phases A–C only, no fsolve refinement
 ./run_all.sh --phase=ABC        # ~3–5 min: Phases A–C only
 ./run_all.sh --phase=D          # ~25 min: Phase D only (assumes ABC has run)

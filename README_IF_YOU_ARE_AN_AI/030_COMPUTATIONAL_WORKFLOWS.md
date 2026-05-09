@@ -11,7 +11,7 @@ The Python pipeline is organised into four phases:
 | C | 09–11 | Initial + final steady state, credit-expansion transition, Figs 2–3 | ~2 min |
 | D | 12–14 | Unexpected contraction (flex + fixed FX), Figs 4–5 | ~25 min |
 
-Total: **~30–35 min** on an Apple M4 Pro MacBook Pro (16 GB RAM).
+Total: **~26 min** on an Apple M4 Pro MacBook Pro (16 GB RAM).
 
 ---
 

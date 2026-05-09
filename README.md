@@ -190,7 +190,7 @@ Per-notebook wall-clock timings are printed by each notebook (via
 
 - `./run_all.sh --phase=ABC --fast`: **< 1 min**
 - `./run_all.sh --phase=ABC`: **~3–5 min**
-- `./run_all.sh --phase=all` (everything): **~30–35 min** (Phase D dominates)
+- `./run_all.sh --phase=all` (everything): **~26 min** (Phase D dominates)
 
 The MATLAB sources are vendored under `Code/MATLAB/` (the original [HANKSOME
 package](https://github.com/kurtmitman/HANKSOME) by de Ferra, Mitman, and
