@@ -72,7 +72,7 @@ cd de-Ferra2020-kz
 | `./reproduce.sh --comp min` | Phases A–C: Rouwenhorst, EGM, β-calibration, Figs 1–3 | ~5 min |
 | `./reproduce.sh --comp full` | Phases A–D: everything above + sudden-stop Figs 4–5 | ~30 min |
 
-Runtimes are measured on a 2024 MacBook Pro M3, single-core. The Python pipeline prints per-notebook wall-clock times via `time.perf_counter()`, and `reproduce.sh` prints quantitative results (calibrated $\beta^\star$, $K/Y$, NFA/Y, residuals) directly to the terminal at the end of `--comp min`.
+Runtimes are measured on a modern Apple-silicon laptop, single-core. The Python pipeline prints per-notebook wall-clock times via `time.perf_counter()`, and `reproduce.sh` prints quantitative results (calibrated $\beta^\star$, $K/Y$, NFA/Y, residuals) directly to the terminal at the end of `--comp min`.
 
 ---
 
