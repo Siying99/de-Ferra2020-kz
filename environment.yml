@@ -1,59 +1,51 @@
-# =============================================================================
-# NOTICE: UV is now the recommended environment manager for this project
-# =============================================================================
-# 
-# For faster setup (recommended):
-#   uv sync --all-groups
-#   source .venv/bin/activate
+# Conda environment for the de-Ferra2020-kz REMARK (root convenience copy).
 #
-# This conda environment.yml is maintained for backward compatibility.
-# See README.md for migration instructions.
-# =============================================================================
+# Create:   conda env create -f environment.yml
+# Activate: conda activate deferra2020-kz
+# Update:   conda env update -f environment.yml --prune
+#
+# SINGLE SOURCE OF TRUTH: binder/environment.yml. This root-level file mirrors
+# it verbatim so that `conda env create -f environment.yml` from the repo root
+# yields the same Python 3.12 environment used by the dev-container, Binder,
+# reproduce.sh, and the 14-notebook pipeline under Code/Python/. pyproject.toml
+# mirrors the same pins for uv/pip users.
+#
+# (This replaces an earlier HAFiscal-template leftover that pinned Python 3.9
+#  under the name `hafiscal`; that env would not run the 3.12 notebooks.)
 
-# Conda environment for HAFiscal project
-# Create environment: conda env create -f environment.yml
-# Update environment: conda env update -f environment.yml --prune
-# Activate: conda activate hafiscal
-
-name: hafiscal
+name: deferra2020-kz
 channels:
   - conda-forge
   - defaults
 
 dependencies:
-  # Python version - REQUIRED: 3.9.x due to econ-ark dependencies
-  - python=3.9
+  # Python: standardised on 3.12 across environment.yml, binder/requirements.txt,
+  # pyproject.toml, and Dockerfile.
+  - python=3.12
 
-  # Core scientific computing stack (from conda for optimized builds)
-  - numpy>=1.24,<2
-  - scipy>=1.10
-  - pandas>=2.0
-  - matplotlib>=3.7
-  - numba>=0.57
-  
-  # Jupyter ecosystem (from conda)
-  # Note: pyzmq will be auto-installed by jupyter packages at whatever version
-  # conda-forge has available for Python 3.9 (not 27.1.0, but that's OK)
+  # Core scientific stack
+  - numpy>=1.26
+  - scipy>=1.11
+  - pandas>=2.1
+  - matplotlib>=3.8
+  - numba>=0.59
+
+  # Jupyter (needed to run the Code/Python notebooks and view the stages notebook)
   - jupyter>=1.0
   - notebook>=7.0
   - ipykernel>=6.0
-  - voila>=0.5.6
-  
-  # Statistical and visualization tools
+  - ipywidgets>=8.0
+
+  # Statistical analysis and visualisation
   - statsmodels>=0.14
-  - seaborn>=0.12
-  
+  - seaborn>=0.13
+
   # Development tools
-  - black>=23.0
+  - black>=24.0
   - pytest>=7.0
-  - pytest-cov>=4.0
-  - mypy>=1.0
-  - ruff>=0.1.0
-  
-  # pip for packages not available on conda
+  - ruff>=0.4.0
+
+  # pip for packages not on conda
   - pip
   - pip:
-      # econ-ark and dependencies only on PyPI
-      - econ-ark==0.14.1
-      # Jupyter notebook converter (not on conda)
-      - ipynb-py-convert>=0.4
+      - econ-ark>=0.15

@@ -110,6 +110,37 @@ for nb in "${NOTEBOOKS[@]}"; do
   echo "    [$nb finished in ${ELAPSED}s]"
 done
 
+# Strip volatile per-cell execution metadata (the iopub.* timestamps that
+# `nbconvert --inplace` writes on every run). Without this, re-running the
+# pipeline produces large, meaningless git diffs (and embeds machine-specific
+# run times). Cell *outputs* are preserved; only the timing metadata is removed.
+echo
+echo "[run_all] Stripping volatile execution timestamps from notebooks ..."
+PYTHON="${PYTHON:-python}"
+for nb in "${NOTEBOOKS[@]}"; do
+  "$PYTHON" - "$nb" <<'PY'
+import json, sys
+fp = sys.argv[1]
+nb = json.load(open(fp, encoding='utf-8'))
+changed = False
+for c in nb.get('cells', []):
+    if c.get('metadata', {}).pop('execution', None) is not None:
+        changed = True
+if changed:
+    with open(fp, 'w', encoding='utf-8') as f:
+        json.dump(nb, f, indent=1, ensure_ascii=False)
+        f.write('\n')
+PY
+done
+
+# Keep the LaTeX-source copy of Figure 1 in sync. Figures 2-5 are dual-written
+# to output/ and ../../Figures/ by their own notebooks; notebook 04 writes only
+# to output/, so copy it here when Phase A/B/C just ran.
+if [[ -f output/deFerra2020_fig1_credit_supply.png ]]; then
+  cp output/deFerra2020_fig1_credit_supply.png \
+     ../../Figures/deFerra2020_fig1_credit_supply.png 2>/dev/null || true
+fi
+
 # Restore default REFINE=True if we modified it.
 if [[ "$REFINE_FLAG" == "false" ]]; then
   if [[ -f notebooks/10_solve_transition.ipynb.bak ]]; then
