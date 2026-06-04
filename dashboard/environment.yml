@@ -3,7 +3,8 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.11.7
+  # Aligned to the REMARK standard (Python 3.12); see binder/environment.yml.
+  - python=3.12
   - econ-ark=0.14.1
   - numpy=1.26.4
   - matplotlib=3.8.0

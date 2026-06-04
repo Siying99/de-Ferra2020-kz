@@ -140,6 +140,56 @@ Python cost in exchange for an open-source dependency tree.
 - Variable names follow the MATLAB convention (`params.alpha`, `Agrid`,
   `shock_b_agg`, …) so cross-checking is easy.
 
+### Shared model constants
+
+A handful of economic constants recur across notebooks as bare literals (each
+cited in its cell header to the MATLAB source). Their canonical values:
+
+| Constant | Value | Meaning | Defined in |
+|---|---|---|---|
+| `TT` | 200 | transition horizon (quarters) | nb 03 (`shock_path`) |
+| `shock_start_t` / `shock_start_idx0` | 41 / 40 | contraction onset (1- / 0-indexed) | nb 03 |
+| `rho_shock` | 0.98 | AR(1) persistence of the credit-supply shock | nb 03 |
+| `cur_acc` | 0.074 | current-account shock size | nb 03 |
+| `k_const_hat` ($\hat k$) | 1/16 | leverage at the contraction | nb 12–13 (`Main.m` §Leverage) |
+| `phi_ac` | 17.0 | capital adjustment-cost curvature | nb 10, 12, 13 |
+
+`shock_path.npz` persists `TT`, `shock_start_t`, `shock_start_idx0`,
+`rho_shock`, and `cur_acc`, so downstream notebooks **read** them rather than
+re-hardcoding; notebooks 02–03 are the single point of definition. (A full
+extraction into a shared `.py` module is deliberately *not* done — see the note
+on the notebook-centric design below.)
+
+### Notebook hygiene (git-clean reproduction)
+
+`run_all.sh` executes notebooks in-place with `nbconvert`, which would otherwise
+write volatile `iopub.*` execution timestamps into every cell on each run,
+producing large, meaningless diffs. The script therefore strips that per-cell
+`metadata.execution` after execution (cell *outputs* are kept). Saved-path
+prints use **relative** paths (`../output/…`) — no absolute machine paths are
+embedded. Re-running the full pipeline should leave the tracked `.ipynb` files
+byte-clean except where a figure or numerical result genuinely changed.
+
+### Committed intermediate outputs
+
+The `output/*.npz` intermediates and the figure PNGs are committed on purpose:
+it lets `./reproduce_min.sh` (and `reproduce.sh --docs`) rebuild
+`deFerra2020.pdf` in under a minute with no Python run, and lets Phase D start
+from the committed Phase-C state (`--phase=D`). The trade-off is that a
+*partial* run can read a stale committed `.npz`; for a guaranteed-fresh result
+run the full `./run_all.sh` (or delete `output/*.npz` first). Figures 2–5 are
+written to both `output/` and the repo-level `Figures/` (the LaTeX source);
+Figure 1 is written to `output/` and synced into `Figures/` by `run_all.sh`.
+
+### Why no shared solver library (design note)
+
+The EGM / distribution / transition routines are intentionally kept inline in
+each notebook rather than factored into an importable `.py` package. The
+notebooks are the pedagogical unit of this REMARK — each is meant to be read
+top-to-bottom alongside its cited MATLAB source — and a shared library would
+hide the line-by-line MATLAB correspondence that is the point of the
+cross-check. A library refactor is noted as future work, not a defect.
+
 ## Out of scope
 
 - Section 7 policy experiments (optimal monetary rules, pegged-but-revisable,

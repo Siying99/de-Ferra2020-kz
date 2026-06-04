@@ -17,6 +17,7 @@ The final state of `main` (incorporating PRs #1–#5) is the course-project arte
 |---|---|---|
 | **Class 12 / #141** — *Ask AI help to improve your REMARK* (due Apr 23, 2026) | [PR #1: *Substance improvements from Claude Opus 4.7 review*](https://github.com/Siying99/de-Ferra2020-kz/pull/1) — implemented all 10 substantive improvements from a Claude Opus 4.7 baseline-REMARK review. Prompt + full model response + accept/edit/reject judgments are in the PR body and the [linked gist](https://gist.github.com/Siying99/745b844792c8e836447aeed2430cd16a). | Merged Apr 23, 2026 |
 | **Final course project** (due May 12, 2026) | This PR + the final state of `main`. Extends PRs #2–#5 beyond the original Task 2 scope. | This PR |
+| **#141 round 2** — accept/edit/reject on the final-project pipeline | A second AI-improvement pass applied to the 14-notebook Python pipeline (which PR #1 predated). Findings + verdicts in [`REVIEW.md`](REVIEW.md). | Follow-up PR |
 
 ---
 
